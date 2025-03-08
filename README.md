@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Read With Me
+
+## About the Project
+
+Read With Me is a collaborative portfolio project for CareerFoundry students to showcase their skills in Next.js, React, and TypeScript. This project is designed for learning, contributing, and gaining real-world experience in a team setting.
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the Repository
+
+Make sure you're branching from the develop branch:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/YOUR-USERNAME/read-with-me.git
+cd read-with-me
+git checkout develop
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Install Dependencies
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+````bash
+npm install
 
-## Learn More
+### 3. Run the Project
+```bash
+npm run dev
 
-To learn more about Next.js, take a look at the following resources:
+This starts the development server at http://localhost:3000/.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contribution Guidelines
+- Always create a new branch from `develop` before working on any feature.
+- Follow the Prettier + ESLint formatting rules.
+- Open a Pull Request (PR) to merge your changes.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Getting Access & Collaboration
+If you’d like to contribute, **contact the repo admin** for access. You can request access by:
+- Sending a message to the **repo admin** on GitHub.
+- Posting in the **Discord channel** and tagging an admin.
+- Providing your GitHub username to be added as a collaborator.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Once you have access, you can join the discussion in Discord and start contributing to the project.
+````
