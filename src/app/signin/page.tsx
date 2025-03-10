@@ -1,8 +1,7 @@
 import { auth, signIn, signOut } from '@/auth';
 
-export default async function SignIn() {
+const SignIn: React.FC = async () => {
     const session = await auth();
-    console.log(session);
 
     const user = session?.user;
 
@@ -46,4 +45,6 @@ export default async function SignIn() {
             )}
         </div>
     );
-}
+};
+
+export default SignIn;
