@@ -1,6 +1,7 @@
 import { auth, signIn, signOut } from '@/auth';
+import { JSX } from 'react';
 
-const SignIn: React.FC = async () => {
+const SignIn = async (): Promise<JSX.Element> => {
     const session = await auth();
 
     const user = session?.user;
