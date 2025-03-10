@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 const Home: React.FC = () => {
     return (
@@ -6,9 +7,9 @@ const Home: React.FC = () => {
             <h1 className="text-3xl font-bold">Welcome to Read With Me</h1>
             <p className="text-gray-600 mt-2">Temporary landing page.</p>
             <Link href="/signin">
-                <button className="mt-4 px-4 py-2 bg-red-400 text-white rounded">
+                <Button className="mt-4 px-4 py-2 bg-red-400 text-white rounded">
                     Get Started
-                </button>
+                </Button>
             </Link>
         </div>
     );

@@ -1,5 +1,7 @@
 import { auth, signIn, signOut } from '@/auth';
 import { JSX } from 'react';
+import { Button } from '@/components/ui/button';
+import { FcGoogle } from 'react-icons/fc';
 
 const SignIn = async (): Promise<JSX.Element> => {
     const session = await auth();
@@ -19,12 +21,12 @@ const SignIn = async (): Promise<JSX.Element> => {
                             await signOut();
                         }}
                     >
-                        <button
+                        <Button
                             className="bg-red-400 text-white px-4 py-2 rounded mt-4"
                             type="submit"
                         >
                             Sign Out
-                        </button>
+                        </Button>
                     </form>
                 </>
             ) : (
@@ -38,9 +40,10 @@ const SignIn = async (): Promise<JSX.Element> => {
                             await signIn('google');
                         }}
                     >
-                        <button className="bg-red-400 text-white px-4 py-2 rounded mt-4">
+                        <Button className="bg-[#131314] border mt-4 border-[#8E918F] text-[#E3E3E3] font-medium text-[14px] leading-[20px] rounded-full px-6 py-4 flex items-center gap-2 shadow-md hover:bg-[#1a1a1b] transition">
+                            <FcGoogle size={18} />
                             Sign In with Google
-                        </button>
+                        </Button>
                     </form>
                 </>
             )}
