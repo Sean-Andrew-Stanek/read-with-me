@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { useSession, signIn, signOut } from 'next-auth/react';
@@ -20,6 +20,15 @@ const AuthDialog: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { data: session, status } = useSession();
     const isAuthenticated = status === 'authenticated';
+
+    // Prevent page shift when dialog is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('overflow-hidden'); // Prevents shifting
+        } else {
+            document.body.classList.remove('overflow-hidden');
+        }
+    }, [isOpen]);
 
     const handleGoogleSignIn = async (): Promise<void> => {
         await signIn('google', { callbackUrl: '/dashboard' });
@@ -56,9 +65,9 @@ const AuthDialog: React.FC = () => {
                     Sign In
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="w-[94%] max-w-md px-6 mx-auto">
                 <DialogHeader>
-                    <DialogTitle className="text-center text-xl">
+                    <DialogTitle className="text-center  text-lg md:text-xl">
                         Sign in to your account
                     </DialogTitle>
                 </DialogHeader>
