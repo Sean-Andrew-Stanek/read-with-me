@@ -1,7 +1,5 @@
-import { auth, signIn, signOut } from '@/auth';
+import { auth } from '@/auth';
 import { JSX } from 'react';
-import { Button } from '@/components/ui/button';
-import { FcGoogle } from 'react-icons/fc';
 
 const SignIn = async (): Promise<JSX.Element> => {
     const session = await auth();
@@ -15,7 +13,7 @@ const SignIn = async (): Promise<JSX.Element> => {
                     <h1 className="text-2xl  md:text-4xl font-semibold">
                         Welcome {user.name}
                     </h1>
-                    <form
+                    {/* <form
                         action={async () => {
                             'use server';
                             await signOut();
@@ -27,14 +25,14 @@ const SignIn = async (): Promise<JSX.Element> => {
                         >
                             Sign Out
                         </Button>
-                    </form>
+                    </form> */}
                 </>
             ) : (
                 <>
-                    <h1 className="text-2xl  md:text-4xl p-4 font-semibold">
+                    <h1 className="text-2xl  md:text-4xl p-4font-semibold">
                         You are not authenticated. Please sign in!
                     </h1>
-                    <form
+                    {/* <form
                         action={async () => {
                             'use server';
                             await signIn('google');
@@ -47,7 +45,7 @@ const SignIn = async (): Promise<JSX.Element> => {
                             <FcGoogle size={18} />
                             Sign In with Google
                         </Button>
-                    </form>
+                    </form> */}
                 </>
             )}
         </div>

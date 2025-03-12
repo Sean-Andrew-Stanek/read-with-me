@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+// import Link from 'next/link';
+// import { Button } from '@/components/ui/button';
 import { frontPage as strings } from '@/config/strings';
 const Home: React.FC = () => {
     return (
@@ -10,11 +10,11 @@ const Home: React.FC = () => {
             <p className="text-gray-600 mt-2 text-lg md:text-xl lg:text-2xl">
                 {strings.description}
             </p>
-            <Link href="/signin">
+            {/* <Link href="/signin">
                 <Button className="mt-4 md:w-auto py-3 md:py-6 lg:py-6 md:text-xl text-base bg-red-400 text-white rounded font-medium cursor-pointer">
                     {strings.getStarted}
                 </Button>
-            </Link>
+            </Link> */}
         </div>
     );
 };
