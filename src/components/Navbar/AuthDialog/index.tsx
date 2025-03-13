@@ -13,7 +13,8 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger
+    DialogTrigger,
+    DialogClose
 } from '@/components/ui/dialog';
 
 const AuthDialog: React.FC = () => {
@@ -51,6 +52,7 @@ const AuthDialog: React.FC = () => {
                     variant="outline"
                     className="flex items-center gap-2 text-black cursor-pointer"
                 >
+                    {/* Logout Icon */}
                     <LogOut className="h-4 w-4" />
                     Sign Out
                 </Button>
@@ -65,23 +67,25 @@ const AuthDialog: React.FC = () => {
                     Sign In
                 </Button>
             </DialogTrigger>
-            <DialogContent className="w-[94%] max-w-md px-6 mx-auto">
+            <DialogContent className="w-[94%] max-w-md px-6 mx-auto [&>button]:cursor-pointer">
                 <DialogHeader>
                     <DialogTitle className="text-center  text-lg md:text-xl">
                         Sign in to your account
                     </DialogTitle>
                 </DialogHeader>
+
                 <div className="flex flex-col space-y-4 py-4">
                     <Button
                         variant="outline"
                         className="flex items-center justify-center gap-2 h-12 cursor-pointer"
                         onClick={handleGoogleSignIn}
                     >
+                        {/* Google Icon */}
                         <svg
                             viewBox="0 0 24 24"
                             width="24"
                             height="24"
-                            className="h-5 w-5 "
+                            className="h-5 w-5"
                         >
                             <path
                                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
