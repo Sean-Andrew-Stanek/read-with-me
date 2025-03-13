@@ -13,8 +13,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
-    DialogClose
+    DialogTrigger
 } from '@/components/ui/dialog';
 
 const AuthDialog: React.FC = () => {
