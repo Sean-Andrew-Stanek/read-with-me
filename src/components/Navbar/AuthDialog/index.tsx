@@ -49,7 +49,7 @@ const AuthDialog: React.FC = () => {
                 <Button
                     onClick={handleSignOut}
                     variant="outline"
-                    className="flex items-center gap-2 text-black"
+                    className="flex items-center gap-2 text-black cursor-pointer"
                 >
                     <LogOut className="h-4 w-4" />
                     Sign Out
@@ -61,7 +61,7 @@ const AuthDialog: React.FC = () => {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button className="text-black" variant="outline">
+                <Button className="text-black cursor-pointer" variant="outline">
                     Sign In
                 </Button>
             </DialogTrigger>
@@ -74,14 +74,14 @@ const AuthDialog: React.FC = () => {
                 <div className="flex flex-col space-y-4 py-4">
                     <Button
                         variant="outline"
-                        className="flex items-center justify-center gap-2 h-12"
+                        className="flex items-center justify-center gap-2 h-12 cursor-pointer"
                         onClick={handleGoogleSignIn}
                     >
                         <svg
                             viewBox="0 0 24 24"
                             width="24"
                             height="24"
-                            className="h-5 w-5"
+                            className="h-5 w-5 "
                         >
                             <path
                                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
