@@ -23,6 +23,14 @@ git checkout develop
 ````bash
 npm install
 
+### 3. Configure environmental variables
+AUTH_SECRET - Production only NextAuth number
+NEXTAUTH_URL - NextAuth redirect url
+
+AUTH_GOOGLE_ID - Google oAuth Id
+AUTH_GOOGLE_SECRET - Google oAuth Secret
+
+
 ### 3. Run the Project
 ```bash
 npm run dev
