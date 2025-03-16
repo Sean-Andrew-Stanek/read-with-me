@@ -1,4 +1,4 @@
-import { POST } from '../route';
+import { POST } from '../story/route';
 import { NextResponse } from 'next/server';
 
 describe('POST API Route', () => {
