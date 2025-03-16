@@ -1,13 +1,20 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 
-// Initialize NextAuth with Google as an authentication provider
+const clientId = process.env.GOOGLE_CLIENT_ID;
+const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
+if (!clientId || !clientSecret) {
+    throw new Error(
+        'Missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET in environment'
+    );
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
-    // providers: [
-    //     Google({
-    //         clientId: process.env.GOOGLE_CLIENT_ID!,
-    //         clientSecret: process.env.GOOGLE_CLIENT_SECRET!
-    //     })
-    // ]
-    providers: [Google]
+    providers: [
+        Google({
+            clientId,
+            clientSecret
+        })
+    ]
 });
