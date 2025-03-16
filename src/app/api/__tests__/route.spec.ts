@@ -1,5 +1,4 @@
 import { POST } from '../story/route';
-import { NextResponse } from 'next/server';
 
 describe('POST API Route', () => {
   it('should return 400 if token is missing', async () => {
