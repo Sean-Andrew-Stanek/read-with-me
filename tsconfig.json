@@ -28,6 +28,7 @@
         }
     },
     "include": [
+        "eslint.config.mjs",
         "next-env.d.ts",
         "src/**/*.ts",
         "src/**/*.tsx",
