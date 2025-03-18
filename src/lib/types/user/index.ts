@@ -8,12 +8,12 @@ const BaseUserSchema = z.object({
     children: z.array(z.string().uuid()).optional()
 });
 
-export const ParentUserSchema = BaseUserSchema.extend({
+export const ParentUserSchema = BaseUserSchema.omit({ parentId: true }).extend({
     isParent: z.literal(true),
     children: z.array(z.string().uuid())
 });
 
-export const ChildUserSchema = BaseUserSchema.extend({
+export const ChildUserSchema = BaseUserSchema.omit({ children: true }).extend({
     isParent: z.literal(false),
     parentId: z.string().uuid()
 });
