@@ -21,10 +21,7 @@ export const POST = async (): Promise<NextResponse> => {
 
     if (existingUser) {
         const safeUser = sanitizeDoc(existingUser);
-        return NextResponse.json(
-            { exists: true, user: safeUser },
-            { status: 200 }
-        );
+        return NextResponse.json({ user: safeUser }, { status: 200 });
     }
 
     const newUser: ParentUser = {
@@ -37,8 +34,5 @@ export const POST = async (): Promise<NextResponse> => {
     await users.insertOne(newUser);
 
     const safeUser = sanitizeDoc(newUser);
-    return NextResponse.json(
-        { created: true, user: safeUser },
-        { status: 201 }
-    );
+    return NextResponse.json({ user: safeUser }, { status: 201 });
 };
