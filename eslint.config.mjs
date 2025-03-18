@@ -80,14 +80,6 @@ export default [
                     unnamedComponents: 'arrow-function'
                 }
             ],
-
-            'no-restricted-globals': [
-                'warn',
-                {
-                    name: 'fetch',
-                    message: 'Use secureFetch if you need the token.'
-                }
-            ],
             'prefer-arrow-callback': ['error', { allowNamedFunctions: false }]
         }
     }
