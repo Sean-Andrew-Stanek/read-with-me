@@ -2,13 +2,14 @@
 
 export const postLogin = async (): Promise<void> => {
     try {
-        const response = fetch('/api/auth/login', {
+        const response = await fetch('/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-        console.log(response);
+        const data = await response.json();
+        console.log('Login response:', response.status, data);
     } catch (error) {
         console.error(error);
     }
