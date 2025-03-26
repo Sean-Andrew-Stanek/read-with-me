@@ -20,19 +20,25 @@ export default function CreateStoryPage() {
     const router = useRouter();
     const [prompt, setPrompt] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [storyContent, setStoryContent] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!prompt.trim()) return;
 
         setIsLoading(true);
+        setStoryContent('');
         try {
             const storyContent = await createStory(prompt);
             console.log('Generated Story:', storyContent);
-            alert('Story created successfully!');
+
+            setStoryContent(storyContent);
+            setPrompt('');
             setIsLoading(false);
         } catch (error) {
             console.error('Error creating story:', error);
+            setIsLoading(false);
+        } finally {
             setIsLoading(false);
         }
     };
@@ -105,6 +111,12 @@ export default function CreateStoryPage() {
                     </CardFooter>
                 </form>
             </Card>
+            {storyContent && (
+                <div className="mt-6 p-4 border border-gray-300 rounded w-full max-w-2xl bg-white">
+                    <h2 className="text-xl font-bold mb-2">Generated Story:</h2>
+                    <p>{storyContent}</p>
+                </div>
+            )}
         </div>
     );
 }
