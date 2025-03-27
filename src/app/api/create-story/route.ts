@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import { StorySchema, Story } from '@/lib/types/story';
+import clientPromise from '@/lib/mongodb';
+import { ObjectId } from 'mongodb';
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY!
@@ -7,7 +10,8 @@ const openai = new OpenAI({
 
 export const POST = async (req: Request): Promise<Response> => {
     try {
-        const { prompt }: { prompt: string } = await req.json();
+        const { prompt, parentId, childId }: { prompt: string } =
+            await req.json();
 
         if (!prompt || prompt.trim().length === 0) {
             return NextResponse.json(
@@ -36,7 +40,29 @@ export const POST = async (req: Request): Promise<Response> => {
             throw new Error('Failed to generate story');
         }
 
-        return NextResponse.json({ story: storyContent }, { status: 200 });
+        const story: Story = {
+            id: new ObjectId().toString(),
+            title: prompt.slice(0, 20),
+            content: storyContent,
+            prompt,
+            createdAt: new Date().toISOString(),
+            parentId: parentId || null,
+            childId: childId || null
+        };
+
+        StorySchema.parse(story);
+
+        // Save the story to MongoDB
+        const client = await clientPromise;
+        const db = client.db('read-with-me');
+        const storiesCollection = db.collection('stories');
+
+        const result = await storiesCollection.insertOne(story);
+
+        return NextResponse.json(
+            { story: storyContent, storyId: result.insertedId },
+            { status: 200 }
+        );
     } catch (error) {
         if (error instanceof Error) {
             return NextResponse.json({ error: error.message }, { status: 500 });
