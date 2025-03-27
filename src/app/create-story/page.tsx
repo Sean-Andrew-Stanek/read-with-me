@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -16,25 +15,28 @@ import { Label } from '@/components/ui/label';
 import { Sparkles, Loader2 } from 'lucide-react';
 import { createStory } from '@/lib/actions';
 
-export default function CreateStoryPage() {
-    const router = useRouter();
-    const [prompt, setPrompt] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [storyContent, setStoryContent] = useState('');
+type CreateStoryPageProps = object;
 
-    const handleSubmit = async (e: React.FormEvent) => {
+const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
+    const [prompt, setPrompt] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [storyContent, setStoryContent] = useState<string>('');
+
+    const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         if (!prompt.trim()) return;
 
         setIsLoading(true);
         setStoryContent('');
         try {
-            const storyContent = await createStory(prompt);
+            const storyContent: string = await createStory(prompt);
             setStoryContent(storyContent);
             setPrompt('');
             setIsLoading(false);
         } catch (error) {
-            console.error('Error creating story:', error);
+            if (error instanceof Error) {
+                console.error('Error creating story:', error.message); // eslint-disable-line no-console
+            }
         } finally {
             setIsLoading(false);
         }
@@ -116,4 +118,6 @@ export default function CreateStoryPage() {
             )}
         </div>
     );
-}
+};
+
+export default CreateStoryPage;

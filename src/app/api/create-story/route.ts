@@ -5,9 +5,9 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY!
 });
 
-export const POST = async (req: Request) => {
+export const POST = async (req: Request): Promise<Response> => {
     try {
-        const { prompt } = await req.json();
+        const { prompt }: { prompt: string } = await req.json();
 
         if (!prompt || prompt.trim().length === 0) {
             return NextResponse.json(
@@ -30,15 +30,21 @@ export const POST = async (req: Request) => {
             temperature: 0.7
         });
 
-        const storyContent = response.choices[0].message?.content || '';
+        const storyContent: string = response.choices[0].message?.content || '';
 
         if (!storyContent) {
             throw new Error('Failed to generate story');
         }
 
         return NextResponse.json({ story: storyContent }, { status: 200 });
-    } catch (error: any) {
-        console.error('Error generating story:', error.message);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error) {
+        if (error instanceof Error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        } else {
+            return NextResponse.json(
+                { error: 'Unknown error' },
+                { status: 500 }
+            );
+        }
     }
 };

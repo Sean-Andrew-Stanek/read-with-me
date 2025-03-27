@@ -1,4 +1,3 @@
-import { auth } from '@/auth';
 import type { FC } from 'react';
 import { Button } from '@/components/ui/button';
 import {
