@@ -7,8 +7,8 @@ export const StorySchema = z.object({
     content: z.string().min(1, 'Content is required'),
     prompt: z.string().min(1, 'Prompt is required'),
     createdAt: z.string().datetime(),
-    parentId: z.string().uuid().optional().nullable(),
-    childId: z.string().uuid().optional().nullable()
+    parentId: z.string().or(z.string().uuid()).optional().nullable(), // Accepts both ObjectId and UUID
+    childId: z.string().or(z.string().uuid()).optional().nullable()
 });
 
 export type Story = z.infer<typeof StorySchema>;

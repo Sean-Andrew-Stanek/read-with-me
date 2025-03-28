@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -13,29 +13,92 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Sparkles, Loader2 } from 'lucide-react';
-import { createStory } from '@/lib/actions';
+import { createStory, fetchUserData } from '@/lib/actions';
+import { useSession } from 'next-auth/react';
 
 type CreateStoryPageProps = object;
 
 const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
+    const { data: session } = useSession();
+
     const [prompt, setPrompt] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [storyContent, setStoryContent] = useState<string>('');
+    const [userData, setUserData] = useState<any>(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (!session) {
+                console.log('No session found.');
+                return;
+            }
+
+            console.log('Session Object:', session);
+            const uuid = (session?.user as any)?.uuid;
+
+            if (!uuid) {
+                console.log('No user ID found in session.');
+                return;
+            }
+
+            try {
+                const userData = await fetchUserData(uuid);
+                console.log('User Data Retrieved From Backend:', userData);
+
+                if (!userData) {
+                    console.log('No user data found from backend.');
+                    return;
+                }
+
+                setUserData(userData);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUser();
+    }, [session]);
 
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         if (!prompt.trim()) return;
 
+        if (!userData) {
+            console.error('User data is not yet loaded. Please try again.');
+            alert('User data is not yet loaded. Please try again.');
+            return;
+        }
+        console.log('User Data Retrieved Before Submission:', userData); // Add this log
+
         setIsLoading(true);
         setStoryContent('');
+
         try {
-            const storyContent: string = await createStory(prompt);
+            // If the user is a parent, use their `uuid` as the `parentId`
+            // const parentId = userData?.isParent ? userData?.uuid : null;
+
+            // If the user is a child, use their `uuid` as `childId` and parent's `uuid` as `parentId`
+            // const childId = !userData?.isParent ? userData?.uuid : null;
+
+            const parentId = userData?.parentId || null; // Fetch parentId if it exists
+            const childId =
+                userData?.children?.length > 0 ? userData.uuid : null; // If the user has children, they are a parent
+            console.log('Sending to backend in handlesubmit:', {
+                parentId,
+                childId,
+                prompt,
+                userData
+            });
+            const storyContent: string = await createStory(
+                prompt,
+                parentId,
+                childId
+            );
             setStoryContent(storyContent);
             setPrompt('');
-            setIsLoading(false);
         } catch (error) {
             if (error instanceof Error) {
-                console.error('Error creating story:', error.message); // eslint-disable-line no-console
+                console.error('Error creating story:', error.message);
             }
         } finally {
             setIsLoading(false);
@@ -93,7 +156,8 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                         <Button
                             type="submit"
                             className="w-full"
-                            disabled={isLoading || !prompt.trim()}
+                            // disabled={isLoading || !prompt.trim()}
+                            disabled={isLoading || !prompt.trim() || !userData}
                         >
                             {isLoading ? (
                                 <>

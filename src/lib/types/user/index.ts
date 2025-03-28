@@ -4,8 +4,8 @@ const BaseUserSchema = z.object({
     googleId: z.string().email(),
     uuid: z.string().uuid(),
     isParent: z.boolean(),
-    parentId: z.string().uuid().optional(),
-    children: z.array(z.string().uuid()).optional()
+    parentId: z.string().or(z.string().uuid()).optional(),
+    children: z.array(z.string().or(z.string().uuid())).optional()
 });
 
 export const ParentUserSchema = BaseUserSchema.omit({ parentId: true }).extend({

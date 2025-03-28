@@ -9,7 +9,7 @@ import {
     CardTitle
 } from '@/components/ui/card'; // npx shadcn add card
 import Link from 'next/link';
-import { Sparkles } from 'lucide-react';
+import { BookOpen, Sparkles } from 'lucide-react';
 
 const Dashboard: FC = () => (
     <div className=" flex flex-col justify-center items-center py-10 px-4">
@@ -37,6 +37,28 @@ const Dashboard: FC = () => (
                 <CardFooter>
                     <Button asChild className="w-full">
                         <Link href="/create-story">Create a Story</Link>
+                    </Button>
+                </CardFooter>
+            </Card>
+            <Card className=" w-full bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <BookOpen className="h-5 w-5 text-green-500" />
+                        Read a Story
+                    </CardTitle>
+                    <CardDescription>
+                        Practice your reading skills
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p>
+                        Read your stories out loud and get helpful feedback to
+                        improve your reading!
+                    </p>
+                </CardContent>
+                <CardFooter>
+                    <Button asChild variant="outline" className="w-full">
+                        <Link href="/my-stories">My Stories</Link>
                     </Button>
                 </CardFooter>
             </Card>
