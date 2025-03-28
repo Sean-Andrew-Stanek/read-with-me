@@ -74,12 +74,6 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
         setStoryContent('');
 
         try {
-            // If the user is a parent, use their `uuid` as the `parentId`
-            // const parentId = userData?.isParent ? userData?.uuid : null;
-
-            // If the user is a child, use their `uuid` as `childId` and parent's `uuid` as `parentId`
-            // const childId = !userData?.isParent ? userData?.uuid : null;
-
             const parentId = userData?.parentId || null; // Fetch parentId if it exists
             const childId =
                 userData?.children?.length > 0 ? userData.uuid : null; // If the user has children, they are a parent

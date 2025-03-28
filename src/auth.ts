@@ -35,6 +35,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 // Attach the uuid to the session object
                 session.user.uuid = userData.uuid;
                 session.user.isParent = userData.isParent;
+            } else {
+                console.error('User data not found in the database');
             }
 
             return session;

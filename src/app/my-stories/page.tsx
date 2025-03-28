@@ -30,16 +30,10 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
         const loadStories = async () => {
             if (!session) return;
 
-            const { parentId, childId } = session.user as {
-                parentId?: string;
-                childId?: string;
-            };
+            const uuid = (session?.user as any)?.uuid;
+            const isParent = (session?.user as any)?.isParent;
 
-            // Check if the user is a parent or child from session
-            // const parentId = session?.user?.parentId;
-            // const childId = session?.user?.childId;
-
-            if (!parentId && !childId) {
+            if (!uuid) {
                 setError(
                     'No valid user ID found. Please make sure you are logged in properly.'
                 );
@@ -49,10 +43,12 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
             try {
                 setLoading(true);
 
-                const fetchedStories = await fetchStories(
-                    parentId || undefined,
-                    childId || undefined
-                );
+                // Send the appropriate ID to the backend
+                const parentId = isParent ? uuid : undefined;
+                const childId = !isParent ? uuid : undefined;
+                console.log('Fetching stories with:', { parentId, childId });
+
+                const fetchedStories = await fetchStories(parentId, childId);
                 setStories(fetchedStories);
             } catch (error: any) {
                 setError(error.message);

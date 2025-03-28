@@ -43,7 +43,7 @@ const fetchStories = async (
     if (parentId) params.append('parentId', parentId);
     if (childId) params.append('childId', childId);
 
-    const response = await fetch(`/api/my-story?${params.toString()}`, {
+    const response = await fetch(`/api/my-stories?${params.toString()}`, {
         method: 'GET'
     });
 
