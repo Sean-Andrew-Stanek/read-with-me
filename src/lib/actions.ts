@@ -1,3 +1,6 @@
+import { Story } from '@/lib/types/story';
+import { ParentUser, ChildUser } from '@/lib/types/user';
+
 const createStory = async (
     prompt: string,
     parentId?: string,
@@ -20,7 +23,7 @@ const createStory = async (
     return data.story;
 };
 
-const fetchUserData = async (uuid: string): Promise<any> => {
+const fetchUserData = async (uuid: string): Promise<ParentUser | ChildUser> => {
     const response = await fetch(`/api/get-user?uuid=${uuid}`, {
         method: 'GET'
     });
@@ -31,14 +34,13 @@ const fetchUserData = async (uuid: string): Promise<any> => {
     }
 
     const data = await response.json();
-    console.log('User Data Retrieved From Backend:', data);
-    return data;
+    return data as ParentUser | ChildUser;
 };
 
 const fetchStories = async (
     parentId?: string,
     childId?: string
-): Promise<any> => {
+): Promise<Story[]> => {
     const params = new URLSearchParams();
     if (parentId) params.append('parentId', parentId);
     if (childId) params.append('childId', childId);

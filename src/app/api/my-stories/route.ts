@@ -22,7 +22,8 @@ export const GET = async (req: Request): Promise<Response> => {
         const storiesCollection = db.collection('stories');
 
         // Build query object to filter stories
-        const query: Record<string, any> = {};
+        const query: Record<string, string> = {};
+
         if (parentId) query.parentId = parentId;
         if (childId) query.childId = childId;
 
@@ -34,8 +35,13 @@ export const GET = async (req: Request): Promise<Response> => {
 
         // send stories back as JSON
         return NextResponse.json({ stories: stories || [] }, { status: 200 });
-    } catch (error: any) {
-        console.error('Error fetching stories:', error.message);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+        return NextResponse.json(
+            { error: 'An unknown error occurred.' },
+            { status: 500 }
+        );
     }
 };

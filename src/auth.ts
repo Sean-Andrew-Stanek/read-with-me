@@ -1,3 +1,4 @@
+import { Session } from 'next-auth';
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
@@ -21,7 +22,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         })
     ],
     callbacks: {
-        async session({ session, token }) {
+        async session({ session }: { session: Session }) {
             const client = await clientPromise;
             const db = client.db('read-with-me');
             const usersCollection = db.collection('users');
@@ -36,16 +37,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 session.user.uuid = userData.uuid;
                 session.user.isParent = userData.isParent;
             } else {
-                console.error('User data not found in the database');
+                throw new Error('User data not found in database.');
             }
 
             return session;
-        },
-        async jwt({ token, user }) {
-            if (user) {
-                token.id = user.id; // Store the NextAuth userId
-            }
-            return token;
         }
+        // async jwt({ token, user }: { token: JWT; user: any }) {
+        //     if (user) {
+        //         token.id = user.id; // Store the NextAuth userId
+        //     }
+        //     return token;
+        // }
     }
 });

@@ -18,8 +18,6 @@ export const POST = async (req: Request): Promise<Response> => {
         }: { prompt: string; parentId?: string; childId?: string } =
             await req.json();
 
-        console.log('Received from frontend:', { parentId, childId, prompt });
-
         if (!prompt || prompt.trim().length === 0) {
             return NextResponse.json(
                 { error: 'Prompt is required' },

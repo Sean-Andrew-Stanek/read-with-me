@@ -27,32 +27,31 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
     const [userData, setUserData] = useState<any>(null);
 
     useEffect(() => {
-        const fetchUser = async () => {
-            if (!session) {
-                console.log('No session found.');
-                return;
+        const fetchUser = async (): Promise<void> => {
+            if (!session || !session.user) {
+                throw new Error('User not logged in.');
             }
 
-            console.log('Session Object:', session);
-            const uuid = (session?.user as any)?.uuid;
+            const uuid = (session?.user as { uuid: string })?.uuid;
 
             if (!uuid) {
-                console.log('No user ID found in session.');
                 return;
             }
 
             try {
                 const userData = await fetchUserData(uuid);
-                console.log('User Data Retrieved From Backend:', userData);
 
                 if (!userData) {
-                    console.log('No user data found from backend.');
                     return;
                 }
 
                 setUserData(userData);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    throw new Error(
+                        `Error fetching user data: ${error.message}`
+                    );
+                }
             }
         };
 
@@ -64,11 +63,9 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
         if (!prompt.trim()) return;
 
         if (!userData) {
-            console.error('User data is not yet loaded. Please try again.');
             alert('User data is not yet loaded. Please try again.');
             return;
         }
-        console.log('User Data Retrieved Before Submission:', userData); // Add this log
 
         setIsLoading(true);
         setStoryContent('');
@@ -77,22 +74,18 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
             const parentId = userData?.parentId || null; // Fetch parentId if it exists
             const childId =
                 userData?.children?.length > 0 ? userData.uuid : null; // If the user has children, they are a parent
-            console.log('Sending to backend in handlesubmit:', {
-                parentId,
-                childId,
-                prompt,
-                userData
-            });
+
             const storyContent: string = await createStory(
                 prompt,
                 parentId,
                 childId
             );
+
             setStoryContent(storyContent);
             setPrompt('');
-        } catch (error) {
+        } catch (error: unknown) {
             if (error instanceof Error) {
-                console.error('Error creating story:', error.message);
+                throw new Error(`Error creating story: ${error.message}`);
             }
         } finally {
             setIsLoading(false);

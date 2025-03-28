@@ -13,8 +13,6 @@ export const GET = async (req: Request): Promise<Response> => {
             );
         }
 
-        console.log('Fetching user with uuid:', uuid);
-
         const client = await clientPromise;
         const db = client.db('read-with-me');
         const usersCollection = db.collection('users');
@@ -32,11 +30,14 @@ export const GET = async (req: Request): Promise<Response> => {
         const parentId = user.isParent ? user.uuid : user.parentId || null;
         const children = user.children || null;
 
-        console.log('User Data Retrieved:', { parentId, children });
-
         return NextResponse.json({ parentId, children }, { status: 200 });
-    } catch (error: any) {
-        console.error('Error fetching user data:', error.message);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+        return NextResponse.json(
+            { error: 'An unknown error occurred.' },
+            { status: 500 }
+        );
     }
 };

@@ -2,16 +2,7 @@
 import { useState, useEffect } from 'react';
 import { fetchStories } from '@/lib/actions';
 import { useSession } from 'next-auth/react';
-
-type Story = {
-    id: string;
-    title: string;
-    content: string;
-    prompt: string;
-    createdAt: string;
-    parentId?: string | null;
-    childId?: string | null;
-};
+import { Story } from '@/lib/types/story';
 
 type CreateStoryPageProps = {
     parentId?: string;
@@ -20,18 +11,22 @@ type CreateStoryPageProps = {
 
 const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
     const { data: session } = useSession();
-    console.log('Session Data:', session);
+    // console.log('Session Data:', session);
 
     const [stories, setStories] = useState<Story[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const loadStories = async () => {
-            if (!session) return;
-
-            const uuid = (session?.user as any)?.uuid;
-            const isParent = (session?.user as any)?.isParent;
+        const loadStories = async (): Promise<void> => {
+            if (!session || !session.user) {
+                setError(
+                    'You are not logged in. Please log in to view your stories.'
+                );
+                return;
+            }
+            const uuid = (session?.user as { uuid: string })?.uuid;
+            const isParent = (session?.user as { isParent: boolean })?.isParent;
 
             if (!uuid) {
                 setError(
@@ -46,12 +41,14 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
                 // Send the appropriate ID to the backend
                 const parentId = isParent ? uuid : undefined;
                 const childId = !isParent ? uuid : undefined;
-                console.log('Fetching stories with:', { parentId, childId });
+                // console.log('Fetching stories with:', { parentId, childId });
 
                 const fetchedStories = await fetchStories(parentId, childId);
                 setStories(fetchedStories);
-            } catch (error: any) {
-                setError(error.message);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    setError(error.message);
+                }
             } finally {
                 setLoading(false);
             }
