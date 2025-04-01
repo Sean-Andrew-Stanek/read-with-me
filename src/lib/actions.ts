@@ -24,7 +24,7 @@ const createStory = async (
 };
 
 const fetchUserData = async (uuid: string): Promise<ParentUser | ChildUser> => {
-    const response = await fetch(`/api/get-user?uuid=${uuid}`, {
+    const response = await fetch(`/api/user?uuid=${uuid}`, {
         method: 'GET'
     });
 
