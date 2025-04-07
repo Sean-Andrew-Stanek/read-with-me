@@ -18,6 +18,28 @@ const Dashboard: FC = () => (
         </h1>
 
         <div className=" flex flex-col gap-6 lg:w-[80%] xl:w-[60%]">
+            <Card className="w-full bg-purple-50 border-purple-200 dark:bg-purple-950 dark:border-purple-800">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        👶 Create Child Profile
+                    </CardTitle>
+                    <CardDescription>
+                        Set up a login code (UUID) and password for your child.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p>
+                        Your child will be able to log in using the code you
+                        create here.
+                    </p>
+                </CardContent>
+                <CardFooter>
+                    <Button asChild className="w-full">
+                        <Link href="/create-child">Create Child Account</Link>
+                    </Button>
+                </CardFooter>
+            </Card>
+
             <Card className="w-full bg-blue-50 border-blue-200 dark:bg-blue-950 dark:border-blue-800">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">

@@ -11,6 +11,7 @@
         "test": "npx playwright test"
     },
     "dependencies": {
+        "@auth/core": "^0.38.0",
         "@auth/mongodb-adapter": "^3.8.0",
         "@radix-ui/react-dialog": "^1.1.6",
         "@radix-ui/react-label": "^2.1.2",
