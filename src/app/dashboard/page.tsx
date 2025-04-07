@@ -24,12 +24,12 @@ const Dashboard: FC = () => (
                         👶 Create Child Profile
                     </CardTitle>
                     <CardDescription>
-                        Set up a login code (UUID) and password for your child.
+                        Set up a login username and password for your child.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <p>
-                        Your child will be able to log in using the code you
+                        Your child will be able to log in using the username you
                         create here.
                     </p>
                 </CardContent>
