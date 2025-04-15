@@ -11,13 +11,12 @@ import {
     DialogTrigger
 } from '@/components/ui/dialog';
 
-const Signup = ({
-    loggedIn,
-    setLoggedIn
-}: {
+type LoginProps = {
     loggedIn: boolean;
     setLoggedIn: (value: boolean) => void;
-}) => {
+};
+
+const Login = ({ loggedIn, setLoggedIn }: LoginProps) => {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [userName, setUserName] = useState('');
@@ -32,8 +31,8 @@ const Signup = ({
         }
     }, [isOpen]);
 
-    const handleSignup = async (): Promise<void> => {
-        const res = await fetch('/api/user/signup', {
+    const handleLogin = async (): Promise<void> => {
+        const res = await fetch('/api/user/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userName, password })
@@ -46,7 +45,7 @@ const Signup = ({
             setIsOpen(false);
             router.push('/home');
         } else {
-            setError(data.error || 'Something went wrong.');
+            setError(data.error || 'Invalid username or password.');
         }
     };
 
@@ -54,21 +53,19 @@ const Signup = ({
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <Button variant="outline" className="text-black cursor-pointer">
-                    Sign Up
+                    Log In
                 </Button>
             </DialogTrigger>
+
             <DialogContent className="w-[94%] max-w-md px-6 mx-auto [&>button]:cursor-pointer">
                 <DialogHeader>
                     <DialogTitle className="text-center text-lg md:text-xl">
-                        Create an account
+                        Log into your account
                     </DialogTitle>
                 </DialogHeader>
 
                 <div className="flex flex-col space-y-4 py-4">
-                    <label
-                        className="block mb-1 font-medium text-sm"
-                        htmlFor="password"
-                    >
+                    <label className="block mb-1 font-medium text-sm">
                         Username:
                     </label>
                     <input
@@ -78,10 +75,8 @@ const Signup = ({
                         onChange={e => setUserName(e.target.value)}
                         className="border border-gray-300 rounded p-2"
                     />
-                    <label
-                        className="block mb-1 font-medium text-sm"
-                        htmlFor="password"
-                    >
+
+                    <label className="block mb-1 font-medium text-sm">
                         Password:
                     </label>
                     <input
@@ -95,10 +90,10 @@ const Signup = ({
                     {error && <p className="text-red-500 text-sm">{error}</p>}
 
                     <Button
-                        onClick={handleSignup}
-                        className="bg-red-400 hover:bg-red-600 text-white font-semibold py-2 rounded-2xl cursor-pointer"
+                        onClick={handleLogin}
+                        className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold py-2 rounded-2xl"
                     >
-                        Sign Up
+                        Log In
                     </Button>
                 </div>
             </DialogContent>
@@ -106,4 +101,4 @@ const Signup = ({
     );
 };
 
-export default Signup;
+export default Login;
