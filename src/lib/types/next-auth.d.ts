@@ -1,3 +1,5 @@
+import { DefaultSession } from 'next-auth';
+
 declare module 'next-auth' {
     interface Session {
         user: {
@@ -7,6 +9,6 @@ declare module 'next-auth' {
             name?: string | null;
             email?: string | null;
             image?: string | null;
-        };
+        } & DefaultSession['user'];
     }
 }

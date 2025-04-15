@@ -42,11 +42,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
             return session;
         }
-        // async jwt({ token, user }: { token: JWT; user: any }) {
-        //     if (user) {
-        //         token.id = user.id; // Store the NextAuth userId
-        //     }
-        //     return token;
-        // }
     }
 });
