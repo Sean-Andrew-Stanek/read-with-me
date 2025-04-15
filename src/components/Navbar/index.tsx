@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
             <div className="flex items-center gap-2">
                 {!loggedIn ? (
                     <>
-                        <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+                        <Login setLoggedIn={setLoggedIn} />
                         <Signup loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
                     </>
                 ) : (
