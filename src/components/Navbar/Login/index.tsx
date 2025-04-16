@@ -12,11 +12,11 @@ import {
 } from '@/components/ui/dialog';
 
 type LoginProps = {
-    loggedIn: boolean;
+    // loggedIn: boolean;
     setLoggedIn: (value: boolean) => void;
 };
 
-const Login = ({ loggedIn, setLoggedIn }: LoginProps) => {
+const Login = ({ setLoggedIn }: LoginProps) => {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [userName, setUserName] = useState('');
