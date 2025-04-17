@@ -61,30 +61,6 @@ const AuthDialog: React.FC = () => {
         }
     };
 
-    // const handleSignOut = async (): Promise<void> => {
-    //     await signOut({ callbackUrl: '/' });
-    // };
-
-    // if (isLoggedIn) {
-    //     return (
-    //         <div className="flex items-center gap-2">
-    //             <span className="text-white text-sm md:text-base break-words whitespace-normal">
-    //                 {session?.user?.uuid}
-    //             </span>
-
-    //             <Button
-    //                 onClick={handleSignOut}
-    //                 variant="outline"
-    //                 className="flex items-center gap-2 text-black cursor-pointer"
-    //             >
-    //                 {/* Logout Icon */}
-    //                 <LogOut className="h-4 w-4" />
-    //                 Sign Out
-    //             </Button>
-    //         </div>
-    //     );
-    // }
-
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>

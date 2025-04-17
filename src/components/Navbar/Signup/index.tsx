@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { useOnboardingStore } from '@/lib/store/onboardingStore';
+
 import {
     Dialog,
     DialogContent,
@@ -12,9 +14,12 @@ import {
 } from '@/components/ui/dialog';
 import { signIn } from 'next-auth/react';
 import { JSX } from 'react';
+// import OnboardingDialog from '@/components/OnBoardingDialog';
 
 const Signup = (): JSX.Element => {
-    const router = useRouter();
+    const { setShowOnboarding } = useOnboardingStore();
+
+    // const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -46,8 +51,9 @@ const Signup = (): JSX.Element => {
 
             if (loginRes && loginRes.ok) {
                 setIsOpen(false);
-                router.push('/home');
-                router.refresh();
+                setShowOnboarding(true);
+                // router.push('/home');
+                // router.refresh();
             } else {
                 setError(data.error || 'Something went wrong.');
             }
@@ -55,59 +61,72 @@ const Signup = (): JSX.Element => {
             setError(data.error || 'Something went wrong.');
         }
     };
+
+    // const handleOnboardingDone = () => {
+    //     setShowOnboarding(false);
+    //     router.push('/home');
+    // };
+
     return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-                <Button variant="outline" className="text-black cursor-pointer">
-                    Sign Up
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="w-[94%] max-w-md px-6 mx-auto [&>button]:cursor-pointer">
-                <DialogHeader>
-                    <DialogTitle className="text-center text-lg md:text-xl">
-                        Create an account
-                    </DialogTitle>
-                </DialogHeader>
-
-                <div className="flex flex-col space-y-4 py-4">
-                    <label
-                        className="block mb-1 font-medium text-sm"
-                        htmlFor="password"
-                    >
-                        Username:
-                    </label>
-                    <input
-                        type="text"
-                        placeholder="Username"
-                        value={userName}
-                        onChange={e => setUserName(e.target.value)}
-                        className="border border-gray-300 rounded p-2"
-                    />
-                    <label
-                        className="block mb-1 font-medium text-sm"
-                        htmlFor="password"
-                    >
-                        Password:
-                    </label>
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        className="border border-gray-300 rounded p-2"
-                    />
-
-                    {error && <p className="text-red-500 text-sm">{error}</p>}
-
+        <>
+            <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <DialogTrigger asChild>
                     <Button
-                        onClick={handleSignup}
-                        className="bg-red-400 hover:bg-red-600 text-white font-semibold py-2 rounded-2xl cursor-pointer"
+                        variant="outline"
+                        className="text-black cursor-pointer"
                     >
                         Sign Up
                     </Button>
-                </div>
-            </DialogContent>
-        </Dialog>
+                </DialogTrigger>
+                <DialogContent className="w-[94%] max-w-md px-6 mx-auto [&>button]:cursor-pointer">
+                    <DialogHeader>
+                        <DialogTitle className="text-center text-lg md:text-xl">
+                            Create an account
+                        </DialogTitle>
+                    </DialogHeader>
+
+                    <div className="flex flex-col space-y-4 py-4">
+                        <label
+                            className="block mb-1 font-medium text-sm"
+                            htmlFor="password"
+                        >
+                            Username:
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Username"
+                            value={userName}
+                            onChange={e => setUserName(e.target.value)}
+                            className="border border-gray-300 rounded p-2"
+                        />
+                        <label
+                            className="block mb-1 font-medium text-sm"
+                            htmlFor="password"
+                        >
+                            Password:
+                        </label>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            className="border border-gray-300 rounded p-2"
+                        />
+
+                        {error && (
+                            <p className="text-red-500 text-sm">{error}</p>
+                        )}
+
+                        <Button
+                            onClick={handleSignup}
+                            className="bg-red-400 hover:bg-red-600 text-white font-semibold py-2 rounded-2xl cursor-pointer"
+                        >
+                            Sign Up
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
+        </>
     );
 };
 

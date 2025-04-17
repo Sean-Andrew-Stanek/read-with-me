@@ -6,42 +6,55 @@ import AuthDialog from './AuthDialog';
 import { useSession } from 'next-auth/react';
 import { signOut } from 'next-auth/react';
 import { LogOut } from 'lucide-react';
+import { useOnboardingStore } from '@/lib/store/onboardingStore';
+import OnboardingDialog from '@/components/OnBoardingDialog';
 
 const Navbar: React.FC = () => {
+    const { showOnboarding, setShowOnboarding } = useOnboardingStore();
+
     const { data: session, status } = useSession();
     if (status === 'loading') return null;
 
     const isLoggedIn = !!session?.user?.uuid;
 
     return (
-        <nav className="flex justify-between items-center py-4 bg-red-400 text-white p-4">
-            <Logo />
+        <>
+            <nav className="flex justify-between items-center py-4 bg-red-400 text-white p-4">
+                <Logo />
 
-            <div className="flex items-center gap-2 ">
-                {isLoggedIn ? (
-                    <div className="flex items-center gap-2">
-                        <span className="text-white text-sm md:text-base break-words whitespace-normal">
-                            {session?.user?.name}
-                        </span>
+                <div className="flex items-center gap-2 ">
+                    {isLoggedIn ? (
+                        <div className="flex items-center gap-2">
+                            <span className="text-white text-sm md:text-base break-words whitespace-normal">
+                                {session?.user?.name}
+                            </span>
 
-                        <Button
-                            onClick={() => signOut({ callbackUrl: '/' })}
-                            variant="outline"
-                            className="flex items-center gap-2 text-black cursor-pointer"
-                        >
-                            {/* Logout Icon */}
-                            <LogOut className="h-4 w-4" />
-                            Sign Out
-                        </Button>
-                    </div>
-                ) : (
-                    <>
-                        <Signup />
-                        <AuthDialog />
-                    </>
-                )}
-            </div>
-        </nav>
+                            <Button
+                                onClick={() => signOut({ callbackUrl: '/' })}
+                                variant="outline"
+                                className="flex items-center gap-2 text-black cursor-pointer"
+                            >
+                                {/* Logout Icon */}
+                                <LogOut className="h-4 w-4" />
+                                Sign Out
+                            </Button>
+                        </div>
+                    ) : (
+                        <>
+                            <Signup />
+                            <AuthDialog />
+                        </>
+                    )}
+                </div>
+            </nav>
+            <OnboardingDialog
+                open={showOnboarding}
+                onOnboarded={() => {
+                    setShowOnboarding(false);
+                    window.location.href = '/home';
+                }}
+            />
+        </>
     );
 };
 
