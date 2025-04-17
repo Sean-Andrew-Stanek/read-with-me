@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -12,9 +11,11 @@ import {
 } from '@/components/ui/dialog';
 import { signIn } from 'next-auth/react';
 import { JSX } from 'react';
+import { useOnboardingStore } from '@/lib/store/onboardingStore';
 
 const Signup = (): JSX.Element => {
-    const router = useRouter();
+    const { setShowOnboarding } = useOnboardingStore();
+
     const [isOpen, setIsOpen] = useState(false);
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -46,8 +47,7 @@ const Signup = (): JSX.Element => {
 
             if (loginRes && loginRes.ok) {
                 setIsOpen(false);
-                router.push('/home');
-                router.refresh();
+                setShowOnboarding(true);
             } else {
                 setError(data.error || 'Something went wrong.');
             }
