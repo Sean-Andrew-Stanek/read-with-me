@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { LogOut } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 // import { JSX } from 'react';
 
@@ -18,8 +19,18 @@ import {
 
 const AuthDialog: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [userName, setUserName] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
     const { data: session, status } = useSession();
-    const isAuthenticated = status === 'authenticated';
+    const isLoggedIn = !!session?.user?.uuid;
+
+    const router = useRouter();
+
+    if (status === 'loading') return null;
+
+    // const isAuthenticated = status === 'authenticated';
 
     // Prevent page shift when dialog is open
     useEffect(() => {
@@ -31,19 +42,54 @@ const AuthDialog: React.FC = () => {
     }, [isOpen]);
 
     const handleGoogleSignIn = async (): Promise<void> => {
-        await signIn('google', { callbackUrl: '/dashboard' });
+        await signIn('google', { callbackUrl: '/home' });
         setIsOpen(false);
     };
+
+    const handleCredentialsLogin = async () => {
+        const res = await signIn('credentials', {
+            redirect: false,
+            userName,
+            password
+        });
+
+        if (res?.ok) {
+            setIsOpen(false);
+            router.refresh();
+
+            router.push('/home');
+        } else {
+            setError('Invalid username or password.');
+        }
+    };
+    // const handleCredentialsLogin = async (): Promise<void> => {
+    //             const res = await fetch('/api/user/login', {
+    //                 method: 'POST',
+    //                 headers: { 'Content-Type': 'application/json' },
+    //                 body: JSON.stringify({ userName, password })
+    //             });
+
+    //             const data = await res.json();
+
+    //             if (res.ok) {
+    //                 setLoggedIn(true);
+    //                 setIsOpen(false);
+    //                 router.push('/home');
+    //             } else {
+    //                 setError(data.error || 'Invalid username or password.');
+    //             }
 
     const handleSignOut = async (): Promise<void> => {
         await signOut({ callbackUrl: '/' });
     };
+    console.log('session signupfront:', session);
+    console.log('uuid signup front:', userName, session?.user?.uuid);
 
-    if (isAuthenticated) {
+    if (isLoggedIn) {
         return (
             <div className="flex items-center gap-2">
                 <span className="text-white text-sm md:text-base break-words whitespace-normal">
-                    {session?.user?.name}
+                    {session?.user?.uuid}
                 </span>
 
                 <Button
@@ -105,6 +151,39 @@ const AuthDialog: React.FC = () => {
                             <path d="M1 1h22v22H1z" fill="none" />
                         </svg>
                         Continue with Google
+                    </Button>
+                    <div className="text-center text-sm text-muted-foreground">
+                        or sign in as a child
+                    </div>
+
+                    {/* Username and password login */}
+                    <label className="block mb-1 font-medium text-sm">
+                        Username:
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={userName}
+                        onChange={e => setUserName(e.target.value)}
+                        className="border border-gray-300 rounded p-2"
+                    />
+                    <label className="block mb-1 font-medium text-sm">
+                        Password:
+                    </label>
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        className="border border-gray-300 rounded p-2"
+                    />
+                    {error && <p className="text-red-500 text-sm">{error}</p>}
+
+                    <Button
+                        onClick={handleCredentialsLogin}
+                        className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold py-2 rounded-2xl"
+                    >
+                        Log In as Child
                     </Button>
                 </div>
             </DialogContent>

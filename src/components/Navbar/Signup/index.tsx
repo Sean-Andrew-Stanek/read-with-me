@@ -11,7 +11,7 @@ import {
     DialogTrigger
 } from '@/components/ui/dialog';
 
-const Signup = ({ setLoggedIn }: { setLoggedIn: (value: boolean) => void }) => {
+const Signup = () => {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [userName, setUserName] = useState('');
@@ -36,7 +36,7 @@ const Signup = ({ setLoggedIn }: { setLoggedIn: (value: boolean) => void }) => {
         const data = await res.json();
 
         if (res.ok) {
-            setLoggedIn(true);
+            // setLoggedIn(true);
             setIsOpen(false);
             router.push('/home');
         } else {

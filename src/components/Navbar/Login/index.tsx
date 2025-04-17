@@ -1,104 +1,118 @@
-'use client';
+// 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from '@/components/ui/dialog';
+// import { useState, useEffect } from 'react';
+// import { useRouter } from 'next/navigation';
+// import { Button } from '@/components/ui/button';
+// import { signIn } from 'next-auth/react';
+// import {
+//     Dialog,
+//     DialogContent,
+//     DialogHeader,
+//     DialogTitle,
+//     DialogTrigger
+// } from '@/components/ui/dialog';
 
-type LoginProps = {
-    loggedIn: boolean;
-    setLoggedIn: (value: boolean) => void;
-};
+// type LoginProps = {
+//     setLoggedIn: (value: boolean) => void;
+// };
 
-const Login = ({ loggedIn, setLoggedIn }: LoginProps) => {
-    const router = useRouter();
-    const [isOpen, setIsOpen] = useState(false);
-    const [userName, setUserName] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+// const Login = ({ setLoggedIn }: LoginProps) => {
+//     const router = useRouter();
+//     const [isOpen, setIsOpen] = useState(false);
+//     const [userName, setUserName] = useState('');
+//     const [password, setPassword] = useState('');
+//     const [error, setError] = useState('');
 
-    useEffect(() => {
-        if (isOpen) {
-            document.body.classList.add('overflow-hidden');
-        } else {
-            document.body.classList.remove('overflow-hidden');
-        }
-    }, [isOpen]);
+//     useEffect(() => {
+//         if (isOpen) {
+//             document.body.classList.add('overflow-hidden');
+//         } else {
+//             document.body.classList.remove('overflow-hidden');
+//         }
+//     }, [isOpen]);
 
-    const handleLogin = async (): Promise<void> => {
-        const res = await fetch('/api/user/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userName, password })
-        });
+//     // const handleLogin = async () => {
+//     //     const res = await signIn('credentials', {
+//     //         redirect: false,
+//     //         userName,
+//     //         password
+//     //     });
+//     const handleLogin = async (): Promise<void> => {
+//         const res = await fetch('/api/user/login', {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({ userName, password })
+//         });
 
-        const data = await res.json();
+//         const data = await res.json();
 
-        if (res.ok) {
-            setLoggedIn(true);
-            setIsOpen(false);
-            router.push('/home');
-        } else {
-            setError(data.error || 'Invalid username or password.');
-        }
-    };
+//         if (res.ok) {
+//             setLoggedIn(true);
+//             setIsOpen(false);
+//             router.push('/home');
+//         } else {
+//             setError(data.error || 'Invalid username or password.');
+//         }
 
-    return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-                <Button variant="outline" className="text-black cursor-pointer">
-                    Log In
-                </Button>
-            </DialogTrigger>
+//         // if (res?.ok) {
+//         //     setIsOpen(false);
+//         //     router.push('/home');
+//         //     router.refresh();
+//         // } else {
+//         //     setError('Invalid username or password.');
+//         // }
+//     };
 
-            <DialogContent className="w-[94%] max-w-md px-6 mx-auto [&>button]:cursor-pointer">
-                <DialogHeader>
-                    <DialogTitle className="text-center text-lg md:text-xl">
-                        Log into your account
-                    </DialogTitle>
-                </DialogHeader>
+//     return (
+//         <Dialog open={isOpen} onOpenChange={setIsOpen}>
+//             <DialogTrigger asChild>
+//                 <Button variant="outline" className="text-black cursor-pointer">
+//                     Log In
+//                 </Button>
+//             </DialogTrigger>
 
-                <div className="flex flex-col space-y-4 py-4">
-                    <label className="block mb-1 font-medium text-sm">
-                        Username:
-                    </label>
-                    <input
-                        type="text"
-                        placeholder="Username"
-                        value={userName}
-                        onChange={e => setUserName(e.target.value)}
-                        className="border border-gray-300 rounded p-2"
-                    />
+//             <DialogContent className="w-[94%] max-w-md px-6 mx-auto [&>button]:cursor-pointer">
+//                 <DialogHeader>
+//                     <DialogTitle className="text-center text-lg md:text-xl">
+//                         Log into your account
+//                     </DialogTitle>
+//                 </DialogHeader>
 
-                    <label className="block mb-1 font-medium text-sm">
-                        Password:
-                    </label>
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        className="border border-gray-300 rounded p-2"
-                    />
+//                 <div className="flex flex-col space-y-4 py-4">
+//                     <label className="block mb-1 font-medium text-sm">
+//                         Username:
+//                     </label>
+//                     <input
+//                         type="text"
+//                         placeholder="Username"
+//                         value={userName}
+//                         onChange={e => setUserName(e.target.value)}
+//                         className="border border-gray-300 rounded p-2"
+//                     />
 
-                    {error && <p className="text-red-500 text-sm">{error}</p>}
+//                     <label className="block mb-1 font-medium text-sm">
+//                         Password:
+//                     </label>
+//                     <input
+//                         type="password"
+//                         placeholder="Password"
+//                         value={password}
+//                         onChange={e => setPassword(e.target.value)}
+//                         className="border border-gray-300 rounded p-2"
+//                     />
 
-                    <Button
-                        onClick={handleLogin}
-                        className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold py-2 rounded-2xl"
-                    >
-                        Log In
-                    </Button>
-                </div>
-            </DialogContent>
-        </Dialog>
-    );
-};
+//                     {error && <p className="text-red-500 text-sm">{error}</p>}
 
-export default Login;
+//                     <Button
+//                         onClick={handleLogin}
+//                         className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold py-2 rounded-2xl cursor-pointer"
+//                     >
+//                         Log In
+//                     </Button>
+//                 </div>
+//             </DialogContent>
+//         </Dialog>
+//     );
+// };
+
+// export default Login;
