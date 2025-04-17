@@ -10,6 +10,7 @@ import {
     DialogTitle,
     DialogTrigger
 } from '@/components/ui/dialog';
+import { signIn } from 'next-auth/react';
 
 const Signup = () => {
     const router = useRouter();
@@ -34,11 +35,21 @@ const Signup = () => {
         });
 
         const data = await res.json();
-
         if (res.ok) {
-            // setLoggedIn(true);
-            setIsOpen(false);
-            router.push('/home');
+            // log in after signup
+            const loginRes = await signIn('credentials', {
+                redirect: false,
+                userName,
+                password
+            });
+
+            if (loginRes && loginRes.ok) {
+                setIsOpen(false);
+                router.push('/home');
+                router.refresh();
+            } else {
+                setError(data.error || 'Something went wrong.');
+            }
         } else {
             setError(data.error || 'Something went wrong.');
         }
