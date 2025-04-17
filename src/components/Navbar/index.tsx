@@ -16,12 +16,12 @@ const Navbar: React.FC = () => {
         <nav className="flex justify-between items-center py-4 bg-red-400 text-white p-4">
             <Logo />
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 ">
                 {isLoggedIn ? (
                     <Button
                         onClick={() => signOut({ callbackUrl: '/' })}
                         variant="outline"
-                        className="text-black"
+                        className="text-black cursor-pointer"
                     >
                         Sign Out
                     </Button>

@@ -10,8 +10,10 @@ import {
     DialogTitle,
     DialogTrigger
 } from '@/components/ui/dialog';
+import { signIn } from 'next-auth/react';
+import { JSX } from 'react';
 
-const Signup = () => {
+const Signup = (): JSX.Element => {
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [userName, setUserName] = useState('');
@@ -34,15 +36,25 @@ const Signup = () => {
         });
 
         const data = await res.json();
-
         if (res.ok) {
-            setIsOpen(false);
-            router.push('/home');
+            // log in after signup
+            const loginRes = await signIn('credentials', {
+                redirect: false,
+                userName,
+                password
+            });
+
+            if (loginRes && loginRes.ok) {
+                setIsOpen(false);
+                router.push('/home');
+                router.refresh();
+            } else {
+                setError(data.error || 'Something went wrong.');
+            }
         } else {
             setError(data.error || 'Something went wrong.');
         }
     };
-
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>

@@ -26,8 +26,6 @@ const AuthDialog: React.FC = () => {
 
     const router = useRouter();
 
-    if (status === 'loading') return null;
-
     // Prevent page shift when dialog is open
     useEffect(() => {
         if (isOpen) {
@@ -37,12 +35,14 @@ const AuthDialog: React.FC = () => {
         }
     }, [isOpen]);
 
+    if (status === 'loading') return null;
+
     const handleGoogleSignIn = async (): Promise<void> => {
         await signIn('google', { callbackUrl: '/home' });
         setIsOpen(false);
     };
 
-    const handleCredentialsLogin = async () => {
+    const handleCredentialsLogin = async (): Promise<void> => {
         const res = await signIn('credentials', {
             redirect: false,
             userName,
@@ -62,8 +62,6 @@ const AuthDialog: React.FC = () => {
     const handleSignOut = async (): Promise<void> => {
         await signOut({ callbackUrl: '/' });
     };
-    console.log('session signupfront:', session);
-    console.log('uuid signup front:', userName, session?.user?.uuid);
 
     if (isLoggedIn) {
         return (
@@ -161,7 +159,7 @@ const AuthDialog: React.FC = () => {
 
                     <Button
                         onClick={handleCredentialsLogin}
-                        className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold py-2 rounded-2xl"
+                        className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold py-2 rounded-2xl cursor-pointer"
                     >
                         Log In as Child
                     </Button>
