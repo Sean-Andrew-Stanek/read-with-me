@@ -1,39 +1,36 @@
 'use client';
 import Logo from './Logo';
-// import AuthDialog from './AuthDialog';
 import Signup from './Signup';
-import Login from './Login';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import AuthDialog from './AuthDialog';
+import { useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 
 const Navbar: React.FC = () => {
-    const router = useRouter();
+    const { data: session, status } = useSession();
+    if (status === 'loading') return null;
 
-    const [loggedIn, setLoggedIn] = useState(false);
+    const isLoggedIn = !!session?.user?.uuid;
 
     return (
         <nav className="flex justify-between items-center py-4 bg-red-400 text-white p-4">
             <Logo />
+
             <div className="flex items-center gap-2">
-                {!loggedIn ? (
-                    <>
-                        <Login setLoggedIn={setLoggedIn} />
-                        <Signup loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-                    </>
-                ) : (
+                {isLoggedIn ? (
                     <Button
-                        onClick={() => {
-                            setLoggedIn(false);
-                            router.push('/');
-                        }}
+                        onClick={() => signOut({ callbackUrl: '/' })}
                         variant="outline"
                         className="text-black"
                     >
                         Sign Out
                     </Button>
+                ) : (
+                    <>
+                        <Signup />
+                        <AuthDialog />
+                    </>
                 )}
-                {/* <AuthDialog /> */}
             </div>
         </nav>
     );

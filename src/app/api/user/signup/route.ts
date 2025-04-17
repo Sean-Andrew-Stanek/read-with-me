@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
+import { v4 as uuidv4 } from 'uuid';
 
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
     const { userName, password } = await req.json();
@@ -29,6 +30,8 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
         await db.collection('childUsers').insertOne({
             userName,
             password,
+            uuid: uuidv4(),
+            isParent: false,
             createdAt: new Date()
         });
 
