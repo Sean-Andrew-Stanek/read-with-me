@@ -6,7 +6,7 @@ const createStory = async (
     parentId?: string,
     childId?: string
 ): Promise<string> => {
-    const response = await fetch('/api/create-story', {
+    const response = await fetch('/api/story', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ const fetchStories = async (
     if (parentId) params.append('parentId', parentId);
     if (childId) params.append('childId', childId);
 
-    const response = await fetch(`/api/my-stories?${params.toString()}`, {
+    const response = await fetch(`/api/story?${params.toString()}`, {
         method: 'GET'
     });
 
