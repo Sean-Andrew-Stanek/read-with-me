@@ -71,9 +71,10 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
         setStoryContent('');
 
         try {
-            const parentId = userData?.parentId || null; // Fetch parentId if it exists
-            const childId =
-                userData?.children?.length > 0 ? userData.uuid : null; // If the user has children, they are a parent
+            const parentId = userData.isParent
+                ? userData.uuid
+                : userData.parentId;
+            const childId = userData.isParent ? null : userData.uuid;
 
             const storyContent: string = await createStory(
                 prompt,
