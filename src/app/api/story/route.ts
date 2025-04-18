@@ -12,12 +12,6 @@ const openai = new OpenAI({
 // Create a story
 export const POST = async (req: Request): Promise<Response> => {
     try {
-        // const {
-        //     prompt,
-        //     parentId,
-        //     childId
-        // }: { prompt: string; parentId?: string; childId?: string } =
-        //     await req.json();
         const session = await auth();
         if (!session || !session.user?.uuid) {
             return NextResponse.json(
