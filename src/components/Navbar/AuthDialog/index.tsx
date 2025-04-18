@@ -50,14 +50,12 @@ const AuthDialog: React.FC = () => {
             userName,
             password
         });
-
-        if (res?.ok) {
+        if (res?.error) {
+            setError('Invalid username or password.');
+        } else {
             setIsOpen(false);
             router.refresh();
-
             router.push('/home');
-        } else {
-            setError('Invalid username or password.');
         }
     };
 
