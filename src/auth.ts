@@ -83,12 +83,16 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                         {
                             $set: {
                                 uuid: newUuid,
-                                isParent: true
+                                isParent: true,
+                                children: [],
+                                googleId: session.user.email
                             }
                         }
                     );
                     userData.uuid = newUuid;
                     userData.isParent = true;
+                    userData.children = [];
+                    userData.googleId = session.user.email;
                 }
 
                 if (userData) {
