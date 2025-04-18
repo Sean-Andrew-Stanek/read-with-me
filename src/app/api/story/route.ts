@@ -3,6 +3,7 @@ import OpenAI from 'openai';
 import { StorySchema, Story } from '@/lib/types/story';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
+import { auth } from '@/auth';
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY!
@@ -11,12 +12,20 @@ const openai = new OpenAI({
 // Create a story
 export const POST = async (req: Request): Promise<Response> => {
     try {
-        const {
-            prompt,
-            parentId,
-            childId
-        }: { prompt: string; parentId?: string; childId?: string } =
-            await req.json();
+        // const {
+        //     prompt,
+        //     parentId,
+        //     childId
+        // }: { prompt: string; parentId?: string; childId?: string } =
+        //     await req.json();
+        const session = await auth();
+        if (!session || !session.user?.uuid) {
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
+        }
+        const { prompt }: { prompt: string } = await req.json();
 
         if (!prompt || prompt.trim().length === 0) {
             return NextResponse.json(
@@ -51,8 +60,8 @@ export const POST = async (req: Request): Promise<Response> => {
             content: storyContent,
             prompt,
             createdAt: new Date().toISOString(),
-            parentId: parentId || null,
-            childId: childId || null
+            parentId: session.user.isParent ? session.user.uuid : null,
+            childId: session.user.isParent ? null : session.user.uuid
         };
 
         StorySchema.parse(story);
@@ -81,45 +90,29 @@ export const POST = async (req: Request): Promise<Response> => {
 };
 
 // Get stories
-export const GET = async (req: Request): Promise<Response> => {
+export const GET = async (): Promise<Response> => {
     try {
-        // Get parentId and childId from query params
-        const url = new URL(req.url);
-        const parentId = url.searchParams.get('parentId');
-        const childId = url.searchParams.get('childId');
-
-        if (!parentId && !childId) {
+        const session = await auth();
+        if (!session || !session.user?.uuid) {
             return NextResponse.json(
-                { error: 'Either parentId or childId must be provided' },
-                { status: 400 }
+                { error: 'Unauthorized' },
+                { status: 401 }
             );
         }
 
-        // Connect to MongoDB
+        const uuid = session.user.uuid;
+        const isParent = session.user.isParent;
+
+        const query = isParent ? { parentId: uuid } : { childId: uuid };
+
         const client = await clientPromise;
         const db = client.db('read-with-me');
-        const storiesCollection = db.collection('stories');
+        const stories = await db.collection('stories').find(query).toArray();
 
-        // Build query object to filter stories
-        const query: Record<string, string> = {};
-
-        if (parentId) query.parentId = parentId;
-        if (childId) query.childId = childId;
-
-        // Fetch stories from the database based on query
-        const stories = await storiesCollection.find(query).toArray();
-        if (!stories.length) {
-            return NextResponse.json({ stories: [] }, { status: 200 });
-        }
-
-        // send stories back as JSON
-        return NextResponse.json({ stories: stories || [] }, { status: 200 });
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        }
+        return NextResponse.json({ stories }, { status: 200 });
+    } catch (error) {
         return NextResponse.json(
-            { error: 'An unknown error occurred.' },
+            { error: error instanceof Error ? error.message : 'Unknown error' },
             { status: 500 }
         );
     }

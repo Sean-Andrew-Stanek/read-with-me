@@ -71,9 +71,14 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
         setStoryContent('');
 
         try {
-            const parentId = userData?.parentId || null; // Fetch parentId if it exists
-            const childId =
-                userData?.children?.length > 0 ? userData.uuid : null; // If the user has children, they are a parent
+            // const parentId = userData?.parentId || null; // Fetch parentId if it exists
+            // const childId =
+            //     userData?.children?.length > 0 ? userData.uuid : null; // If the user has children, they are a parent
+
+            const parentId = userData.isParent
+                ? userData.uuid
+                : userData.parentId;
+            const childId = userData.isParent ? null : userData.uuid;
 
             const storyContent: string = await createStory(
                 prompt,
@@ -93,7 +98,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
     };
 
     return (
-        <div className="container mx-auto py-10 max-w-2xl">
+        <div className="min-h-screen overflow-y-auto container mx-auto py-10 max-w-2xl">
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
