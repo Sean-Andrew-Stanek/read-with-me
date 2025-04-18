@@ -5,6 +5,7 @@ import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import clientPromise from './lib/mongodb';
 import { Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
+import { v4 as uuidv4 } from 'uuid';
 
 const clientId = process.env.GOOGLE_CLIENT_ID!;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET!;
@@ -70,8 +71,25 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             //  If logging in via Google (no token.uuid), fetch user by email
             if (session.user?.email) {
                 const userData = await db.collection('users').findOne({
-                    googleId: session.user.email
+                    email: session.user.email
                 });
+                if (
+                    userData &&
+                    (!userData.uuid || userData.isParent === undefined)
+                ) {
+                    const newUuid = uuidv4();
+                    await db.collection('users').updateOne(
+                        { _id: userData._id },
+                        {
+                            $set: {
+                                uuid: newUuid,
+                                isParent: true
+                            }
+                        }
+                    );
+                    userData.uuid = newUuid;
+                    userData.isParent = true;
+                }
 
                 if (userData) {
                     session.user.uuid = userData.uuid;
