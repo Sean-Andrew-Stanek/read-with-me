@@ -15,8 +15,11 @@ import { Label } from '@/components/ui/label';
 import { Sparkles, Loader2 } from 'lucide-react';
 import { createStory, fetchUserData } from '@/lib/actions';
 import { useSession } from 'next-auth/react';
+import { ParentUser, ChildUser } from '@/lib/types/user';
 
 type CreateStoryPageProps = object;
+
+type UserData = ParentUser | ChildUser;
 
 const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
     const { data: session } = useSession();
@@ -24,7 +27,8 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
     const [prompt, setPrompt] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [storyContent, setStoryContent] = useState<string>('');
-    const [userData, setUserData] = useState<any>(null);
+    // const [userData, setUserData] = useState<any>(null);
+    const [userData, setUserData] = useState<UserData | null>(null);
 
     useEffect(() => {
         const fetchUser = async (): Promise<void> => {
@@ -79,7 +83,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
             const storyContent: string = await createStory(
                 prompt,
                 parentId,
-                childId
+                childId as string | null
             );
 
             setStoryContent(storyContent);

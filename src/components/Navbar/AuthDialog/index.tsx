@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { useSession, signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 // import { LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -21,8 +21,7 @@ const AuthDialog: React.FC = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const { data: session, status } = useSession();
-    console.log('SESSION:', session);
+    // const { data: session, status } = useSession();
 
     // const isLoggedIn = !!session?.user?.uuid;
 
@@ -37,7 +36,7 @@ const AuthDialog: React.FC = () => {
         }
     }, [isOpen]);
 
-    if (status === 'loading') return null;
+    // if (status === 'loading') return null;
 
     const handleGoogleSignIn = async (): Promise<void> => {
         await signIn('google', { callbackUrl: '/home' });

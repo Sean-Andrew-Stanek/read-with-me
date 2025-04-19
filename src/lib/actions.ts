@@ -3,8 +3,8 @@ import { ParentUser, ChildUser } from '@/lib/types/user';
 
 const createStory = async (
     prompt: string,
-    parentId?: string,
-    childId?: string
+    parentId?: string | null,
+    childId?: string | null
 ): Promise<string> => {
     const response = await fetch('/api/story', {
         method: 'POST',

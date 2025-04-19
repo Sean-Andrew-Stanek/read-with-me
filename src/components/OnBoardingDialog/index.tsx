@@ -33,7 +33,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
     const router = useRouter();
     if (!open) return null;
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (): Promise<void> => {
         if (!session?.user?.uuid) {
             alert('Session not ready.');
             return;
@@ -47,16 +47,15 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
                     grade: selectedGrade
                 })
             });
-        } catch (err) {
-            console.error('Failed to save grade:', err);
+        } catch {
+            throw new Error('Failed to save grade.');
         }
 
-        console.log('Selected Grade Level:', selectedGrade);
         onOnboarded();
         router.push('/home');
     };
 
-    const handleCancel = () => {
+    const handleCancel = (): void => {
         onOnboarded(); // close without saving
         router.push('/home');
     };

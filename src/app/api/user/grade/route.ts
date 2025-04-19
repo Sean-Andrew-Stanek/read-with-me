@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest): Promise<NextResponse> => {
     const { uuid, grade } = await req.json();
 
     if (!uuid || grade === undefined) {
@@ -27,8 +27,7 @@ export const POST = async (req: NextRequest) => {
         }
 
         return NextResponse.json({ success: true });
-    } catch (error) {
-        console.error('Error updating grade:', error);
+    } catch {
         return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
 };
