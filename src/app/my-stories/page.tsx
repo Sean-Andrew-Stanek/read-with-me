@@ -57,6 +57,11 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
         loadStories();
     }, [session]);
 
+    useEffect(() => {
+        // Clean up any leftover overflow-hidden class to be able to scroll the page for child user
+        document.body.classList.remove('overflow-hidden');
+    }, []);
+
     if (!session) {
         return <p>Please log in to see your stories.</p>;
     }

@@ -62,6 +62,11 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
         fetchUser();
     }, [session]);
 
+    useEffect(() => {
+        // Clean up any leftover overflow-hidden class to be able to scroll the page for child user
+        document.body.classList.remove('overflow-hidden');
+    }, []);
+
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         if (!prompt.trim()) return;
