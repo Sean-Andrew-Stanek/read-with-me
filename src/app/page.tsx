@@ -1,11 +1,12 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { frontPage as strings } from '@/config/strings';
+import { navLink } from '@/config/navigation';
 
 const Home: React.FC = async () => {
     const session = await auth();
     if (session) {
-        redirect('/home');
+        redirect(navLink.dashboard);
     }
 
     return (
