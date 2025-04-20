@@ -30,7 +30,7 @@ const Signup = (): JSX.Element => {
     }, [isOpen]);
 
     const handleSignup = async (): Promise<void> => {
-        const res = await fetch('/api/user/signup', {
+        const res = await fetch('/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userName, password })
