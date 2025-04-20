@@ -1,4 +1,15 @@
 const baseApiUri =
     process.env.REACT_APP_API_URL || 'http://localhost:8080/api/';
 
-export const putUserGradeURI = (): string => `${baseApiUri}/user`;
+const putUserGradeURI = (): string => `${baseApiUri}/user`;
+const postNewStoryUri = (): string => `${baseApiUri}/story`;
+const getUserDataUri = (uuid: string): string =>
+    `${baseApiUri}/user?uuid=${uuid}`;
+const getStoriesUri = (parentId?: string, childId?: string): string => {
+    const params = new URLSearchParams();
+    if (parentId) params.append('parentId', parentId);
+    if (childId) params.append('childId', childId);
+    return `${baseApiUri}/story?${params.toString()}`;
+};
+
+export { putUserGradeURI, postNewStoryUri, getUserDataUri, getStoriesUri };

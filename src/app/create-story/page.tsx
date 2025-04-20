@@ -13,7 +13,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Sparkles, Loader2 } from 'lucide-react';
-import { createStory, fetchUserData } from '@/lib/actions';
+import { postNewStory, getUserData } from '@/services/apiServices';
 import { useSession } from 'next-auth/react';
 import { ParentUser, ChildUser } from '@/lib/types/user';
 
@@ -43,7 +43,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
             }
 
             try {
-                const userData = await fetchUserData(uuid);
+                const userData = await getUserData(uuid);
 
                 if (!userData) {
                     return;
@@ -85,7 +85,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                 : userData.parentId;
             const childId = userData.isParent ? null : userData.uuid;
 
-            const storyContent: string = await createStory(
+            const storyContent: string = await postNewStory(
                 prompt,
                 parentId,
                 childId as string | null

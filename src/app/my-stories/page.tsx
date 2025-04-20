@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { fetchStories } from '@/lib/actions';
+import { getStories } from '@/services/apiServices';
 import { useSession } from 'next-auth/react';
 import { Story } from '@/lib/types/story';
 
@@ -43,7 +43,7 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
                 const childId = !isParent ? uuid : undefined;
                 // console.log('Fetching stories with:', { parentId, childId });
 
-                const fetchedStories = await fetchStories(parentId, childId);
+                const fetchedStories = await getStories(parentId, childId);
                 setStories(fetchedStories);
             } catch (error: unknown) {
                 if (error instanceof Error) {
