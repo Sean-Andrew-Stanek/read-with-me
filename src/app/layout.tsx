@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 import './globals.css';
 import Navbar from '@/components/Navbar';
-import Sidebar from '@/components/Sidebar';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -28,7 +27,6 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             >
                 <SessionProvider>
                     <Navbar />
-                    <Sidebar />
                     {children}
                 </SessionProvider>
             </body>
