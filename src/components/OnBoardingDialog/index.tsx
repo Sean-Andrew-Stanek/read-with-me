@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { navLink } from '@/config/navigation';
+import { putUserGrade } from '@/services/apiServices';
 
 interface OnboardingDialogProps {
     open: boolean;
@@ -35,22 +36,11 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
     if (!open) return null;
 
     const handleSubmit = async (): Promise<void> => {
-        if (!session?.user?.uuid) {
-            alert('Session not ready.');
-            return;
-        }
-        try {
-            await fetch('/api/user', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    uuid: session.user.uuid,
-                    grade: selectedGrade
-                })
-            });
-        } catch {
-            throw new Error('Failed to save grade.');
-        }
+        if (!session || !session.user || !session.user.uuid) return;
+
+        if (selectedGrade === null) return;
+
+        await putUserGrade(selectedGrade.toString(), session.user.uuid);
 
         onOnboarded();
         router.push(navLink.dashboard); // Redirect to the dashboard after saving
