@@ -1,5 +1,13 @@
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 import { frontPage as strings } from '@/config/strings';
-const Home: React.FC = () => {
+
+const Home: React.FC = async () => {
+    const session = await auth();
+    if (session) {
+        redirect('/home');
+    }
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-900">
             <h1 className="text-2xl  md:text-4xl  font-bold">
