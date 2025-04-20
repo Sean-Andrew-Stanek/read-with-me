@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { navLink } from '@/config/navigation';
 
 interface OnboardingDialogProps {
     open: boolean;
@@ -52,12 +53,12 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
         }
 
         onOnboarded();
-        router.push('/home');
+        router.push(navLink.dashboard); // Redirect to the dashboard after saving
     };
 
     const handleCancel = (): void => {
         onOnboarded(); // close without saving
-        router.push('/home');
+        router.push(navLink.home); // Redirect to the home page
     };
 
     return (
