@@ -39,8 +39,8 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
             return;
         }
         try {
-            await fetch('/api/user/grade', {
-                method: 'POST',
+            await fetch('/api/user', {
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     uuid: session.user.uuid,
