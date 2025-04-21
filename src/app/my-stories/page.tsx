@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { getStories } from '@/services/apiServices';
 import { useSession } from 'next-auth/react';
 import { Story } from '@/lib/types/story';
+import ProtectedPage from '@/components/PortectedPage';
 
 type CreateStoryPageProps = {
     parentId?: string;
@@ -11,7 +12,6 @@ type CreateStoryPageProps = {
 
 const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
     const { data: session } = useSession();
-    // console.log('Session Data:', session);
 
     const [stories, setStories] = useState<Story[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -41,7 +41,6 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
                 // Send the appropriate ID to the backend
                 const parentId = isParent ? uuid : undefined;
                 const childId = !isParent ? uuid : undefined;
-                // console.log('Fetching stories with:', { parentId, childId });
 
                 const fetchedStories = await getStories(parentId, childId);
                 setStories(fetchedStories);
@@ -62,36 +61,29 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
         document.body.classList.remove('overflow-hidden');
     }, []);
 
-    if (!session) {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <p className="text-center text-xl text-red-500 font-bold ">
-                    Please log in to see your stories.
-                </p>
-            </div>
-        );
-    }
-
     return (
-        <div className="container mx-auto py-10 max-w-2xl">
-            <h1 className="text-2xl font-bold mb-4">Generated Stories</h1>
+        <ProtectedPage>
+            <div className="container mx-auto py-10 max-w-2xl">
+                <h1 className="text-2xl font-bold mb-4">Generated Stories</h1>
 
-            {loading && <p>Loading stories...</p>}
-            {error && <p className="text-red-500">{error}</p>}
-            {stories.length === 0 && !loading && !error && (
-                <p>No stories found.</p>
-            )}
+                {loading && <p>Loading stories...</p>}
+                {error && <p className="text-red-500">{error}</p>}
+                {stories.length === 0 && !loading && !error && (
+                    <p>No stories found.</p>
+                )}
 
-            {stories.map(story => (
-                <div key={story.id} className="mb-4 p-4 border rounded">
-                    <h2 className="text-xl font-semibold">{story.title}</h2>
-                    <p>{story.content}</p>
-                    <p className="text-sm text-gray-500">
-                        Created At: {new Date(story.createdAt).toLocaleString()}
-                    </p>
-                </div>
-            ))}
-        </div>
+                {stories.map(story => (
+                    <div key={story.id} className="mb-4 p-4 border rounded">
+                        <h2 className="text-xl font-semibold">{story.title}</h2>
+                        <p>{story.content}</p>
+                        <p className="text-sm text-gray-500">
+                            Created At:{' '}
+                            {new Date(story.createdAt).toLocaleString()}
+                        </p>
+                    </div>
+                ))}
+            </div>
+        </ProtectedPage>
     );
 };
 
