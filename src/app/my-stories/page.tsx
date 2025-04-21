@@ -63,7 +63,13 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
     }, []);
 
     if (!session) {
-        return <p>Please log in to see your stories.</p>;
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <p className="text-center text-xl text-red-500 font-bold ">
+                    Please log in to see your stories.
+                </p>
+            </div>
+        );
     }
 
     return (
