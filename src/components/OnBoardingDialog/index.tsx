@@ -73,7 +73,10 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
                         {Object.entries(grades).map(([gradeStr, label]) => {
                             const grade = parseInt(gradeStr, 10);
                             return (
-                                <div key={grade} className="flex items-center">
+                                <div
+                                    key={grade}
+                                    className="flex items-center rounded-md p-1 transition-all duration-200 hover:bg-gray-100 hover:translate-x-1 cursor-pointer"
+                                >
                                     <input
                                         type="radio"
                                         id={`grade-${grade}`}
@@ -85,7 +88,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
                                     />
                                     <label
                                         htmlFor={`grade-${grade}`}
-                                        className="ml-2 text-gray-700"
+                                        className="ml-2 text-gray-700 hover:text-blue-600 transition-colors duration-200"
                                     >
                                         {label}
                                     </label>
