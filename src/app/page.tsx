@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-import { frontPage as strings } from '@/config/strings';
+import { frontPageStrings as strings } from '@/config/strings';
 import { navLink } from '@/config/navigation';
 
 const Home: React.FC = async () => {

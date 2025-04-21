@@ -12,7 +12,8 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger
+    DialogTrigger,
+    DialogDescription
 } from '@/components/ui/dialog';
 
 const AuthDialog: React.FC = () => {
@@ -70,6 +71,9 @@ const AuthDialog: React.FC = () => {
                     <DialogTitle className="text-center  text-lg md:text-xl">
                         Sign in to your account
                     </DialogTitle>
+                    <DialogDescription className="text-center text-sm text-muted-foreground">
+                        Choose how you'd like to log in below.
+                    </DialogDescription>
                 </DialogHeader>
 
                 <div className="flex flex-col space-y-4 py-4">
