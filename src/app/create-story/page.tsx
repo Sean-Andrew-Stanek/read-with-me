@@ -33,7 +33,8 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
     useEffect(() => {
         const fetchUser = async (): Promise<void> => {
             if (!session || !session.user) {
-                throw new Error('User not logged in.');
+                // throw new Error('User not logged in.');
+                return;
             }
 
             const uuid = (session?.user as { uuid: string })?.uuid;
@@ -101,6 +102,16 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
             setIsLoading(false);
         }
     };
+
+    if (!session || !session.user) {
+        return (
+            <div className="min-h-screen flex items-center justify-center text-center">
+                <p className="text-xl font-bold text-red-500">
+                    You must be logged in to create a story.
+                </p>
+            </div>
+        );
+    }
 
     return (
         <div className="container mx-auto py-10 max-w-2xl">
