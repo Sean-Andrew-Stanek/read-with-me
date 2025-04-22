@@ -19,7 +19,7 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
 
     useEffect(() => {
         const loadStories = async (): Promise<void> => {
-            if (!session || !session.user) {
+            if (status !== 'authenticated' || !session || !session.user) {
                 setError(
                     'You are not logged in. Please log in to view your stories.'
                 );
@@ -37,6 +37,7 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
 
             try {
                 setLoading(true);
+                setError(null); // Reset error state
 
                 // Send the appropriate ID to the backend
                 const parentId = isParent ? uuid : undefined;
@@ -55,20 +56,20 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
         };
 
         loadStories();
-    }, [session]);
+    }, [session, status]);
 
     useEffect(() => {
         // Clean up any leftover overflow-hidden class to be able to scroll the page for child user
         document.body.classList.remove('overflow-hidden');
     }, []);
 
-    if (status === 'loading' || typeof status === 'undefined') {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <p className="text-center text-xl text-gray-500">Loading...</p>
-            </div>
-        );
-    }
+    // if (status === 'loading' || typeof status === 'undefined') {
+    //     return (
+    //         <div className="flex items-center justify-center h-screen">
+    //             <p className="text-center text-xl text-gray-500">Loading...</p>
+    //         </div>
+    //     );
+    // }
 
     if (!session) {
         return (
