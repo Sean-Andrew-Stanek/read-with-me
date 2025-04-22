@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { protectedRoutes } from '@/config/navigation';
 import { navLink } from '@/config/navigation';
-import { auth } from '@/auth';
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
@@ -14,12 +13,10 @@ export async function middleware(request: NextRequest) {
         route => pathname === route || pathname.startsWith(route + '/')
     );
 
-    // if (isProtected) {
-    //     // Get cookie value
-    //     const token =
-    //         request.cookies.get('next-auth.session-token')?.value ||
-    //         request.cookies.get('__Secure-next-auth.session-token')?.value;
-    const session = await auth();
+    // Get cookie value
+    const token =
+        request.cookies.get('authjs.session-token')?.value ||
+        request.cookies.get('__Secure-authjs.session-token')?.value;
 
     console.log(
         'Path:',
@@ -27,10 +24,10 @@ export async function middleware(request: NextRequest) {
         '| Protected:',
         isProtected,
         '| Token:',
-        session
+        token
     );
 
-    if (isProtected && !session) {
+    if (isProtected && !token) {
         // redirect to / if not authenticated
         return NextResponse.redirect(new URL(navLink.home, request.url));
     }
