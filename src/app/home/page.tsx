@@ -13,7 +13,7 @@ import { BookOpen, Sparkles } from 'lucide-react';
 
 const Dashboard: FC = () => (
     <div className=" flex flex-col gap-5 items-center py-10 px-4 mt-10">
-        <h1 className="text-4xl font-bold text-center mb-8">
+        <h1 className="font-literata text-4xl font-bold text-primary-500 text-center mb-8">
             Welcome to Reading Assistant!
         </h1>
 

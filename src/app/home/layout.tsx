@@ -7,7 +7,7 @@ interface DashboardLayoutProps {
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     return (
-        <div className="flex w-full h-screen font-literata text-xl">
+        <div className="flex w-full h-screen">
             <Sidebar />
             <div className="flex-1 flex justify-center">{children}</div>
         </div>
