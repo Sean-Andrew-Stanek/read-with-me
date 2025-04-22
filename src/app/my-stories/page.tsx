@@ -10,7 +10,7 @@ type CreateStoryPageProps = {
 };
 
 const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     // console.log('Session Data:', session);
 
     const [stories, setStories] = useState<Story[]>([]);
@@ -62,10 +62,18 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
         document.body.classList.remove('overflow-hidden');
     }, []);
 
+    if (status === 'loading' || typeof status === 'undefined') {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <p className="text-center text-xl text-gray-500">Loading...</p>
+            </div>
+        );
+    }
+
     if (!session) {
         return (
             <div className="flex items-center justify-center h-screen">
-                <p className="text-center text-xl text-red-500 font-bold ">
+                <p className="text-center text-xl text-red-500 font-bold">
                     Please log in to see your stories.
                 </p>
             </div>
