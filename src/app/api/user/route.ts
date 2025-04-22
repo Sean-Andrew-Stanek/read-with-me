@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
+import { validatePassword } from '@/lib/utils/index';
 
 export const GET = async (req: Request): Promise<Response> => {
     try {
@@ -62,6 +63,15 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
     if (!userName || !password) {
         return NextResponse.json(
             { error: 'Missing username or password' },
+            { status: 400 }
+        );
+    }
+
+    if (!validatePassword(password)) {
+        return NextResponse.json(
+            {
+                error: 'Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character.'
+            },
             { status: 400 }
         );
     }
