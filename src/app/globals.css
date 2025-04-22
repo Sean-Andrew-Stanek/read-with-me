@@ -15,9 +15,9 @@
 }
 
 @font-face {
-  font-family: 'Literata Variable'; /* Or another suitable name */
+  font-family: 'Literata Variable';
   src: url('/fonts/Literata-Varia..._opsz,wght.ttf') format('truetype');
-  font-weight: 300 800; /* Example weight range */
+  font-weight: 300 800; /* weight range */
   font-style: normal;
   font-display: swap;
 }
