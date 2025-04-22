@@ -37,5 +37,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/home', '/create-story', '/my-stories']
+    matcher: [navLink.dashboard, navLink.story, navLink.storyList]
 };

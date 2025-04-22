@@ -1,6 +1,8 @@
 export const navLink: Record<string, string> = {
     home: '/',
-    dashboard: '/home'
+    dashboard: '/home',
+    story: '/create-story',
+    storyList: '/my-stories'
 };
 
 // Protected routes that require authentication
