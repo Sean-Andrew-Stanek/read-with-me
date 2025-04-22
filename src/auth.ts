@@ -6,6 +6,7 @@ import clientPromise from './lib/mongodb';
 import { Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcrypt';
 
 const clientId = process.env.GOOGLE_CLIENT_ID!;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET!;
@@ -24,7 +25,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 password: { label: 'Password', type: 'password' }
             },
             async authorize(credentials) {
-                if (!credentials) return null;
+                if (!credentials) {
+                    throw new Error('No credentials provided');
+                }
 
                 const client = await clientPromise;
                 const db = client.db();
@@ -32,16 +35,31 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                     userName: credentials?.userName
                 });
 
-                if (user && credentials?.password === user.password) {
-                    return {
-                        id: user._id.toString(),
-                        name: user.userName,
-                        uuid: user.uuid,
-                        isParent: false
-                    };
+                if (!user) {
+                    throw new Error('User not found');
                 }
 
-                return null;
+                if (
+                    typeof credentials?.password !== 'string' ||
+                    typeof user?.password !== 'string'
+                ) {
+                    throw new Error('Invalid input');
+                }
+
+                const isValidPassword = await bcrypt.compare(
+                    credentials.password,
+                    user.password
+                );
+
+                if (!isValidPassword) {
+                    throw new Error('Incorrect password');
+                }
+                return {
+                    id: user._id.toString(),
+                    name: user.userName,
+                    uuid: user.uuid,
+                    isParent: false
+                };
             }
         })
     ],
