@@ -10,7 +10,7 @@ Read With Me is a collaborative portfolio project for CareerFoundry students to 
 
 Make sure you're branching from the develop branch:
 
-```bash
+```
 git clone https://github.com/YOUR-USERNAME/read-with-me.git
 cd read-with-me
 git checkout develop
@@ -20,8 +20,7 @@ git checkout develop
 
 ### 2. Install Dependencies
 
-````bash
-npm install
+`npm install`  
 
 ### 3. Configure environmental variables
 AUTH_SECRET - Production only NextAuth number
@@ -31,9 +30,9 @@ AUTH_GOOGLE_ID - Google oAuth Id
 AUTH_GOOGLE_SECRET - Google oAuth Secret
 
 
-### 3. Run the Project
-```bash
-npm run dev
+### 3. Run the Project  
+
+`npm run dev`  
 
 This starts the development server at http://localhost:3000/.
 
@@ -49,4 +48,3 @@ If you’d like to contribute, **contact the repo admin** for access. You can re
 - Providing your GitHub username to be added as a collaborator.
 
 Once you have access, you can join the discussion in Discord and start contributing to the project.
-````
