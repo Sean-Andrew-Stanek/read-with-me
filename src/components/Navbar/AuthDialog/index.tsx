@@ -72,7 +72,7 @@ const AuthDialog: React.FC = () => {
                         Sign in to your account
                     </DialogTitle>
                     <DialogDescription className="text-center text-sm text-muted-foreground">
-                        Choose how you'd like to log in below.
+                        Choose how you&apos;d like to log in below.
                     </DialogDescription>
                 </DialogHeader>
 

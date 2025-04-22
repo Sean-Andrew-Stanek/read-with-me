@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { protectedRoutes } from '@/config/navigation';
 import { navLink } from '@/config/navigation';
-export async function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest): Promise<NextResponse> {
     const { pathname } = request.nextUrl;
 
     // Check the path to see if it matches with protected routes
