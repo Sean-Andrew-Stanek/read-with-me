@@ -13,7 +13,7 @@ export const cn = (...inputs: ClassValue[]): string => {
 };
 
 // validation rules for password creation
-export function validatePassword(password: string): boolean {
+export const validatePassword = (password: string): boolean => {
     const minLength = 8;
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
@@ -27,4 +27,4 @@ export function validatePassword(password: string): boolean {
         hasNumber &&
         hasSpecialChar
     );
-}
+};
