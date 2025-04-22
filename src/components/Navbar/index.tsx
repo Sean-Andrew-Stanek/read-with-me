@@ -14,7 +14,7 @@ import Link from 'next/link';
 const Navbar: React.FC = () => {
     const { showOnboarding, setShowOnboarding } = useOnboardingStore();
     const pathname = usePathname();
-    const isCreateStoryPage = pathname === '/create-story';
+    const isSelectedPath = pathname === '/create-story' || '/my-stories';
 
     const { data: session, status } = useSession();
     if (status === 'loading') return null;
@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
                                 {session?.user?.name}
                             </span>
 
-                            {isCreateStoryPage && (
+                            {isSelectedPath && (
                                 <Link href='/home'>
                                     <Button variant="outline" className='text-black cursor-pointer'>Back</Button>
                                 </Link>
