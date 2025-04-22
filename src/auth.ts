@@ -6,7 +6,7 @@ import clientPromise from './lib/mongodb';
 import { Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import { v4 as uuidv4 } from 'uuid';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 const clientId = process.env.GOOGLE_CLIENT_ID!;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET!;
