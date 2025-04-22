@@ -31,12 +31,14 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
 }) => {
     const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
     const { data: session } = useSession();
+    console.log('session', session);
 
     const router = useRouter();
     if (!open) return null;
 
     const handleSubmit = async (): Promise<void> => {
         if (!session || !session.user || !session.user.uuid) return;
+        console.log('session.user.uuid', session.user.uuid);
 
         if (selectedGrade === null) return;
 
