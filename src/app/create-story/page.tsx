@@ -78,6 +78,17 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
             return;
         }
 
+        // warn user if grade is not picked
+        if (!userData.grade) {
+            const proceed = confirm(
+                'You have not selected a grade. The story will be written for a 6th grade level. Do you want to proceed?'
+            );
+            if (!proceed) {
+                window.location.reload();
+                return;
+            }
+        }
+
         setIsLoading(true);
         setStoryContent('');
 
@@ -106,15 +117,15 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
         }
     };
 
-    if (!session || !session.user) {
-        return (
-            <div className="min-h-screen flex items-center justify-center text-center">
-                <p className="text-xl font-bold text-red-500">
-                    You must be logged in to create a story.
-                </p>
-            </div>
-        );
-    }
+    // if (!session || !session.user) {
+    //     return (
+    //         <div className="min-h-screen flex items-center justify-center text-center">
+    //             <p className="text-xl font-bold text-red-500">
+    //                 You must be logged in to create a story.
+    //             </p>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className="container mx-auto py-10 max-w-2xl">
