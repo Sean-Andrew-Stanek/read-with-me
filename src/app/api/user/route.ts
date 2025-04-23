@@ -3,6 +3,7 @@ import clientPromise from '@/lib/mongodb';
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';
 import { validatePassword } from '@/lib/utils/index';
+import { auth } from '@/auth';
 
 export const GET = async (req: Request): Promise<Response> => {
     try {
@@ -13,6 +14,13 @@ export const GET = async (req: Request): Promise<Response> => {
             return NextResponse.json(
                 { error: 'UUID is required' },
                 { status: 400 }
+            );
+        }
+        const session = await auth();
+        if (!session || session.user.uuid !== uuid) {
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
             );
         }
 
@@ -120,6 +128,13 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
     }
 
     try {
+        const session = await auth();
+        if (!session || session.user.uuid !== uuid) {
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
+        }
         const client = await clientPromise;
         const db = client.db();
 
