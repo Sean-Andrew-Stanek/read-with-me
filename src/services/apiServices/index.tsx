@@ -25,14 +25,15 @@ const putUserGrade = async (grade: string, uuid: string): Promise<void> => {
 const postNewStory = async (
     prompt: string,
     parentId?: string | null,
-    childId?: string | null
+    childId?: string | null,
+    grade?: string | number
 ): Promise<string> => {
     const response = await fetch(postNewStoryUri(), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ prompt, parentId, childId })
+        body: JSON.stringify({ prompt, parentId, childId, grade })
     });
 
     if (!response.ok) {
