@@ -19,7 +19,14 @@ export const POST = async (req: Request): Promise<Response> => {
                 { status: 401 }
             );
         }
-        const { prompt }: { prompt: string } = await req.json();
+
+        // step 7-branch
+        const { prompt, grade }: { prompt: string; grade?: string | number } =
+            await req.json();
+
+        const gradeLabel = grade
+            ? `for a ${grade} grade reading level.`
+            : 'for 6th grade.';
 
         if (!prompt || prompt.trim().length === 0) {
             return NextResponse.json(
@@ -30,11 +37,11 @@ export const POST = async (req: Request): Promise<Response> => {
 
         const response = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
+            // step 8-branch
             messages: [
                 {
                     role: 'system',
-                    content:
-                        "You are a children's storyteller. Create a short, engaging story for kids ages 6-10."
+                    content: `You are a children's storyteller. Create a short, engaging story ${gradeLabel}`
                 },
                 { role: 'user', content: prompt }
             ],
@@ -43,6 +50,8 @@ export const POST = async (req: Request): Promise<Response> => {
         });
 
         const storyContent: string = response.choices[0].message?.content || '';
+        console.log('Backend received grade:', grade);
+        console.log('System message:', gradeLabel);
 
         if (!storyContent) {
             throw new Error('Failed to generate story');

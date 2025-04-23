@@ -3,27 +3,29 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { navLink } from '@/config/navigation';
 import { putUserGrade } from '@/services/apiServices';
+// import { grades } from '@/lib/constants/grades';
+import { grades } from '@/lib/constants/grades'; // step 4-branch
 
 interface OnboardingDialogProps {
     open: boolean;
     onOnboarded: () => void;
 }
 
-const grades: Record<number, string> = {
-    0: 'Kindergarten',
-    1: '1st Grade',
-    2: '2nd Grade',
-    3: '3rd Grade',
-    4: '4th Grade',
-    5: '5th Grade',
-    6: '6th Grade',
-    7: '7th Grade',
-    8: '8th Grade',
-    9: '9th Grade',
-    10: '10th Grade',
-    11: '11th Grade',
-    12: '12th Grade'
-};
+// const grades: Record<number, string> = {
+//     0: 'Kindergarten',
+//     1: '1st Grade',
+//     2: '2nd Grade',
+//     3: '3rd Grade',
+//     4: '4th Grade',
+//     5: '5th Grade',
+//     6: '6th Grade',
+//     7: '7th Grade',
+//     8: '8th Grade',
+//     9: '9th Grade',
+//     10: '10th Grade',
+//     11: '11th Grade',
+//     12: '12th Grade'
+// };
 
 const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
     open,

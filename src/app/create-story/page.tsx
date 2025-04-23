@@ -16,10 +16,13 @@ import { Sparkles, Loader2 } from 'lucide-react';
 import { postNewStory, getUserData } from '@/services/apiServices';
 import { useSession } from 'next-auth/react';
 import { ParentUser, ChildUser } from '@/lib/types/user';
+// import { parse } from 'path';
+import { grades } from '@/lib/constants/grades'; // step 5-branch
 
 type CreateStoryPageProps = object;
 
-type UserData = ParentUser | ChildUser;
+// step 2-branch
+type UserData = (ParentUser | ChildUser) & { grade?: string | number | null };
 
 const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
     const { data: session } = useSession();
@@ -45,6 +48,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
 
             try {
                 const userData = await getUserData(uuid);
+                console.log('User Data:', userData);
 
                 if (!userData) {
                     return;
@@ -70,6 +74,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
 
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
+        console.log('Form submitted');
         if (!prompt.trim()) return;
 
         if (!userData) {
@@ -86,11 +91,21 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                 : userData.parentId;
             const childId = userData.isParent ? null : userData.uuid;
 
+            // step 6-branch
+            const grade = userData.grade || '6';
+            // const gradeLabel =
+            //     grades[parseInt(grade.toString())] || '6th Grade';
+
+            // const promptWithGrade = `Write a ${gradeLabel} story about ${prompt}`;
+
             const storyContent: string = await postNewStory(
                 prompt,
                 parentId,
-                childId as string | null
+                childId as string | null,
+                grade
             );
+
+            setStoryContent(storyContent);
 
             setStoryContent(storyContent);
             setPrompt('');
