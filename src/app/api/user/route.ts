@@ -7,22 +7,25 @@ import { auth } from '@/auth';
 
 export const GET = async (req: Request): Promise<Response> => {
     try {
-        const { searchParams } = new URL(req.url);
-        const uuid = searchParams.get('uuid');
+        // const { searchParams } = new URL(req.url);
+        // const uuid = searchParams.get('uuid');
 
-        if (!uuid) {
-            return NextResponse.json(
-                { error: 'UUID is required' },
-                { status: 400 }
-            );
-        }
+        // if (!uuid) {
+        //     return NextResponse.json(
+        //         { error: 'UUID is required' },
+        //         { status: 400 }
+        //     );
+        // }
+        // validate that the request is from the correct logged in user
         const session = await auth();
-        if (!session || session.user.uuid !== uuid) {
+        if (!session || !session.user.uuid) {
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
             );
         }
+
+        const uuid = session.user.uuid;
 
         const client = await clientPromise;
         const db = client.db('read-with-me');
@@ -39,17 +42,26 @@ export const GET = async (req: Request): Promise<Response> => {
             );
         }
 
-        const parentId = user.isParent ? user.uuid : user.parentId || null;
-        const children = user.children || null;
+        // const parentId = user.isParent ? user.uuid : user.parentId || null;
+        // const children = user.children || null;
 
         return NextResponse.json(
+            // {
+            //     parentId,
+            //     children,
+            //     userName: user.userName,
+            //     grade: user.grade ?? null,
+            //     googleId: user.googleId ?? null,
+            //     email: user.email ?? null
+            // },
             {
-                parentId,
-                children,
-                userName: user.userName,
-                grade: user.grade ?? null,
+                userName: user.userName ?? null,
                 googleId: user.googleId ?? null,
-                email: user.email ?? null
+                uuid: user.uuid,
+                isParent: user.isParent,
+                parentId: user.isParent ? undefined : (user.parentId ?? null),
+                children: user.isParent ? (user.children ?? []) : undefined,
+                grade: user.grade ?? null
             },
             { status: 200 }
         );
@@ -118,18 +130,22 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
 
 // This can be expanded later to include other user details
 export const PUT = async (req: NextRequest): Promise<NextResponse> => {
-    const { uuid, grade } = await req.json();
+    // const { uuid, grade } = await req.json();
+    const { grade } = await req.json();
 
-    if (!uuid || grade === undefined) {
-        return NextResponse.json(
-            { error: 'Missing uuid or grade' },
-            { status: 400 }
-        );
+    // if (!uuid || grade === undefined) {
+    //     return NextResponse.json(
+    //         { error: 'Missing uuid or grade' },
+    //         { status: 400 }
+    //     );
+    // }
+    if (grade === undefined) {
+        return NextResponse.json({ error: 'Missing grade' }, { status: 400 });
     }
 
     try {
         const session = await auth();
-        if (!session || session.user.uuid !== uuid) {
+        if (!session || !session.user.uuid) {
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
@@ -140,7 +156,10 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
 
         const result = await db
             .collection('childUsers')
-            .updateOne({ uuid }, { $set: { grade: Number(grade) } });
+            .updateOne(
+                { uuid: session.user.uuid },
+                { $set: { grade: Number(grade) } }
+            );
 
         if (result.modifiedCount === 0) {
             return NextResponse.json(

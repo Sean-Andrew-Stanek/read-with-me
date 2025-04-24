@@ -16,7 +16,6 @@ import { Sparkles, Loader2 } from 'lucide-react';
 import { postNewStory, getUserData } from '@/services/apiServices';
 import { useSession } from 'next-auth/react';
 import { ParentUser, ChildUser } from '@/lib/types/user';
-import { grades } from '@/lib/constants/grades';
 
 type CreateStoryPageProps = object;
 
@@ -28,7 +27,6 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
     const [prompt, setPrompt] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [storyContent, setStoryContent] = useState<string>('');
-    // const [userData, setUserData] = useState<any>(null);
     const [userData, setUserData] = useState<UserData | null>(null);
 
     useEffect(() => {
@@ -38,14 +36,14 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                 return;
             }
 
-            const uuid = (session?.user as { uuid: string })?.uuid;
+            // const uuid = (session?.user as { uuid: string })?.uuid;
 
-            if (!uuid) {
-                return;
-            }
+            // if (!uuid) {
+            //     return;
+            // }
 
             try {
-                const userData = await getUserData(uuid);
+                const userData = await getUserData();
 
                 if (!userData) {
                     return;
@@ -93,16 +91,16 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
         setStoryContent('');
 
         try {
-            const parentId = userData.isParent
-                ? userData.uuid
-                : userData.parentId;
-            const childId = userData.isParent ? null : userData.uuid;
+            // const parentId = userData.isParent
+            //     ? userData.uuid
+            //     : userData.parentId;
+            // const childId = userData.isParent ? null : userData.uuid;
             const grade = userData.grade || '6';
 
             const storyContent: string = await postNewStory(
                 prompt,
-                parentId,
-                childId as string | null,
+                // parentId,
+                // childId as string | null,
                 grade
             );
 

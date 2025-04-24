@@ -3,8 +3,9 @@ const baseApiUri =
 
 const putUserGradeURI = (): string => `${baseApiUri}/user`;
 const postNewStoryUri = (): string => `${baseApiUri}/story`;
-const getUserDataUri = (uuid: string): string =>
-    `${baseApiUri}/user?uuid=${uuid}`;
+// const getUserDataUri = (uuid: string): string =>
+//     `${baseApiUri}/user?uuid=${uuid}`;
+const getUserDataUri = (): string => `${baseApiUri}/user`;
 const getStoriesUri = (parentId?: string, childId?: string): string => {
     const params = new URLSearchParams();
     if (parentId) params.append('parentId', parentId);
