@@ -16,7 +16,6 @@ import { Sparkles, Loader2 } from 'lucide-react';
 import { postNewStory, getUserData } from '@/services/apiServices';
 import { useSession } from 'next-auth/react';
 import { ParentUser, ChildUser } from '@/lib/types/user';
-import { grades } from '@/lib/constants/grades';
 
 type CreateStoryPageProps = object;
 
@@ -97,13 +96,11 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                 ? userData.uuid
                 : userData.parentId;
             const childId = userData.isParent ? null : userData.uuid;
-            const grade = userData.grade || '6';
 
             const storyContent: string = await postNewStory(
                 prompt,
                 parentId,
-                childId as string | null,
-                grade
+                childId as string | null
             );
 
             setStoryContent(storyContent);

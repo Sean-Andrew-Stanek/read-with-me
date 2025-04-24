@@ -19,18 +19,27 @@ export const POST = async (req: Request): Promise<Response> => {
                 { status: 401 }
             );
         }
-        const { prompt, grade }: { prompt: string; grade: string | number } =
-            await req.json();
+        const { prompt }: { prompt: string } = await req.json();
 
-        const gradeLabel = grade
-            ? `for a ${grade} grade reading level`
-            : 'for 6th level';
+        // const gradeLabel = grade
+        //     ? `for a ${grade} grade reading level`
+        //     : 'for 6th level';
         if (!prompt || prompt.trim().length === 0) {
             return NextResponse.json(
                 { error: 'Prompt is required' },
                 { status: 400 }
             );
         }
+        // get the grade from database
+        const client = await clientPromise;
+        const db = client.db('read-with-me');
+        const userCollection = session.user.isParent ? 'users' : 'childUsers';
+        const userData = await db
+            .collection(userCollection)
+            .findOne({ uuid: session.user.uuid });
+
+        const grade = userData?.grade || '6';
+        const gradeLabel = `for a ${grade} grade reading level`;
 
         const response = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
@@ -67,8 +76,7 @@ export const POST = async (req: Request): Promise<Response> => {
         StorySchema.parse(story);
 
         // Save the story to MongoDB
-        const client = await clientPromise;
-        const db = client.db('read-with-me');
+
         const storiesCollection = db.collection('stories');
 
         const result = await storiesCollection.insertOne(story);
