@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
                     {isLoggedIn ? (
                         
                         <div className="flex items-center gap-2">
-                            <span className="text-white text-sm md:text-base break-words whitespace-normal">
+                            <span className="text-white font-semibold not-odd:text-md md:text-base break-words whitespace-normal">
                                 {session?.user?.name}
                             </span>
 
