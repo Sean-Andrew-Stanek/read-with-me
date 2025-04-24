@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import { validatePassword } from '@/lib/utils/index';
 import { auth } from '@/auth';
 
-export const GET = async (req: Request): Promise<Response> => {
+export const GET = async (): Promise<Response> => {
     try {
         // const { searchParams } = new URL(req.url);
         // const uuid = searchParams.get('uuid');
