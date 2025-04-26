@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import './globals.css';
 import Navbar from '@/components/Navbar';
-import { Literata } from '@next/font/google'
+import { Literata } from "next/font/google"
 
 const literata = Literata({
     subsets: ['latin'],
