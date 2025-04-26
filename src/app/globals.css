@@ -1,27 +1,3 @@
-@font-face {
-  font-family: 'Literata';
-  src: url('/fonts/Literata-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Literata';
-  src: url('/fonts/Literata-Italic..._opsz,wght.ttf') format('truetype');
-  font-weight: normal;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Literata Variable';
-  src: url('/fonts/Literata-Varia..._opsz,wght.ttf') format('truetype');
-  font-weight: 300 800; /* weight range */
-  font-style: normal;
-  font-display: swap;
-}
-
 @import 'tailwindcss';
 
 @plugin 'tailwindcss-animate';
