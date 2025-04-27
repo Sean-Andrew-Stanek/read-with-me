@@ -113,7 +113,7 @@ const Signup = (): JSX.Element => {
                         )}
                         <Button
                             onClick={toggleVisibility}
-                            className="absolute top-1/2 right-1 transform -translate-y-1/2 rounded  cursor-pointer text-white"
+                            className="absolute top-1/2 right-1 transform -translate-y-1/2 rounded cursor-pointer bg-grey text-black hover:bg-grey focus:outline-none shadow-none"
                         >
                             {showPassword ? (
                                 <EyeOff className="h-4 w-4" />

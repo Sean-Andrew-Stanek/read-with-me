@@ -146,7 +146,7 @@ const AuthDialog: React.FC = () => {
                         )}
                         <Button
                             onClick={toggleVisibility}
-                            className="absolute right-1 top-1/2 transform -translate-y-1/2 text-white crusor-pointer"
+                            className="absolute top-1/2 right-1 transform -translate-y-1/2 rounded cursor-pointer bg-grey text-black hover:bg-grey focus:outline-none shadow-none"
                         >
                             {showPassword ? (
                                 <EyeOff className="h-4 w-4" />
