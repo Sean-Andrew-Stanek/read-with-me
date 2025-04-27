@@ -24,7 +24,7 @@ const AuthDialog: React.FC = () => {
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
-    const toggleVisibility = () => {
+    const toggleVisibility = (): void => {
         setShowPassword(prev => !prev);
     };
 

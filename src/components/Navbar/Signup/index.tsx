@@ -13,6 +13,7 @@ import {
 import { signIn } from 'next-auth/react';
 import { JSX } from 'react';
 import { useOnboardingStore } from '@/lib/store/onboardingStore';
+import { Eye, EyeOff } from 'lucide-react';
 
 const Signup = (): JSX.Element => {
     const { setShowOnboarding } = useOnboardingStore();
@@ -21,6 +22,11 @@ const Signup = (): JSX.Element => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
+    const toggleVisibility = (): void => {
+        setShowPassword(prev => !prev);
+    };
 
     useEffect(() => {
         if (isOpen) {
@@ -93,15 +99,29 @@ const Signup = (): JSX.Element => {
                     >
                         Password:
                     </label>
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        className="border border-gray-300 rounded p-2"
-                    />
+                    <div className="relative w-full">
+                        <input
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            className="border border-gray-300 rounded p-2 w-full"
+                        />
 
-                    {error && <p className="text-red-500 text-sm">{error}</p>}
+                        {error && (
+                            <p className="text-red-500 text-sm">{error}</p>
+                        )}
+                        <Button
+                            onClick={toggleVisibility}
+                            className="absolute top-1/2 right-1 transform -translate-y-1/2 rounded  cursor-pointer text-white"
+                        >
+                            {showPassword ? (
+                                <EyeOff className="h-4 w-4" />
+                            ) : (
+                                <Eye className="h-4 w-4" />
+                            )}
+                        </Button>
+                    </div>
 
                     <Button
                         onClick={handleSignup}
