@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { signIn } from 'next-auth/react';
 // import { LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Eye, EyeOff } from 'lucide-react';
 
 import {
     Dialog,
@@ -21,6 +22,11 @@ const AuthDialog: React.FC = () => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
+    const toggleVisibility = () => {
+        setShowPassword(prev => !prev);
+    };
 
     // const { data: session, status } = useSession();
 
@@ -127,14 +133,28 @@ const AuthDialog: React.FC = () => {
                     <label className="block mb-1 font-medium text-sm">
                         Password:
                     </label>
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        className="border border-gray-300 rounded p-2"
-                    />
-                    {error && <p className="text-red-500 text-sm">{error}</p>}
+                    <div className="relative w-full">
+                        <input
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            className="border border-gray-300 rounded p-2 w-full"
+                        />
+                        {error && (
+                            <p className="text-red-500 text-sm">{error}</p>
+                        )}
+                        <Button
+                            onClick={toggleVisibility}
+                            className="absolute right-1 top-1/2 transform -translate-y-1/2 text-white crusor-pointer"
+                        >
+                            {showPassword ? (
+                                <EyeOff className="h-4 w-4" />
+                            ) : (
+                                <Eye className="h-4 w-4" />
+                            )}
+                        </Button>
+                    </div>
 
                     <Button
                         onClick={handleCredentialsLogin}
