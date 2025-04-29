@@ -53,7 +53,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
     };
 
     return (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center select-none">
             <div className="relative bg-white p-8 rounded-md shadow-md w-full max-w-md">
                 {/* Close button */}
                 <button
