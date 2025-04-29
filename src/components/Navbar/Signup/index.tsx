@@ -14,6 +14,7 @@ import { signIn } from 'next-auth/react';
 import { JSX } from 'react';
 import { useOnboardingStore } from '@/lib/store/onboardingStore';
 import { Eye, EyeOff } from 'lucide-react';
+import { signupSchema } from '@/lib/validation';
 
 const Signup = (): JSX.Element => {
     const { setShowOnboarding } = useOnboardingStore();
@@ -37,6 +38,13 @@ const Signup = (): JSX.Element => {
     }, [isOpen]);
 
     const handleSignup = async (): Promise<void> => {
+        const validation = signupSchema.safeParse({ userName, password });
+
+        if (!validation.success) {
+            setError(validation.error.errors[0].message); // show the first error message
+            return;
+        }
+
         const res = await fetch('/api/user', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
