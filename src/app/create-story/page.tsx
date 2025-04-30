@@ -117,7 +117,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                         </p>
                         <div className="flex justify-end gap-2 mt-3">
                             <Button
-                                className="text-sm px-3 py-1 bg-gray-200 text-black border rounded cursor-pointer"
+                                className="text-sm px-3 py-1 bg-gray-200 text-black border rounded cursor-pointer hover:bg-white"
                                 onClick={() => {
                                     toast.dismiss(t);
                                     window.location.reload();
