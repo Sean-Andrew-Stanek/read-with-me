@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import './globals.css';
 import Navbar from '@/components/Navbar';
-import { Literata } from "next/font/google"
+import { Literata } from 'next/font/google';
+import { Toaster } from '@/components/ui/sonner';
 
 const literata = Literata({
     subsets: ['latin'],
@@ -17,12 +18,11 @@ export const metadata: Metadata = {
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <html lang="en">
-            <body
-                className={literata.className}
-            >
+            <body className={literata.className}>
                 <SessionProvider>
                     <Navbar />
                     {children}
+                    <Toaster />
                 </SessionProvider>
             </body>
         </html>

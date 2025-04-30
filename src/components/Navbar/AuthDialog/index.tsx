@@ -7,6 +7,7 @@ import { signIn } from 'next-auth/react';
 // import { LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
+import { toast } from 'sonner';
 
 import {
     Dialog,
@@ -47,6 +48,7 @@ const AuthDialog: React.FC = () => {
 
     const handleGoogleSignIn = async (): Promise<void> => {
         await signIn('google', { callbackUrl: '/home' });
+        toast.success('Logged in successfully!');
         setIsOpen(false);
     };
 
@@ -57,8 +59,10 @@ const AuthDialog: React.FC = () => {
             password
         });
         if (res?.error) {
+            toast.error('Invalid username or password.');
             setError('Invalid username or password.');
         } else {
+            toast.success('Logged in successfully!');
             setIsOpen(false);
             router.refresh();
             router.push('/home');
