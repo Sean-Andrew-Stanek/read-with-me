@@ -16,6 +16,7 @@ import { Sparkles, Loader2 } from 'lucide-react';
 import { postNewStory, getUserData } from '@/services/apiServices';
 import { useSession } from 'next-auth/react';
 import { ParentUser, ChildUser } from '@/lib/types/user';
+import { toast } from 'sonner';
 
 type CreateStoryPageProps = object;
 
@@ -27,9 +28,37 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
     const [prompt, setPrompt] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [storyContent, setStoryContent] = useState<string>('');
-    // const [userData, setUserData] = useState<any>(null);
     const [userData, setUserData] = useState<UserData | null>(null);
 
+    // Api call for creating story when the grade exists or when user confirms to continue with toast
+    const storyAPICall = async (): Promise<void> => {
+        setIsLoading(true);
+        setStoryContent('');
+
+        try {
+            const parentId = userData?.isParent
+                ? userData.uuid
+                : userData?.parentId;
+            const childId = userData?.isParent ? null : userData?.uuid;
+
+            const storyContent: string = await postNewStory(
+                prompt,
+                parentId,
+                childId as string | null
+            );
+
+            setStoryContent(storyContent);
+            setPrompt('');
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                toast.error(`Error creating story: ${error.message}`);
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Fetch the user if the user is not found don't let them create a story
     useEffect(() => {
         const fetchUser = async (): Promise<void> => {
             if (!session || !session.user) {
@@ -68,6 +97,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
         document.body.classList.remove('overflow-hidden');
     }, []);
 
+    // Handle form submission to create a story
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
         if (!prompt.trim()) return;
@@ -77,52 +107,42 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
             return;
         }
 
-        // warn user if grade is not picked
         if (!userData.grade) {
-            const proceed = confirm(
-                'You have not selected a grade. The story will be written for a 6th grade level. Do you want to proceed?'
+            toast.custom(
+                t => (
+                    <div className="bg-white border rounded-md p-4 shadow-md w-[300px]">
+                        <p className="mb-2 text-sm">
+                            You haven’t selected a grade. A 6th grade level will
+                            be used. Do you want to continue?
+                        </p>
+                        <div className="flex justify-end gap-2 mt-3">
+                            <button
+                                className="text-sm px-3 py-1 border rounded hover:bg-gray-100"
+                                onClick={() => {
+                                    toast.dismiss(t);
+                                    window.location.reload();
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="text-sm px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                onClick={() => {
+                                    toast.dismiss(t);
+                                    storyAPICall();
+                                }}
+                            >
+                                Continue
+                            </button>
+                        </div>
+                    </div>
+                ),
+                { duration: Infinity }
             );
-            if (!proceed) {
-                window.location.reload();
-                return;
-            }
-        }
-
-        setIsLoading(true);
-        setStoryContent('');
-
-        try {
-            const parentId = userData.isParent
-                ? userData.uuid
-                : userData.parentId;
-            const childId = userData.isParent ? null : userData.uuid;
-
-            const storyContent: string = await postNewStory(
-                prompt,
-                parentId,
-                childId as string | null
-            );
-
-            setStoryContent(storyContent);
-            setPrompt('');
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                throw new Error(`Error creating story: ${error.message}`);
-            }
-        } finally {
-            setIsLoading(false);
+        } else {
+            storyAPICall();
         }
     };
-
-    // if (!session || !session.user) {
-    //     return (
-    //         <div className="min-h-screen flex items-center justify-center text-center">
-    //             <p className="text-xl font-bold text-red-500">
-    //                 You must be logged in to create a story.
-    //             </p>
-    //         </div>
-    //     );
-    // }
 
     return (
         <div className="container mx-auto py-10 max-w-2xl">
@@ -175,7 +195,6 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                         <Button
                             type="submit"
                             className="w-full"
-                            // disabled={isLoading || !prompt.trim()}
                             disabled={isLoading || !prompt.trim() || !userData}
                         >
                             {isLoading ? (
