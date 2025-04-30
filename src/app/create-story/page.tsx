@@ -116,24 +116,24 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                             be used. Do you want to continue?
                         </p>
                         <div className="flex justify-end gap-2 mt-3">
-                            <button
-                                className="text-sm px-3 py-1 border rounded hover:bg-gray-100"
+                            <Button
+                                className="text-sm px-3 py-1 bg-gray-200 text-black border rounded cursor-pointer"
                                 onClick={() => {
                                     toast.dismiss(t);
                                     window.location.reload();
                                 }}
                             >
                                 Cancel
-                            </button>
-                            <button
-                                className="text-sm px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                            </Button>
+                            <Button
+                                className="text-sm px-3 py-1 bg-sky-800 text-white rounded cursor-pointer"
                                 onClick={() => {
                                     toast.dismiss(t);
                                     storyAPICall();
                                 }}
                             >
                                 Continue
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 ),
@@ -194,7 +194,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                     <CardFooter className="py-4">
                         <Button
                             type="submit"
-                            className="w-full"
+                            className="w-full cursor-pointer"
                             disabled={isLoading || !prompt.trim() || !userData}
                         >
                             {isLoading ? (

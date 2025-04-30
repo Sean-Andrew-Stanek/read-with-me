@@ -56,7 +56,6 @@ const Signup = (): JSX.Element => {
         const data = await res.json();
         if (res.ok) {
             toast.success('Account created successfully!', {
-                // position: 'top-right',
                 icon: <Check className="h-5 w-5 text-green-500" />,
                 style: {
                     color: 'rgb(22 163 74)',
