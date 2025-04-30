@@ -46,7 +46,14 @@ const AuthDialog: React.FC = () => {
             await signIn('google', { callbackUrl: '/home' });
             setIsOpen(false);
         } catch (error) {
-            toast.error('Failed to sign in with Google. Please try again.');
+            toast.error('Failed to sign in with Google. Please try again.', {
+                icon: <AlertCircle className="h-5 w-5 text-red-500" />,
+                style: {
+                    color: 'rgb(220 38 38)',
+                    borderColor: 'rgb(252 165 165)',
+                    backgroundColor: 'rgb(254 242 242)'
+                }
+            });
         }
     };
 
@@ -58,7 +65,6 @@ const AuthDialog: React.FC = () => {
         });
         if (res?.error) {
             toast.error('Invalid username or password.', {
-                // position: 'top-right',
                 icon: <AlertCircle className="h-5 w-5 text-red-500" />,
                 style: {
                     color: 'rgb(220 38 38)',

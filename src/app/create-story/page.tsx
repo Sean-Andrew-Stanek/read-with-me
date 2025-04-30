@@ -17,6 +17,7 @@ import { postNewStory, getUserData } from '@/services/apiServices';
 import { useSession } from 'next-auth/react';
 import { ParentUser, ChildUser } from '@/lib/types/user';
 import { toast } from 'sonner';
+import { AlertCircle } from 'lucide-react';
 
 type CreateStoryPageProps = object;
 
@@ -51,7 +52,14 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
             setPrompt('');
         } catch (error: unknown) {
             if (error instanceof Error) {
-                toast.error(`Error creating story: ${error.message}`);
+                toast.error(`Error creating story: ${error.message}`, {
+                    icon: <AlertCircle className="h-5 w-5 text-red-500" />,
+                    style: {
+                        color: 'rgb(220 38 38)',
+                        borderColor: 'rgb(252 165 165)',
+                        backgroundColor: 'rgb(254 242 242)'
+                    }
+                });
             }
         } finally {
             setIsLoading(false);
