@@ -16,6 +16,7 @@ import { useOnboardingStore } from '@/lib/store/onboardingStore';
 import { Eye, EyeOff } from 'lucide-react';
 import { signupSchema } from '@/lib/validation';
 import { toast } from 'sonner';
+import { Check } from 'lucide-react';
 
 const Signup = (): JSX.Element => {
     const { setShowOnboarding } = useOnboardingStore();
@@ -54,7 +55,15 @@ const Signup = (): JSX.Element => {
 
         const data = await res.json();
         if (res.ok) {
-            toast.success('Account created successfully!');
+            toast.success('Account created successfully!', {
+                // position: 'top-right',
+                icon: <Check className="h-5 w-5 text-green-500" />,
+                style: {
+                    color: 'rgb(22 163 74)',
+                    borderColor: 'rgb(134 239 172)'
+                }
+            });
+
             // log in after signup
             const loginRes = await signIn('credentials', {
                 redirect: false,
@@ -63,7 +72,6 @@ const Signup = (): JSX.Element => {
             });
 
             if (loginRes && loginRes.ok) {
-                toast.success('Logged in successfully!');
                 setIsOpen(false);
                 setShowOnboarding(true);
             } else {

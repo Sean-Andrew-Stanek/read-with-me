@@ -10,22 +10,6 @@ interface OnboardingDialogProps {
     onOnboarded: () => void;
 }
 
-// const grades: Record<number, string> = {
-//     0: 'Kindergarten',
-//     1: '1st Grade',
-//     2: '2nd Grade',
-//     3: '3rd Grade',
-//     4: '4th Grade',
-//     5: '5th Grade',
-//     6: '6th Grade',
-//     7: '7th Grade',
-//     8: '8th Grade',
-//     9: '9th Grade',
-//     10: '10th Grade',
-//     11: '11th Grade',
-//     12: '12th Grade'
-// };
-
 const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
     open,
     onOnboarded
@@ -43,11 +27,13 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
 
         await putUserGrade(selectedGrade.toString(), session.user.uuid);
 
+        localStorage.setItem('toast', 'grade-saved');
         onOnboarded();
         router.push(navLink.dashboard); // Redirect to the dashboard after saving
     };
 
     const handleCancel = (): void => {
+        localStorage.setItem('toast', 'grade-skipped');
         onOnboarded(); // close without saving
         router.push(navLink.home); // Redirect to the home page
     };

@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { signIn } from 'next-auth/react';
-// import { LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
+import { Check, AlertCircle } from 'lucide-react';
 
 import {
     Dialog,
@@ -29,10 +29,6 @@ const AuthDialog: React.FC = () => {
         setShowPassword(prev => !prev);
     };
 
-    // const { data: session, status } = useSession();
-
-    // const isLoggedIn = !!session?.user?.uuid;
-
     const router = useRouter();
 
     // Prevent page shift when dialog is open
@@ -44,12 +40,14 @@ const AuthDialog: React.FC = () => {
         }
     }, [isOpen]);
 
-    // if (status === 'loading') return null;
-
     const handleGoogleSignIn = async (): Promise<void> => {
-        await signIn('google', { callbackUrl: '/home' });
-        toast.success('Logged in successfully!');
-        setIsOpen(false);
+        localStorage.setItem('toast', 'google-signin');
+        try {
+            await signIn('google', { callbackUrl: '/home' });
+            setIsOpen(false);
+        } catch (error) {
+            toast.error('Failed to sign in with Google. Please try again.');
+        }
     };
 
     const handleCredentialsLogin = async (): Promise<void> => {
@@ -59,10 +57,24 @@ const AuthDialog: React.FC = () => {
             password
         });
         if (res?.error) {
-            toast.error('Invalid username or password.');
+            toast.error('Invalid username or password.', {
+                // position: 'top-right',
+                icon: <AlertCircle className="h-5 w-5 text-red-500" />,
+                style: {
+                    color: 'rgb(220 38 38)',
+                    borderColor: 'rgb(252 165 165)',
+                    backgroundColor: 'rgb(254 242 242)'
+                }
+            });
             setError('Invalid username or password.');
         } else {
-            toast.success('Logged in successfully!');
+            toast.success('Logged in successfully!', {
+                icon: <Check className="h-5 w-5 text-green-500" />,
+                style: {
+                    color: 'rgb(22 163 74)',
+                    borderColor: 'rgb(134 239 172)'
+                }
+            });
             setIsOpen(false);
             router.refresh();
             router.push('/home');
