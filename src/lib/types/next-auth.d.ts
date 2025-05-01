@@ -9,6 +9,7 @@ declare module 'next-auth' {
             name?: string | null;
             email?: string | null;
             image?: string | null;
+            grade?: string | number | null;
         } & DefaultSession['user'];
     }
 
