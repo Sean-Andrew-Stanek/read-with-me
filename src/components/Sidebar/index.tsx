@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import OnboardingDialog from '@/components/OnBoardingDialog';
 import { Check } from 'lucide-react';
 import { toast } from 'sonner';
+import { grades } from '@/lib/constants/grades';
 
 const Sidebar: FC = () => {
     const { data: session } = useSession();
@@ -35,9 +36,9 @@ const Sidebar: FC = () => {
         <>
             <aside className="w-64 h-screen bg-white border-r border-gray-200 top-16 left-0 z-40 p-4 shadow-sm font-literata-variable font-semibold text-lg">
                 <div className="flex items-center justify-between mb-4">
-                    {grade ? (
+                    {typeof grade === 'number' ? (
                         <span className="text-sm text-gray-500 ">
-                            {session?.user?.name}'s grade level: {grade}
+                            {session?.user?.name}'s grade level: {grades[grade]}
                         </span>
                     ) : (
                         <div className="text-sm">
