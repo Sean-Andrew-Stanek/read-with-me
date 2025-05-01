@@ -19,7 +19,7 @@ import { Info } from 'lucide-react';
 const Dashboard: FC = () => {
     useEffect(() => {
         const toastType = localStorage.getItem('toast');
-        console.log('Toast flag:', toastType);
+        console.log('Toast type from localStorage:', toastType);
 
         setTimeout(() => {
             if (toastType === 'grade-saved') {

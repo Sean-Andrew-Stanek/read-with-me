@@ -16,6 +16,7 @@ declare module 'next-auth' {
     interface User extends DefaultUser {
         uuid: string;
         isParent: boolean;
+        grade?: string | number | null;
     }
 }
 
@@ -23,5 +24,6 @@ declare module 'next-auth/jwt' {
     interface JWT extends DefaultJWT {
         uuid: string;
         isParent: boolean;
+        grade?: string | number | null;
     }
 }

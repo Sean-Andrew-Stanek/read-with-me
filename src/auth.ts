@@ -58,7 +58,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                     id: user._id.toString(),
                     name: user.userName,
                     uuid: user.uuid,
-                    isParent: false
+                    isParent: false,
+                    grade: user.grade ?? null
                 };
             }
         })
@@ -71,6 +72,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             if (user) {
                 token.uuid = user.uuid;
                 token.isParent = user.isParent;
+                token.grade = user.grade || null;
             }
             return token;
         },
@@ -81,9 +83,16 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
             //  If the user is already in the token (from credentials), use it
             if (token?.uuid) {
-                session.user.uuid = token.uuid as string;
-                session.user.isParent = token.isParent as boolean;
-                return session;
+                //  fetch the latest user from the DB using uuid
+                const user = await db
+                    .collection('childUsers')
+                    .findOne({ uuid: token.uuid });
+                if (user) {
+                    session.user.uuid = token.uuid as string;
+                    session.user.isParent = token.isParent as boolean;
+                    session.user.grade = user.grade as string | number | null;
+                    return session;
+                }
             }
 
             //  If logging in via Google (no token.uuid), fetch user by email
@@ -116,6 +125,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 if (userData) {
                     session.user.uuid = userData.uuid;
                     session.user.isParent = userData.isParent;
+                    session.user.grade = userData.grade || null;
                     return session;
                 }
             }

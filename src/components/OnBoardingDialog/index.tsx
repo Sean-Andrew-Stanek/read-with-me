@@ -15,6 +15,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
     onOnboarded
 }) => {
     const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
+    const { update } = useSession();
     const { data: session } = useSession();
 
     const router = useRouter();
@@ -26,6 +27,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
         if (selectedGrade === null) return;
 
         await putUserGrade(selectedGrade.toString(), session.user.uuid);
+        await update();
 
         localStorage.setItem('toast', 'grade-saved');
         onOnboarded();
@@ -33,9 +35,13 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
     };
 
     const handleCancel = (): void => {
-        localStorage.setItem('toast', 'grade-skipped');
-        onOnboarded(); // close without saving
-        router.push(navLink.home); // Redirect to the home page
+        // Only show "grade-skipped" toast if no grade is set yet
+        if (!session?.user?.grade) {
+            localStorage.setItem('toast', 'grade-skipped');
+        }
+
+        onOnboarded(); // Close dialog
+        router.push(navLink.home); // Redirect
     };
 
     return (
