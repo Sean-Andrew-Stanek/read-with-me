@@ -38,7 +38,7 @@ export const POST = async (req: Request): Promise<Response> => {
             .collection(userCollection)
             .findOne({ uuid: session.user.uuid });
 
-        const grade = userData?.grade || '6';
+        const grade = userData?.grade ?? '6'; // fallback to 6th grade only if null or undefined
         const gradeLabel = `for a ${grade} grade reading level`;
 
         const response = await openai.chat.completions.create({

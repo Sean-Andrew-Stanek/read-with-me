@@ -117,7 +117,10 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
             return;
         }
 
-        if (!isParent && !userData.grade) {
+        if (
+            !isParent &&
+            (userData.grade === null || userData.grade === undefined)
+        ) {
             toast.custom(
                 t => (
                     <div className="bg-white border rounded-md p-4 shadow-md w-[300px]">
