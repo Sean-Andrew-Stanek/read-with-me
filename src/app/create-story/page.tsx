@@ -31,6 +31,8 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
     const [storyContent, setStoryContent] = useState<string>('');
     const [userData, setUserData] = useState<UserData | null>(null);
 
+    const isParent = session?.user?.isParent;
+
     // Api call for creating story when the grade exists or when user confirms to continue with toast
     const storyAPICall = async (): Promise<void> => {
         setIsLoading(true);
@@ -115,7 +117,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
             return;
         }
 
-        if (!userData.grade) {
+        if (!isParent && !userData.grade) {
             toast.custom(
                 t => (
                     <div className="bg-white border rounded-md p-4 shadow-md w-[300px]">
