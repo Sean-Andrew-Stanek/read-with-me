@@ -19,6 +19,7 @@ import { Info } from 'lucide-react';
 const Dashboard: FC = () => {
     useEffect(() => {
         const toastType = localStorage.getItem('toast');
+        localStorage.removeItem('toast');
         console.log('Toast flag:', toastType);
 
         setTimeout(() => {
@@ -50,7 +51,6 @@ const Dashboard: FC = () => {
                     }
                 });
             }
-            localStorage.removeItem('toast');
         }, 600); // Delay to allow the toast to be displayed after the page load
     }, []);
 
