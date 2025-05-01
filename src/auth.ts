@@ -58,7 +58,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                     id: user._id.toString(),
                     name: user.userName,
                     uuid: user.uuid,
-                    isParent: false
+                    isParent: false,
+                    grade: user.grade
                 };
             }
         })
@@ -71,6 +72,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             if (user) {
                 token.uuid = user.uuid;
                 token.isParent = user.isParent;
+                token.grade = user.grade;
             }
             return token;
         },
@@ -83,6 +85,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             if (token?.uuid) {
                 session.user.uuid = token.uuid as string;
                 session.user.isParent = token.isParent as boolean;
+                session.user.grade = token.grade as string | number | null;
                 return session;
             }
 
@@ -116,6 +119,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 if (userData) {
                     session.user.uuid = userData.uuid;
                     session.user.isParent = userData.isParent;
+                    session.user.grade = userData.grade;
                     return session;
                 }
             }
