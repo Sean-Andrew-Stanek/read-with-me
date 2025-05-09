@@ -126,6 +126,7 @@ export function SpeechToText() {
             <CardFooter className="flex justify-between">
                 <Button
                     variant="outline"
+                    className={`${!isLoading && !error ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                     onClick={clearTranscript}
                     disabled={!transcript || isLoading}
                 >
@@ -136,7 +137,7 @@ export function SpeechToText() {
                         <Button
                             variant="destructive"
                             onClick={stopListening}
-                            className="gap-2"
+                            className={`gap-2 ${!isLoading && !error ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                         >
                             <MicOff className="h-4 w-4" />
                             Stop
@@ -144,7 +145,7 @@ export function SpeechToText() {
                     ) : (
                         <Button
                             onClick={startListening}
-                            className="gap-2"
+                            className={`gap-2 ${!isLoading && !error ? 'cursor-pointer' : 'cursor-not-allowed'}`}
                             disabled={isLoading || !!error}
                         >
                             {isLoading ? (
