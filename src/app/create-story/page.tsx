@@ -18,6 +18,7 @@ import { useSession } from 'next-auth/react';
 import { ParentUser, ChildUser } from '@/lib/types/user';
 import { toast } from 'sonner';
 import { AlertCircle } from 'lucide-react';
+import { SpeechToText } from '@/components/SpeechToText';
 
 type CreateStoryPageProps = object;
 
@@ -231,6 +232,9 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                     <p>{storyContent}</p>
                 </div>
             )}
+            <div className="mt-6">
+                <SpeechToText />
+            </div>
         </div>
     );
 };
