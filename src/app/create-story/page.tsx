@@ -18,7 +18,8 @@ import { useSession } from 'next-auth/react';
 import { ParentUser, ChildUser } from '@/lib/types/user';
 import { toast } from 'sonner';
 import { AlertCircle } from 'lucide-react';
-import { SpeechToText } from '@/components/SpeechToText';
+import { useRouter } from 'next/navigation';
+import { useStoryStore } from '@/lib/store/storyStore';
 
 type CreateStoryPageProps = object;
 
@@ -29,8 +30,10 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
 
     const [prompt, setPrompt] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [storyContent, setStoryContent] = useState<string>('');
     const [userData, setUserData] = useState<UserData | null>(null);
+
+    const router = useRouter();
+    const { setStoryContent } = useStoryStore();
 
     const isParent = session?.user?.isParent;
 
@@ -53,6 +56,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
 
             setStoryContent(storyContent);
             setPrompt('');
+            router.push('/story-result');
         } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(`Error creating story: ${error.message}`, {
@@ -226,15 +230,6 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                     </CardFooter>
                 </form>
             </Card>
-            {storyContent && (
-                <div className="mt-6 p-4 border border-gray-300 rounded w-full max-w-2xl bg-white">
-                    <h2 className="text-xl font-bold mb-2">Generated Story:</h2>
-                    <p>{storyContent}</p>
-                </div>
-            )}
-            <div className="mt-6">
-                <SpeechToText />
-            </div>
         </div>
     );
 };
