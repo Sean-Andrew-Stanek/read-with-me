@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
     const { showOnboarding, setShowOnboarding } = useOnboardingStore();
     const pathname = usePathname();
     const isSelectedPath =
-        pathname === '/create-story' || pathname === '/my-stories';
+        pathname === '/create-story' || pathname === '/my-stories' || pathname === '/story-result';
 
     const { data: session, status } = useSession();
     if (status === 'loading') return null;
