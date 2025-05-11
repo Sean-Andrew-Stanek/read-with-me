@@ -2,7 +2,8 @@ import {
     postNewStoryUri,
     putUserGradeURI,
     getUserDataUri,
-    getStoriesUri
+    getStoriesUri,
+    getStoryByIdUri,
 } from '@/config/apiUri';
 import { Story } from '@/lib/types/story';
 import { ChildUser, ParentUser } from '@/lib/types/user';
@@ -88,4 +89,21 @@ const getStories = async (
     return data.stories;
 };
 
-export { postNewStory, getUserData, getStories, putUserGrade };
+const getStoryById = async (id: string):Promise<Story> => {
+   const response = await fetch(getStoryByIdUri(id), {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+   });
+
+   if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || 'Failed to fetch story');
+   }
+
+   const data = await response.json();
+   return data as Story;
+  };
+
+export { postNewStory, getUserData, getStories, putUserGrade, getStoryById};

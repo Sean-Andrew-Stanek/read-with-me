@@ -11,5 +11,6 @@ const getStoriesUri = (parentId?: string, childId?: string): string => {
     if (childId) params.append('childId', childId);
     return `${baseApiUri}/story?${params.toString()}`;
 };
+const getStoryByIdUri = (id: string): string => `${baseApiUri}/read-story/${id}`;
 
-export { putUserGradeURI, postNewStoryUri, getUserDataUri, getStoriesUri };
+export { putUserGradeURI, postNewStoryUri, getUserDataUri, getStoriesUri, getStoryByIdUri };
