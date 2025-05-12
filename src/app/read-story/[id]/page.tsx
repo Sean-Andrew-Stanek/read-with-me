@@ -6,7 +6,7 @@ import { getStoryById } from '../../../services/apiServices';
 import { Story } from '../../../lib/types/story';
 
 const ReadStory = () => {
-    const { id } = useParams();/////TO DO There are two ids in db for story
+    const { id } = useParams();
     const [story, setStory] = useState<Story | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -16,8 +16,6 @@ const ReadStory = () => {
             try {
                 const fetchedStory = await getStoryById(id as string);
                 setStory(fetchedStory);
-                console.log('Story ID:', story?.id)
-                console.log('Story title:', story?.title)
             } catch (error) {
                 console.error('Error fetching story:', error);
             } finally {

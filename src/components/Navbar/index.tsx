@@ -10,12 +10,19 @@ import { useOnboardingStore } from '@/lib/store/onboardingStore';
 import OnboardingDialog from '@/components/OnBoardingDialog';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 const Navbar: React.FC = () => {
     const { showOnboarding, setShowOnboarding } = useOnboardingStore();
     const pathname = usePathname();
-    const isSelectedPath =
-        pathname === '/create-story' || pathname === '/my-stories' || pathname === '/story-result';
+    
+    const { id } = useParams(); 
+    // console.log(`ID: ${id}`)
+
+    const staticPaths = ['/create-story', '/my-stories', '/story-result'];
+    const dynamicPath = id ? `/read-story/${id}` : null;
+
+    const isSelectedPath = staticPaths.includes(pathname) || pathname === dynamicPath;
 
     const { data: session, status } = useSession();
     if (status === 'loading') return null;
