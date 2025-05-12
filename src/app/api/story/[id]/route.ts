@@ -17,7 +17,7 @@ export const GET = async (
             );
         }
 
-        const { id } = params;
+        const { id } = await params
         const client = await clientPromise;
         const db = client.db('read-with-me');
 
