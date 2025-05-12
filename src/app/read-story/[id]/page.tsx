@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { getStoryById } from '../../../../services/apiServices';
-import { Story } from '../../../../lib/types/story';
+import { getStoryById } from '../../../services/apiServices';
+import { Story } from '../../../lib/types/story';
 
 const ReadStory = () => {
     const { id } = useParams();/////TO DO There are two ids in db for story
@@ -16,7 +16,8 @@ const ReadStory = () => {
             try {
                 const fetchedStory = await getStoryById(id as string);
                 setStory(fetchedStory);
-                console.log("Story:", story);
+                console.log('Story ID:', story?.id)
+                console.log('Story title:', story?.title)
             } catch (error) {
                 console.error('Error fetching story:', error);
             } finally {
@@ -24,8 +25,6 @@ const ReadStory = () => {
             }
         };
         fetchStory();
-        console.log('Story title:', story?.id)
-        console.log('Story title:', story?.title)
     }, [id]);
 
     if (loading) return <p>Loading story...</p>;

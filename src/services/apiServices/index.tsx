@@ -89,21 +89,48 @@ const getStories = async (
     return data.stories;
 };
 
-const getStoryById = async (id: string):Promise<Story> => {
-   const response = await fetch(getStoryByIdUri(id), {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json'
+// const getStoryById = async (id: string):Promise<Story> => {
+//    const response = await fetch(`/api/stories/${id}`, {
+//     method: 'GET',
+//     headers: {
+//         'Content-Type': 'application/json'
+//     }
+//    });
+
+//    if (!response.ok) {
+//     const errorData = await response.json();
+//     throw new Error(errorData.error || 'Failed to fetch story');
+//    }
+
+//    const data = await response.json();
+//    return data.story as Story;
+//   };
+
+  const getStoryById = async (
+    id?: string,
+  ): Promise<Story> => {
+    const params = new URLSearchParams();
+    
+    if (!id) {
+        return Promise.reject('id missing.');
+    } 
+
+    if (id) params.append('id', id);
+
+    const response = await fetch(getStoryByIdUri(id), {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch story.');
     }
-   });
 
-   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || 'Failed to fetch story');
-   }
-
-   const data = await response.json();
-   return data as Story;
-  };
+    const data = await response.json();
+    if (!data) {
+        throw new Error('Invalid response format or no story found.');
+    }
+    return data;
+  }
 
 export { postNewStory, getUserData, getStories, putUserGrade, getStoryById};
