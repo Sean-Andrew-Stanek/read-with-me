@@ -32,7 +32,15 @@ const ReadStory = () => {
         <div>
             <div className="container mx-auto py-10 max-w-2xl">
                 <h1 className="text-3xl font bold mb-4">{story.title}</h1>
-                <p className="mb-6 text-lg text-black">{story.content}</p>
+                {/* <p className="mb-6 text-lg text-black">{story.content}</p> */}
+                <div className="text-lg">
+                    {story.content.split(/\n\n|\n/).map((para, idx) => (
+                        <p key={idx} className="mb-4 leading-relaxed">
+                            {para.trim()}
+                        </p>
+                    ))}
+                </div>
+
                 <p className="text-sm text-blue-900">
                     Created At: {new Date(story.createdAt).toLocaleString()}
                 </p>

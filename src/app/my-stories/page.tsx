@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { formatSentencesWithSpacing } from '@/lib/utils/formatters';
 
-
 type CreateStoryPageProps = {
     parentId?: string;
     childId?: string;
@@ -90,10 +89,20 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
 
             {stories.map(story => (
                 <div key={story.id} className="mb-4 p-4 border rounded">
-                    <h2 className="text-xl font-semibold mb-2">{story.title}</h2>
-                    <div className='text-lg whitespace-pre-line'>
+                    <h2 className="text-xl font-semibold mb-2">
+                        {story.title}
+                    </h2>
+                    {/* <div className='text-lg whitespace-pre-line'>
                             {formatSentencesWithSpacing(`${story.content}`)}
-                     </div>
+                     </div> */}
+                    <div className="text-lg">
+                        {story.content.split(/\n\n|\n/).map((para, idx) => (
+                            <p key={idx} className="mb-4 leading-relaxed">
+                                {para.trim()}
+                            </p>
+                        ))}
+                    </div>
+
                     <p className="text-sm text-gray-500">
                         Created At: {new Date(story.createdAt).toLocaleString()}
                     </p>
