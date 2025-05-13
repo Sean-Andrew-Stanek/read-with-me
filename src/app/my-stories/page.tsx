@@ -101,14 +101,18 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
                     <p className="text-sm text-gray-500">
                         Created At: {new Date(story.createdAt).toLocaleString()}
                     </p>
-                    <div className='col flex justify-end items-center'>
-                        <Button 
-                            className='mt-6 mr-6 hover:bg-gray-300 hover:text-black'
-                            onClick={() => router.push(`/read-story/${story.id}`)}
+                    <div className="col flex justify-end items-center">
+                        <Button
+                            className="mt-6 mr-6 hover:bg-gray-300 hover:text-black"
+                            onClick={() =>
+                                router.push(`/read-story/${story.id}`)
+                            }
                         >
                             Read
                         </Button>
-                        <Button className='mt-6 hover:bg-gray-300 hover:text-black'>Delete</Button>
+                        <Button className="mt-6 hover:bg-gray-300 hover:text-black">
+                            Delete
+                        </Button>
                     </div>
                 </div>
             ))}
