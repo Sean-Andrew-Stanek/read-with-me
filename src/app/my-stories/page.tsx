@@ -5,6 +5,8 @@ import { useSession } from 'next-auth/react';
 import { Story } from '@/lib/types/story';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { formatSentencesWithSpacing } from '@/lib/utils/formatters';
+
 
 type CreateStoryPageProps = {
     parentId?: string;
@@ -66,14 +68,6 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
         document.body.classList.remove('overflow-hidden');
     }, []);
 
-    // if (status === 'loading' || typeof status === 'undefined') {
-    //     return (
-    //         <div className="flex items-center justify-center h-screen">
-    //             <p className="text-center text-xl text-gray-500">Loading...</p>
-    //         </div>
-    //     );
-    // }
-
     if (!session) {
         return (
             <div className="flex items-center justify-center h-screen">
@@ -96,8 +90,10 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
 
             {stories.map(story => (
                 <div key={story.id} className="mb-4 p-4 border rounded">
-                    <h2 className="text-xl font-semibold">{story.title}</h2>
-                    <p>{story.content}</p>
+                    <h2 className="text-xl font-semibold mb-2">{story.title}</h2>
+                    <div className='text-lg whitespace-pre-line'>
+                            {formatSentencesWithSpacing(`${story.content}`)}
+                     </div>
                     <p className="text-sm text-gray-500">
                         Created At: {new Date(story.createdAt).toLocaleString()}
                     </p>
