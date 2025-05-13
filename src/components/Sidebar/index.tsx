@@ -35,10 +35,10 @@ const Sidebar: FC = () => {
 
     return (
         <>
-            <aside className="w-64 h-screen bg-white border-r border-gray-200 top-16 left-0 z-40 p-4 shadow-sm font-literata-variable font-semibold text-lg">
+            <aside className="w-64 m-h-screen bg-white border-r border-gray-200 top-16 left-0 z-40 p-4 shadow-sm font-literata-variable font-semibold text-lg">
                 <div className="flex items-center justify-between mb-4">
                     {!isParent && typeof grade === 'number' ? (
-                        <span className="text-sm text-gray-500 ">
+                        <span className="text-xs  text-gray-500 ">
                             {session?.user?.name}'s grade level: {grades[grade]}
                         </span>
                     ) : !isParent ? (
@@ -47,7 +47,7 @@ const Sidebar: FC = () => {
                                 {session?.user?.name}'s grade level:
                             </span>
                             <span
-                                className="text-blue-600 underline cursor-pointer hover:text-blue-800"
+                                className="text-blue-600 text-xs underline cursor-pointer hover:text-blue-800"
                                 onClick={() => setShowDialog(true)}
                             >
                                 Select your grade level

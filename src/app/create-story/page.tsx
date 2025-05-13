@@ -163,7 +163,7 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
     };
 
     return (
-        <div className="container mx-auto py-10 max-w-2xl">
+        <div className="container mx-auto py-10 px-4 sm:px-6 max-w-2xl">
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">

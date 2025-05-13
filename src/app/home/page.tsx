@@ -56,7 +56,7 @@ const Dashboard: FC = () => {
 
     return (
         <div className=" flex flex-col gap-5 items-center py-10 px-4 mt-10">
-            <h1 className="font-literata text-4xl font-semibold text-primary-500 text-center mb-8">
+            <h1 className="font-literata text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-primary-500 text-center mb-8">
                 Welcome to Reading Assistant!
             </h1>
 

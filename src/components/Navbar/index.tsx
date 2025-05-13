@@ -15,14 +15,15 @@ import { useParams } from 'next/navigation';
 const Navbar: React.FC = () => {
     const { showOnboarding, setShowOnboarding } = useOnboardingStore();
     const pathname = usePathname();
-    
-    const { id } = useParams(); 
+
+    const { id } = useParams();
     // console.log(`ID: ${id}`)
 
     const staticPaths = ['/create-story', '/my-stories', '/story-result'];
     const dynamicPath = id ? `/read-story/${id}` : null;
 
-    const isSelectedPath = staticPaths.includes(pathname) || pathname === dynamicPath;
+    const isSelectedPath =
+        staticPaths.includes(pathname) || pathname === dynamicPath;
 
     const { data: session, status } = useSession();
     if (status === 'loading') return null;
@@ -57,7 +58,7 @@ const Navbar: React.FC = () => {
                                     signOut({ callbackUrl: '/' });
                                 }}
                                 variant="outline"
-                                className="flex items-center gap-2 text-black cursor-pointer"
+                                className="h-auto px-3 py-1 text-xs sm:text-sm md:text-base text-black flex items-center gap-2"
                             >
                                 {/* Logout Icon */}
                                 <LogOut className="h-4 w-4" />

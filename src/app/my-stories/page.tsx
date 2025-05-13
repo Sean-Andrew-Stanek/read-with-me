@@ -77,7 +77,7 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
     }
 
     return (
-        <div className="container mx-auto py-10 max-w-2xl">
+        <div className="container mx-auto py-10 px-4 sm:px-6 max-w-2xl">
             <h1 className="text-2xl font-bold mb-4">Generated Stories</h1>
 
             {loading && <p>Loading stories...</p>}

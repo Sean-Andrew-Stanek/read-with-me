@@ -83,7 +83,10 @@ const Signup = (): JSX.Element => {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" className="text-black cursor-pointer">
+                <Button
+                    variant="outline"
+                    className="text-black text-sm sm:text-md md:text-lg  p-1 sm:p-1.5 md:p-2 lg:p-3 cursor-pointer"
+                >
                     Sign Up
                 </Button>
             </DialogTrigger>
@@ -143,7 +146,8 @@ const Signup = (): JSX.Element => {
 
                     <Button
                         onClick={handleSignup}
-                        className="bg-red-400 hover:bg-red-600 text-white font-semibold py-2 rounded-2xl cursor-pointer"
+                        className="bg-red-400 sm:w-auto text-sm sm:text-base md:text-lg hover:bg-red-600 text-white font-semibold py-1 rounded-2xl cursor-pointer"
+                        // className="w-full sm:w-auto text-sm sm:text-base md:text-lg px-3 sm:px-4 md:px-6 !py-1 sm:!py-1.5 md:py-3 bg-red-400 hover:bg-red-600  text-white font-medium rounded-xl transition"
                     >
                         Sign Up
                     </Button>

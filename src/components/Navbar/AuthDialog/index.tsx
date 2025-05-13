@@ -90,7 +90,10 @@ const AuthDialog: React.FC = () => {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button className="text-black cursor-pointer" variant="outline">
+                <Button
+                    className="text-black text-sm sm:text-md md:text-lg p-1 sm:p-1.5 md:p-2 lg:p-3 cursor-pointer"
+                    variant="outline"
+                >
                     Sign In
                 </Button>
             </DialogTrigger>
