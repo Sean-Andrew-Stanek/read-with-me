@@ -5,7 +5,7 @@ import { SpeechToText } from '@/components/SpeechToText';
 const StoryResultPage = () => {
     const { storyContent } = useStoryStore();
     return (
-        <div className="container  mx-auto py-10 px-4 max-w-6xl">
+        <div className="container mx-auto py-10 px-4 max-w-6xl">
             <h1 className="text-2xl font-bold mb-4">Your Story Result</h1>
             <div className="flex flex-col lg:flex-row gap-4">
                 {storyContent && (

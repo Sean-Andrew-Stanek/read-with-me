@@ -29,24 +29,24 @@ const ReadStory = () => {
     if (!story) return <p>Story not found.</p>;
 
     return (
-        <div>
-            <div className="container mx-auto py-10 max-w-2xl">
-                <h1 className="text-3xl font bold mb-4">{story.title}</h1>
-                {/* <p className="mb-6 text-lg text-black">{story.content}</p> */}
-                <div className="text-lg">
+        <div className="container mx-auto py-10 px-4 max-w-6xl">
+            <div className="flex flex-col lg:flex-row gap-4">
+                <div className="flex-1 p-4 mt-6 border rounded bg-white shadow">
+                    <h1 className="text-3xl font bold mb-4">{story.title}</h1>
+
                     {story.content.split(/\n\n|\n/).map((para, idx) => (
                         <p key={idx} className="mb-4 leading-relaxed">
                             {para.trim()}
                         </p>
                     ))}
+                    <p className="text-sm text-blue-900">
+                        Created At: {new Date(story.createdAt).toLocaleString()}
+                    </p>
                 </div>
 
-                <p className="text-sm text-blue-900">
-                    Created At: {new Date(story.createdAt).toLocaleString()}
-                </p>
-            </div>
-            <div className="mt-6 flex-1">
-                <SpeechToText />
+                <div className="mt-6 flex-1">
+                    <SpeechToText />
+                </div>
             </div>
         </div>
     );

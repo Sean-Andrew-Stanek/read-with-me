@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react';
 import { Story } from '@/lib/types/story';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { formatSentencesWithSpacing } from '@/lib/utils/formatters';
 
 type CreateStoryPageProps = {
     parentId?: string;
