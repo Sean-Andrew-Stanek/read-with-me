@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Mic, MicOff, Loader2 } from 'lucide-react';
+import { formatSentencesWithSpacing } from '@/lib/utils/formatters';
+
 export function SpeechToText() {
     const [isListening, setIsListening] = useState<boolean>(false);
     const [transcript, setTranscript] = useState<string>('');
@@ -67,12 +69,14 @@ export function SpeechToText() {
                 }
             };
         }
+
         return () => {
             if (recognitionRef.current) {
                 recognitionRef.current.stop();
             }
         };
     }, []);
+    
     const startListening = () => {
         setError(null);
         setIsLoading(true);
@@ -97,10 +101,11 @@ export function SpeechToText() {
     const clearTranscript = () => {
         setTranscript('');
     };
+
     return (
         <Card className="w-full max-w-2xl mx-auto">
             <CardHeader>
-                <CardTitle className="flex items-center justify-between">
+                <CardTitle className="flex items-center justify-between text-xl">
                     Speech to Text
                     {isListening && (
                         <Badge
@@ -114,7 +119,9 @@ export function SpeechToText() {
             <CardContent>
                 <div className="min-h-[200px] p-4 bg-muted/30 rounded-md overflow-auto">
                     {transcript ? (
-                        <p className="text-sm">{transcript}</p>
+                        <div className='text-lg whitespace-pre-line'>
+                            {formatSentencesWithSpacing(transcript)}
+                        </div>
                     ) : (
                         <p className="text-sm text-muted-foreground italic">
                             {error ||
