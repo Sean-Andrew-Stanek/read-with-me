@@ -89,23 +89,6 @@ const getStories = async (
     return data.stories;
 };
 
-// const getStoryById = async (id: string):Promise<Story> => {
-//    const response = await fetch(`/api/stories/${id}`, {
-//     method: 'GET',
-//     headers: {
-//         'Content-Type': 'application/json'
-//     }
-//    });
-
-//    if (!response.ok) {
-//     const errorData = await response.json();
-//     throw new Error(errorData.error || 'Failed to fetch story');
-//    }
-
-//    const data = await response.json();
-//    return data.story as Story;
-//   };
-
   const getStoryById = async (
     id?: string,
   ): Promise<Story> => {
