@@ -5,6 +5,8 @@ import { useParams } from 'next/navigation';
 import { getStoryById } from '../../../services/apiServices';
 import { Story } from '../../../lib/types/story';
 import { SpeechToText } from '../../../components/SpeechToText';
+import { formatSentencesWithSpacing } from '../../../lib/utils/formatters';
+
 const ReadStory = () => {
     const { id } = useParams();
     const [story, setStory] = useState<Story | null>(null);
@@ -34,12 +36,10 @@ const ReadStory = () => {
                 <div className="flex-1 p-4 mt-6 border rounded bg-white shadow">
                     <h1 className="text-3xl font bold mb-4">{story.title}</h1>
 
-                    {story.content.split(/\n\n|\n/).map((para, idx) => (
-                        <p key={idx} className="mb-4 leading-relaxed">
-                            {para.trim()}
-                        </p>
-                    ))}
-                    <p className="text-sm text-blue-900">
+                    <div className='text-lg whitespace-pre-line'>
+                        {formatSentencesWithSpacing(`${story.content}`)}
+                    </div>
+                    <p className="text-sm pt-4 text-blue-900">
                         Created At: {new Date(story.createdAt).toLocaleString()}
                     </p>
                 </div>
