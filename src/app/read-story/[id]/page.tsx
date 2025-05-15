@@ -35,11 +35,10 @@ const ReadStory = () => {
             <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1 p-4 mt-6 border rounded bg-white shadow">
                     <h1 className="text-3xl font bold mb-4">{story.title}</h1>
-
                     <div className='text-lg whitespace-pre-line'>
                         {formatSentencesWithSpacing(`${story.content}`)}
                     </div>
-                    <p className="text-sm pt-4 text-blue-900">
+                    <p className="text-sm text-blue-900">
                         Created At: {new Date(story.createdAt).toLocaleString()}
                     </p>
                 </div>
