@@ -48,14 +48,22 @@ const ReadStory = () => {
 
     return (
         <div className="container mx-auto py-10 px-4 max-w-6xl">
-            <h1 className="text-5xl font bold mb-4">{story.title}</h1>
+            <a href={`/read-story/${story.id}`}>
+                <h1
+                    className="text-5xl font bold mb-4 hover:text-red-800 hover:font-bold hover:cursor-pointer"
+                    title="Restart the story"
+                >
+                    {story.title}
+                </h1>
+            </a>
+            {/* <h1 className="text-5xl font bold mb-4 hover:text-red-800 hover:font-bold hover:cursorp" title='Restart the story'>{story.title}</h1> */}
             <div className="flex flex-col lg:flex-row gap-4">
-                <div className="flex-1 p-4 mt-6 border rounded bg-white shadow relative"> {/* Make this container relative */}
-                    
-                    <div className='text-4xl whitespace-pre-line leading-loose line-height-2 mb-18'> {/* Increased bottom margin for button space */}
+                <div className="flex-1 p-4 mt-6 border rounded bg-white shadow relative">
+
+                    <div className='text-4xl whitespace-pre-line leading-loose line-height-2 mb-18'>
                         {paragraphs[currentParagraphIndex]}
                     </div>
-                    <div className="absolute bottom-4 right-4"> {/* Absolutely position the button/end message */}
+                    <div className="absolute bottom-4 right-4">
                         {!hasNextParagraph && paragraphs.length > 0 && (
                             <p className="text-gray-500 italic mb-6" style={{ marginRight: '16px', marginBottom: '16px' }}>
                                 End of Story
@@ -66,9 +74,9 @@ const ReadStory = () => {
                         )}
                     </div>
                     {!hasNextParagraph && paragraphs.length > 0 && (
-                        <p className="text-sm text-blue-900 mt-2 absolute bottom-4 left-4"> {/* Position "Created At" */}
-                        Created At: {new Date(story.createdAt).toLocaleString()}
-                    </p>
+                        <p className="text-sm text-blue-900 mt-2 absolute bottom-4 left-4">
+                            Created At: {new Date(story.createdAt).toLocaleString()}
+                        </p>
                     )}
                 </div>
 

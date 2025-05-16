@@ -65,7 +65,7 @@ export const POST = async (req: Request): Promise<Response> => {
 
         const story: Story = {
             id: new ObjectId().toString(),
-            title: prompt.slice(0, 20),
+            title: prompt.slice(0, 50),
             content: storyContent,
             prompt,
             createdAt: new Date().toISOString(),
