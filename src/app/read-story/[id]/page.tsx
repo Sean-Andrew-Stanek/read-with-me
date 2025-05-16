@@ -35,7 +35,11 @@ const ReadStory = () => {
         fetchStory();
     }, [id]);
 
-    if (loading) return <p>Loading story...</p>;
+    if (loading) return (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+    <img src="/loading.gif" alt="Loading story..." />
+  </div>
+);
     if (!story) return <p>Story not found.</p>;
 
     const handleNextParagraph = () => {
@@ -56,7 +60,6 @@ const ReadStory = () => {
                     {story.title}
                 </h1>
             </a>
-            {/* <h1 className="text-5xl font bold mb-4 hover:text-red-800 hover:font-bold hover:cursorp" title='Restart the story'>{story.title}</h1> */}
             <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1 p-4 mt-6 border rounded bg-white shadow relative">
 
