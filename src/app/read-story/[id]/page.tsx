@@ -36,10 +36,10 @@ const ReadStory = () => {
     }, [id]);
 
     if (loading) return (
-  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-    <img src="/loading.gif" alt="Loading story..." />
-  </div>
-);
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+            <img src="/loading.gif" alt="Loading story..." />
+        </div>
+    );
     if (!story) return <p>Story not found.</p>;
 
     const handleNextParagraph = () => {
@@ -66,7 +66,11 @@ const ReadStory = () => {
             <h1
                 className="text-5xl font bold mb-4"
             >
-                    {story.title}
+                {story.title
+                    .toLowerCase()
+                    .split(' ')
+                    .map(storyTitle => storyTitle.charAt(0).toUpperCase() + storyTitle.slice(1))
+                    .join(' ')}
             </h1>
             <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1 p-4 mt-6 border rounded bg-white shadow relative">
@@ -76,9 +80,9 @@ const ReadStory = () => {
                     </div>
                     <div className='absolute bottom-4 left-4 flex gap-2'>
                         {hasPreviousParagraph && (
-                            <Button 
+                            <Button
                                 className='bg-black text-white hover:bg-gray-300 hover:text-black'
-                                variant='outline' 
+                                variant='outline'
                                 onClick={handlePreviousParagraph}
                             >
                                 Previous Paragraph
@@ -102,7 +106,7 @@ const ReadStory = () => {
                         )}
                         {hasNextParagraph && (
                             <Button
-                                className="mt-6 hover:bg-gray-300 hover:text-black" 
+                                className="mt-6 hover:bg-gray-300 hover:text-black"
                                 onClick={handleNextParagraph}
                             >
                                 Next Paragraph

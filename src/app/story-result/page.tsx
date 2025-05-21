@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useStoryStore } from '@/lib/store/storyStore';
-import { SpeechToText } from '@/components/SpeechToText';
+// import { SpeechToText } from '@/components/SpeechToText';
 import { Button } from '@/components/ui/button';
 
 const StoryResultPage = () => {
