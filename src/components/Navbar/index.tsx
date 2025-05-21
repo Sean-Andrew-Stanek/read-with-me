@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
     const { id } = useParams();
     // console.log(`ID: ${id}`)
 
-    const staticPaths = ['/create-story', '/my-stories', '/story-result'];
+    const staticPaths = ['/create-story', '/my-stories', '/story-result', '/story-board'];
     const dynamicPath = id ? `/read-story/${id}` : null;
 
     const isSelectedPath = staticPaths.includes(pathname);
