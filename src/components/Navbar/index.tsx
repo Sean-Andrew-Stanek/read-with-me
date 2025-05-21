@@ -22,8 +22,13 @@ const Navbar: React.FC = () => {
     const staticPaths = ['/create-story', '/my-stories', '/story-result'];
     const dynamicPath = id ? `/read-story/${id}` : null;
 
-    const isSelectedPath =
-        staticPaths.includes(pathname) || pathname === dynamicPath;
+    const isSelectedPath = staticPaths.includes(pathname);
+    const isReadingPage = pathname === dynamicPath;
+    const backPath = isSelectedPath
+        ? '/home'
+        : isReadingPage
+        ? '/my-stories'
+        : null
 
     const { data: session, status } = useSession();
     if (status === 'loading') return null;
@@ -41,18 +46,16 @@ const Navbar: React.FC = () => {
                             <span className="text-white font-semibold not-odd:text-md md:text-base break-words whitespace-normal">
                                 {session?.user?.name}
                             </span>
-
-                            {isSelectedPath && (
-                                <Link href="/home">
+                            {backPath && (
+                                <Link href={backPath}>
                                     <Button
-                                        variant="outline"
-                                        className="text-black cursor-pointer"
+                                        variant='outline'
+                                        className='text-black cursor-pointer'
                                     >
-                                        Back
-                                    </Button>
+                                            Back
+                                        </Button>
                                 </Link>
                             )}
-
                             <Button
                                 onClick={() => {
                                     signOut({ callbackUrl: '/' });
