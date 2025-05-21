@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { getStoryById } from '../../../services/apiServices';
 import { Story } from '../../../lib/types/story';
-import { SpeechToText } from '../../../components/SpeechToText';
+// import { SpeechToText } from '../../../components/SpeechToText';
 import { Button } from '@/components/ui/button';
 
 const ReadStory = () => {
@@ -48,23 +48,51 @@ const ReadStory = () => {
         }
     };
 
+    const handlePreviousParagraph = () => {
+        if (currentParagraphIndex > 0) {
+            setCurrentParagraphIndex(currentParagraphIndex - 1);
+        }
+    };
+
+    const handleFirstParagraph = () => {
+        setCurrentParagraphIndex(0);
+    }
+
     const hasNextParagraph = currentParagraphIndex < paragraphs.length - 1;
+    const hasPreviousParagraph = currentParagraphIndex > 0;
 
     return (
         <div className="container mx-auto py-10 px-4 max-w-6xl">
-            <a href={`/read-story/${story.id}`}>
-                <h1
-                    className="text-5xl font bold mb-4 hover:text-red-800 hover:font-bold hover:cursor-pointer"
-                    title="Restart the story"
-                >
+            <h1
+                className="text-5xl font bold mb-4"
+            >
                     {story.title}
-                </h1>
-            </a>
+            </h1>
             <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1 p-4 mt-6 border rounded bg-white shadow relative">
 
                     <div className='text-4xl whitespace-pre-line leading-loose line-height-2 mb-18'>
                         {paragraphs[currentParagraphIndex]}
+                    </div>
+                    <div className='absolute bottom-4 left-4 flex gap-2'>
+                        {hasPreviousParagraph && (
+                            <Button 
+                                className='bg-black text-white hover:bg-gray-300 hover:text-black'
+                                variant='outline' 
+                                onClick={handlePreviousParagraph}
+                            >
+                                Previous Paragraph
+                            </Button>
+                        )}
+                        {currentParagraphIndex > 0 && (
+                            <Button
+                                className='bg-black text-white hover:bg-gray-300 hover:text-black'
+                                variant='outline'
+                                onClick={handleFirstParagraph}
+                            >
+                                Start Over
+                            </Button>
+                        )}
                     </div>
                     <div className="absolute bottom-4 right-4">
                         {!hasNextParagraph && paragraphs.length > 0 && (
@@ -73,14 +101,14 @@ const ReadStory = () => {
                             </p>
                         )}
                         {hasNextParagraph && (
-                            <Button className="mt-6 hover:bg-gray-300 hover:text-black" onClick={handleNextParagraph}>Next Paragraph</Button>
+                            <Button
+                                className="mt-6 hover:bg-gray-300 hover:text-black" 
+                                onClick={handleNextParagraph}
+                            >
+                                Next Paragraph
+                            </Button>
                         )}
                     </div>
-                    {!hasNextParagraph && paragraphs.length > 0 && (
-                        <p className="text-sm text-blue-900 mt-2 absolute bottom-4 left-4">
-                            Created At: {new Date(story.createdAt).toLocaleString()}
-                        </p>
-                    )}
                 </div>
 
                 {/* <div className="mt-6 flex-1">
