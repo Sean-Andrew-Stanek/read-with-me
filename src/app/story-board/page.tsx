@@ -14,7 +14,6 @@ type CreateStoryPageProps = {
 
 const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
     const { data: session, status } = useSession();
-    console.log('Session Data:', session);
     const router = useRouter();
 
     const [stories, setStories] = useState<Story[]>([]);
@@ -41,12 +40,10 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
 
             try {
                 setLoading(true);
-                setError(null); // Reset error state
+                setError(null);
 
-                // Send the appropriate ID to the backend
                 const parentId = isParent ? uuid : undefined;
                 const childId = !isParent ? uuid : undefined;
-                // console.log('Fetching stories with:', { parentId, childId });
 
                 const fetchedStories = await getStories(parentId, childId);
                 setStories(fetchedStories);
@@ -63,7 +60,6 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
     }, [session, status]);
 
     useEffect(() => {
-        // Clean up any leftover overflow-hidden class to be able to scroll the page for child user
         document.body.classList.remove('overflow-hidden');
     }, []);
 
@@ -77,43 +73,54 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
         );
     }
 
-    return (
-        <div className="container mx-auto py-10 px-4 sm:px-6 max-w-2xl">
-            <h1 className="text-2xl font-bold mb-4">Generated Stories</h1>
+    const truncateContent = (content: string, wordLimit: number) => {
+        const words = content.split(' ');
+        if (words.length > wordLimit) {
+            return words.slice(0, wordLimit).join(' ') + '...';
+        }
+        return content;
+    };
 
-            {loading && <p>Loading stories...</p>}
-            {error && <p className="text-red-500">{error}</p>}
+    return (
+        <div className="container mx-auto py-10 px-4 sm:px-6 max-w-5xl">
+            <h1 className="text-2xl font-bold mb-8 text-center">Generated Stories</h1>
+
+            {loading && <p className="text-center">Loading stories...</p>}
+            {error && <p className="text-red-500 text-center">{error}</p>}
             {stories.length === 0 && !loading && !error && (
-                <p>No stories found.</p>
+                <p className="text-center">No stories found.</p>
             )}
 
-            {stories.map(story => (
-                <div key={story.id} className="mb-5 p-4 border rounded">
-                    <h2 className="text-xl font-semibold mb-2">
-                        {convertToTitleCase(`${story.title}`)}
-                    </h2>
-                    <div className='text-lg whitespace-pre-line'>
-                            {formatSentencesWithSpacing(`${story.content}`)}
-                     </div>
-        
-                    <p className="text-sm pt-4 text-gray-500">
-                        Created At: {new Date(story.createdAt).toLocaleString()}
-                    </p>
-                    <div className="col flex justify-end items-center">
-                        <Button
-                            className="mt-6 mr-6 hover:bg-gray-300 hover:text-black"
-                            onClick={() =>
-                                router.push(`/read-story/${story.id}`)
-                            }
-                        >
-                            Read
-                        </Button>
-                        <Button className="mt-6 hover:bg-gray-300 hover:text-black">
-                            Delete
-                        </Button>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {stories.map(story => (
+                    <div key={story.id} className="mb-5 p-6 border rounded-lg shadow-md flex flex-col justify-between">
+                        <div>
+                            <h2 className="text-xl font-semibold mb-2 line-clamp-2">
+                                {convertToTitleCase(`${story.title}`)}
+                            </h2>
+                            <p className="text-sm text-gray-600 mb-4">
+                                {new Date(story.createdAt).toLocaleDateString()}
+                            </p>
+                            <div className='text-base text-gray-800 mb-4'>
+                                {formatSentencesWithSpacing(truncateContent(story.content, 50))}
+                            </div>
+                        </div>
+                        <div className="flex justify-end items-center mt-auto">
+                            <Button
+                                className="mr-4 hover:bg-gray-300 hover:text-black"
+                                onClick={() =>
+                                    router.push(`/read-story/${story.id}`)
+                                }
+                            >
+                                Read
+                            </Button>
+                            <Button className="hover:bg-red-700 hover:text-white bg-red-500">
+                                Delete
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     );
 };

@@ -57,7 +57,7 @@ const Sidebar: FC = () => {
                 </div>
                 {/* ^ top-16 to be placed under a navbar that is 64px tall */}
                 <nav className="space-y-4">
-                    <DashboardSidebarLink href="#" title="Profile" />
+                    <DashboardSidebarLink href="/story-board" title="Story Board" />
                     <DashboardSidebarLink
                         href="/create-story"
                         title="Create Story"

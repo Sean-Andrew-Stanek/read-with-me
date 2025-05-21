@@ -12,3 +12,11 @@ export function formatSentencesWithSpacing(text: string): string {
     });
     return formatted.trim();
 }
+
+export function convertToTitleCase(text: string): string {
+    return text
+        .toLowerCase()
+        .split(' ')
+        .map(storyTitle => storyTitle.charAt(0).toUpperCase() + storyTitle.slice(1))
+        .join(' ');
+}

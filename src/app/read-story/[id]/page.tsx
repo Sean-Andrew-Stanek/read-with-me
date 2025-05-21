@@ -6,6 +6,7 @@ import { getStoryById } from '../../../services/apiServices';
 import { Story } from '../../../lib/types/story';
 // import { SpeechToText } from '../../../components/SpeechToText';
 import { Button } from '@/components/ui/button';
+import { convertToTitleCase } from '@/lib/utils/formatters';
 
 const ReadStory = () => {
     const { id } = useParams();
@@ -66,11 +67,7 @@ const ReadStory = () => {
             <h1
                 className="text-5xl font bold mb-4"
             >
-                {story.title
-                    .toLowerCase()
-                    .split(' ')
-                    .map(storyTitle => storyTitle.charAt(0).toUpperCase() + storyTitle.slice(1))
-                    .join(' ')}
+                {convertToTitleCase(`${story.title}`)}
             </h1>
             <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1 p-4 mt-6 border rounded bg-white shadow relative">
