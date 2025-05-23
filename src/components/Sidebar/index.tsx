@@ -63,8 +63,8 @@ const Sidebar: FC = () => {
                         title="Create Story"
                     />
                     <DashboardSidebarLink
-                        href="/my-stories"
-                        title="My Stories"
+                        href="#"
+                        title="Account"
                     />
                 </nav>
             </aside>

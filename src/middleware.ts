@@ -28,5 +28,5 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-    matcher: ['/home', '/create-story', '/my-stories', '/story-result', '/read-story/${story.id}']
+    matcher: ['/home', '/create-story', '/story-board', '/story-result', '/read-story/${story.id}']
 };

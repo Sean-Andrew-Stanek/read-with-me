@@ -12,7 +12,7 @@ type CreateStoryPageProps = {
     childId?: string;
 };
 
-const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
+const StoryBoard: React.FC<CreateStoryPageProps> = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
 
@@ -125,4 +125,4 @@ const MyStoriesPage: React.FC<CreateStoryPageProps> = () => {
     );
 };
 
-export default MyStoriesPage;
+export default StoryBoard;

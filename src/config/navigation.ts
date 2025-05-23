@@ -7,6 +7,6 @@ export const navLink: Record<string, string> = {
 export const protectedRoutes: string[] = [
     '/home',
     '/create-story',
-    '/my-stories',
+    '/story-board',
     '/story-result'
 ];

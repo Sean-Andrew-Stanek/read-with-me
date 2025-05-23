@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
     const { id } = useParams();
     // console.log(`ID: ${id}`)
 
-    const staticPaths = ['/create-story', '/my-stories', '/story-result', '/story-board'];
+    const staticPaths = ['/create-story', '/story-result', '/story-board'];
     const dynamicPath = id ? `/read-story/${id}` : null;
 
     const isSelectedPath = staticPaths.includes(pathname);
@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
     const backPath = isSelectedPath
         ? '/home'
         : isReadingPage
-        ? '/my-stories'
+        ? '/story-board'
         : null
 
     const { data: session, status } = useSession();

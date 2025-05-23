@@ -101,7 +101,7 @@ const Dashboard: FC = () => {
                     </CardContent>
                     <CardFooter>
                         <Button asChild variant="outline" className="w-full">
-                            <Link href="/my-stories">My Stories</Link>
+                            <Link href="/story-board">My Stories</Link>
                         </Button>
                     </CardFooter>
                 </Card>
