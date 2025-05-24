@@ -39,14 +39,14 @@ export const POST = async (req: Request): Promise<Response> => {
             .findOne({ uuid: session.user.uuid });
 
         const grade = userData?.grade ?? '6'; // fallback to 6th grade only if null or undefined
-        const gradeLabel = `for a ${grade} grade reading level`;
+        const gradeLevel = `${grade} grade reading level`;
 
         const response = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
             messages: [
                 {
                     role: 'system',
-                    content: `You are a children's storyteller. Create a short, engaging story for ${gradeLabel}`
+                    content: `You are a children's storyteller. Create a short, engaging story for a ${gradeLevel}`
                 },
                 { role: 'user', content: prompt }
             ],
@@ -57,7 +57,7 @@ export const POST = async (req: Request): Promise<Response> => {
         const storyContent: string = response.choices[0].message?.content || '';
 
         console.log('Backend received grade:', grade);
-        console.log('System message:', gradeLabel);
+        console.log('System message:', gradeLevel);
 
         if (!storyContent) {
             throw new Error('Failed to generate story');
