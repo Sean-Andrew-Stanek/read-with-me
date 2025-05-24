@@ -4,7 +4,6 @@ import { useStoryStore } from '@/lib/store/storyStore';
 import SpeechToText from '@/components/SpeechToText';
 import { Button } from '@/components/ui/button';
 import { JSX } from 'react';
-import { diffWords } from 'diff';
 
 const StoryResultPage = () => {
     const { storyContent } = useStoryStore();
@@ -59,21 +58,25 @@ const StoryResultPage = () => {
     }
 
     const highlightDifferences = (spoken: string) => {
-        const originalRaw = paragraphs[currentParagraphIndex];
-        const originalWords = originalRaw.trim().split(/\s+/);
+        const originalWords = paragraphs[currentParagraphIndex]
+            .trim()
+            .split(/\s+/)
+            .map(w => w.replace(/[.,!?]/g, '').toLowerCase());
+
         const spokenWords = spoken
             .trim()
             .split(/\s+/)
-            .map(w => w.toLowerCase());
+            .map(w => w.replace(/[.,!?]/g, '').toLowerCase());
 
-        const matches = getLCSIndices(
-            originalWords.map(w => w.toLowerCase().replace(/[.,!?]/g, '')),
-            spokenWords.map(w => w.toLowerCase().replace(/[.,!?]/g, ''))
-        );
+        const matches = getLCSIndices(originalWords, spokenWords);
 
-        const result = originalWords.map((word, idx) =>
-            matches.has(idx) ? (
-                <span key={idx}>{word + ' '}</span>
+        const result = originalWords.map((word, idx) => {
+            const original = paragraphs[currentParagraphIndex]
+                .trim()
+                .split(/\s+/)[idx]; // preserve original case and punctuation
+
+            return matches.has(idx) ? (
+                <span key={idx}>{original + ' '}</span>
             ) : (
                 <span
                     key={idx}
@@ -83,10 +86,10 @@ const StoryResultPage = () => {
                         fontWeight: 'bold'
                     }}
                 >
-                    {word + ' '}
+                    {original + ' '}
                 </span>
-            )
-        );
+            );
+        });
 
         setHighlightedParagraph(result);
     };
@@ -111,7 +114,6 @@ const StoryResultPage = () => {
                             Generated Story:
                         </h2>
 
-                        {/* ✅ This is your single paragraph */}
                         <div className="text-lg leading-loose mb-6">
                             {highlightedParagraph ||
                                 paragraphs[currentParagraphIndex]}

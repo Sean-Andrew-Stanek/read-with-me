@@ -15,6 +15,7 @@ const SpeechToText = ({
     recording
 }: Props) => {
     const recognitionRef = useRef<SpeechRecognition | null>(null);
+    const fullTranscriptRef = useRef(''); // ✅ persist across runs
 
     const SpeechRecognition =
         typeof window !== 'undefined' &&
@@ -32,19 +33,27 @@ const SpeechToText = ({
         recognition.continuous = true;
         recognition.interimResults = false;
 
-        recognition.onresult = (event: SpeechRecognitionEvent) => {
-            let transcript = '';
-            for (let i = event.resultIndex; i < event.results.length; i++) {
-                transcript += event.results[i][0].transcript + ' ';
-            }
+        fullTranscriptRef.current = ''; // reset on new start
 
-            setTimeout(() => {
-                onResult(transcript.trim());
-            }, 500); // slight buffer to let it complete
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                fullTranscriptRef.current +=
+                    event.results[i][0].transcript + ' ';
+            }
         };
 
-        recognition.onerror = () => setRecording(false);
-        recognition.onend = () => setRecording(false);
+        recognition.onend = () => {
+            setRecording(false);
+            const finalTranscript = fullTranscriptRef.current.trim();
+            if (finalTranscript) {
+                onResult(finalTranscript);
+            }
+            fullTranscriptRef.current = '';
+        };
+
+        recognition.onerror = () => {
+            setRecording(false);
+        };
 
         recognitionRef.current = recognition;
         recognition.start();
