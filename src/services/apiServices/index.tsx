@@ -3,7 +3,7 @@ import {
     putUserGradeURI,
     getUserDataUri,
     getStoriesUri,
-    getStoryByIdUri,
+    getStoryByIdUri
 } from '@/config/apiUri';
 import { Story } from '@/lib/types/story';
 import { ChildUser, ParentUser } from '@/lib/types/user';
@@ -89,19 +89,17 @@ const getStories = async (
     return data.stories;
 };
 
-  const getStoryById = async (
-    id?: string,
-  ): Promise<Story> => {
+const getStoryById = async (id?: string): Promise<Story> => {
     const params = new URLSearchParams();
-    
+
     if (!id) {
         return Promise.reject('id missing.');
-    } 
+    }
 
     if (id) params.append('id', id);
 
     const response = await fetch(getStoryByIdUri(id), {
-        method: 'GET',
+        method: 'GET'
     });
 
     if (!response.ok) {
@@ -114,6 +112,6 @@ const getStories = async (
         throw new Error('Invalid response format or no story found.');
     }
     return data;
-  }
+};
 
-export { postNewStory, getUserData, getStories, putUserGrade, getStoryById};
+export { postNewStory, getUserData, getStories, putUserGrade, getStoryById };

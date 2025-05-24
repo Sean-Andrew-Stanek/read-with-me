@@ -1,170 +1,77 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import { Button } from  '@/components/ui/button'
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Mic, MicOff, Loader2 } from 'lucide-react';
-import { formatSentencesWithSpacing } from '@/lib/utils/formatters';
+import React, { useRef } from 'react';
 
-export function SpeechToText() {
-    const [isListening, setIsListening] = useState<boolean>(false);
-    const [transcript, setTranscript] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+type Props = {
+    paragraph: string;
+    setRecording: (value: boolean) => void;
+    onResult: (spokenText: string) => void;
+    recording: boolean;
+};
+
+const SpeechToText = ({
+    paragraph,
+    setRecording,
+    onResult,
+    recording
+}: Props) => {
     const recognitionRef = useRef<SpeechRecognition | null>(null);
-    useEffect(() => {
-        if (
-            !('webkitSpeechRecognition' in window) &&
-            !('SpeechRecognition' in window)
-        ) {
-            setError(
-                "Your browser doesn't support speech recognition. Try Chrome or Edge."
-            );
+
+    const SpeechRecognition =
+        typeof window !== 'undefined' &&
+        ((window as any).SpeechRecognition ||
+            (window as any).webkitSpeechRecognition);
+
+    const startRecognition = () => {
+        if (!SpeechRecognition) {
+            alert('Speech Recognition not supported in this browser.');
             return;
         }
-        // Initialize speech recognition
-        const SpeechRecognitionAPI =
-            window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognitionAPI) {
-            setError('Speech Recognition API not supported in this browser.');
-            return;
-        }
-        recognitionRef.current = new SpeechRecognitionAPI();
-        if (recognitionRef.current) {
-            recognitionRef.current.continuous = true;
-            recognitionRef.current.interimResults = true;
-            recognitionRef.current.lang = 'en-US';
 
-            recognitionRef.current.onstart = () => {
-                setIsLoading(false);
-                setIsListening(true);
-            };
-            recognitionRef.current.onend = () => {
-                setIsListening(false);
-            };
-            recognitionRef.current.onerror = event => {
-                setError(`Speech recognition error: ${(event as any).error}`);
-                setIsListening(false);
-                setIsLoading(false);
-            };
-            recognitionRef.current.onresult = (
-                event: SpeechRecognitionEvent
-            ) => {
-                let finalTranscript = '';
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const result = event.results[i];
-                    if (result.isFinal) {
-                        finalTranscript += result[0].transcript;
-                    }
-                }
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.continuous = true;
+        recognition.interimResults = false;
 
-                if (finalTranscript) {
-                    setTranscript(prev => prev + ' ' + finalTranscript);
-                }
-            };
-        }
-
-        return () => {
-            if (recognitionRef.current) {
-                recognitionRef.current.stop();
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                transcript += event.results[i][0].transcript + ' ';
             }
+
+            setTimeout(() => {
+                onResult(transcript.trim());
+            }, 500); // slight buffer to let it complete
         };
-    }, []);
-    
-    const startListening = () => {
-        setError(null);
-        setIsLoading(true);
-        if (recognitionRef.current) {
-            try {
-                recognitionRef.current.start();
-            } catch (error) {
-                // Handle the case where recognition is already started
-                recognitionRef.current.stop();
 
-                setTimeout(() => {
-                    recognitionRef.current?.start();
-                }, 100);
-            }
-        }
+        recognition.onerror = () => setRecording(false);
+        recognition.onend = () => setRecording(false);
+
+        recognitionRef.current = recognition;
+        recognition.start();
+        setRecording(true);
     };
-    const stopListening = () => {
-        if (recognitionRef.current) {
-            recognitionRef.current.stop();
-        }
+
+    const stopRecognition = () => {
+        recognitionRef.current?.stop();
+        setRecording(false);
     };
-    const clearTranscript = () => {
-        setTranscript('');
+
+    const handleToggle = () => {
+        if (recording) {
+            stopRecognition();
+        } else {
+            startRecognition();
+        }
     };
 
     return (
-        <Card className="w-full max-w-2xl mx-auto">
-            <CardHeader>
-                <CardTitle className="flex items-center justify-between text-xl">
-                    Speech to Text
-                    {isListening && (
-                        <Badge
-                            variant="outline"
-                            className="bg-green-50 text-green-700 border-green-200 animate-pulse">
-                            Listening...
-                        </Badge>
-                    )}
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="min-h-[200px] p-4 bg-muted/30 rounded-md overflow-auto">
-                    {transcript ? (
-                        <div className='text-lg whitespace-pre-line'>
-                            {formatSentencesWithSpacing(transcript)}
-                        </div>
-                    ) : (
-                        <p className="text-sm text-muted-foreground italic">
-                            {error ||
-                                'Start speaking after clicking the microphone button...'}
-                        </p>
-                    )}
-                </div>
-            </CardContent>
-            <CardFooter className="flex justify-between">
-                <Button
-                    variant="outline"
-                    className={`${!isLoading && !error ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                    onClick={clearTranscript}
-                    disabled={!transcript || isLoading}
-                >
-                    Clear
-                </Button>
-                <div className="space-x-2">
-                    {isListening ? (
-                        <Button
-                            variant="destructive"
-                            onClick={stopListening}
-                            className={`gap-2 ${!isLoading && !error ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                        >
-                            <MicOff className="h-4 w-4" />
-                            Stop
-                        </Button>
-                    ) : (
-                        <Button
-                            onClick={startListening}
-                            className={`gap-2 ${!isLoading && !error ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                            disabled={isLoading || !!error}
-                        >
-                            {isLoading ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                                <Mic className="h-4 w-4" />
-                            )}
-                            Start Recording
-                        </Button>
-                    )}
-                </div>
-            </CardFooter>
-        </Card>
+        <button
+            onClick={handleToggle}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
+        >
+            {recording ? 'Stop' : 'Record'}
+        </button>
     );
-}
+};
+
+export default SpeechToText;
