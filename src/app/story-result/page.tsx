@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useStoryStore } from '@/lib/store/storyStore';
-// import { SpeechToText } from '@/components/SpeechToText';
+import { SpeechToText } from '@/components/SpeechToText';
 import { Button } from '@/components/ui/button';
 
 const StoryResultPage = () => {
@@ -96,9 +96,10 @@ const StoryResultPage = () => {
                         </div>
                     </div>
                 )}
-                {/* <div className="mt-6 flex-1">
-                    <SpeechToText />
-                </div> */}
+                <SpeechToText
+                    expectedText={paragraphs[currentParagraphIndex]}
+                    onAccurateRead={handleNextParagraph}
+                />
             </div>
         </div>
     );
