@@ -80,7 +80,7 @@ const ReadStory = () => {
                 {convertToTitleCase(`${story.title}`)}
             </h1>
             <div className="flex flex-col lg:flex-row gap-4">
-                <div className="flex-1 p-4 mt-6 border rounded bg-white max-w-2xl shadow relative">
+                <div className="flex-1 p-4 mt-6 border rounded bg-white max-w-2xl shadow relative  min-h-[200px] sm:min-h-[250px] md:min-h-[300px]">
                     <div className="text-lg whitespace-pre-line leading-loose line-height-2 mb-18">
                         {paragraphs[currentParagraphIndex]}
                     </div>
