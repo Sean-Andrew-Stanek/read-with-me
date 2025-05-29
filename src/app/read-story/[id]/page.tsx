@@ -96,7 +96,7 @@ const ReadStory = () => {
                         )}
                         {currentParagraphIndex > 0 && (
                             <Button
-                                className="bg-black text-white hover:bg-gray-300 hover:text-black"
+                                className="bg-black text-white hover:bg-gray-300 hover:text-black text-sm px-3 py-1 sm:text-base sm:px-4 sm:py-2"
                                 variant="outline"
                                 onClick={handleFirstParagraph}
                             >
@@ -118,7 +118,7 @@ const ReadStory = () => {
                         )}
                         {hasNextParagraph && (
                             <Button
-                                className="mt-6 hover:bg-gray-300 hover:text-black"
+                                className="mt-6 hover:bg-gray-300 hover:text-black text-sm px-3 py-1 sm:text-base sm:px-4 sm:py-2"
                                 onClick={handleNextParagraph}
                             >
                                 Next Paragraph
