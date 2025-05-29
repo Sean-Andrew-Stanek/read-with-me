@@ -206,12 +206,19 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
         }
     };
 
-    const clearTranscript = () => {
+    // const clearTranscript = () => {
+    //     setTranscript('');
+    //     transcriptRef.current = '';
+    //     setScore(null);
+    //     setMessage('');
+    // };
+
+    useEffect(() => {
         setTranscript('');
         transcriptRef.current = '';
         setScore(null);
         setMessage('');
-    };
+    }, [expectedText]);
 
     return (
         <Card className="w-full max-w-2xl mx-auto">
@@ -252,13 +259,13 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
             )}
 
             <CardFooter className="flex justify-between">
-                <Button
+                {/* <Button
                     variant="outline"
-                    onClick={clearTranscript}
+                    // onClick={clearTranscript}
                     disabled={!transcript || isLoading}
                 >
                     Clear
-                </Button>
+                </Button> */}
                 <div className="space-x-2">
                     {isListening ? (
                         <Button

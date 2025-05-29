@@ -75,19 +75,19 @@ const ReadStory = () => {
     const hasPreviousParagraph = currentParagraphIndex > 0;
 
     return (
-        <div className="container mx-auto py-10 px-4 max-w-6xl">
-            <h1 className="text-5xl font bold mb-4">
+        <div className="container mx-auto py-10 px-4 max-w-6xl flex flex-col gap-4 items-center jestifyContent-center">
+            <h1 className="text-3xl sm:text-3xl md:text-4xl font-bold mb-1">
                 {convertToTitleCase(`${story.title}`)}
             </h1>
             <div className="flex flex-col lg:flex-row gap-4">
-                <div className="flex-1 p-4 mt-6 border rounded bg-white shadow relative">
-                    <div className="text-4xl whitespace-pre-line leading-loose line-height-2 mb-18">
+                <div className="flex-1 p-4 mt-6 border rounded bg-white max-w-2xl shadow relative">
+                    <div className="text-lg whitespace-pre-line leading-loose line-height-2 mb-18">
                         {paragraphs[currentParagraphIndex]}
                     </div>
                     <div className="absolute bottom-4 left-4 flex gap-2">
                         {hasPreviousParagraph && (
                             <Button
-                                className="bg-black text-white hover:bg-gray-300 hover:text-black"
+                                className="bg-black text-white hover:bg-gray-300 hover:text-black text-sm px-3 py-1 sm:text-base sm:px-4 sm:py-2"
                                 variant="outline"
                                 onClick={handlePreviousParagraph}
                             >
