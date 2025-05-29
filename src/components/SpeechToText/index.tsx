@@ -61,7 +61,7 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
         const newScore = Math.round(similarity * 100);
         console.log('score:', newScore);
 
-        setScore(newScore); // ✅ Should now re-render
+        setScore(newScore);
         setMessage(`Your accuracy score is: ${newScore}%`); // force re-render
 
         if (similarity > 0.9) {
