@@ -32,25 +32,6 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
     const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
     const shouldStopRef = useRef(false);
 
-    // const evaluateTranscript = () => {
-    //     if (!transcriptRef.current || !expectedText) return;
-
-    //     const similarity = stringSimilarity.compareTwoStrings(
-    //         transcriptRef.current.toLowerCase(),
-    //         expectedText.toLowerCase()
-    //     );
-    //     const score = Math.round(similarity * 100);
-    //     setScore(score);
-    //     console.log('score:', score);
-
-    //     if (similarity > 0.9) {
-    //         setMessage('Great! You read it accurately.');
-    //         onAccurateRead();
-    //     } else {
-    //         setMessage('Not quite there. Try again or click Start to retry.');
-    //     }
-    // };
-
     const evaluateTranscript = useCallback(() => {
         if (!transcriptRef.current || !expectedText) return;
 
@@ -64,9 +45,17 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
         setScore(newScore);
         setMessage(`Your accuracy score is: ${newScore}%`); // force re-render
 
+        // if (similarity > 0.9) {
+        //     setMessage('Great! You read it accurately.');
+        //     onAccurateRead();
+        // } else {
+        //     setMessage('Not quite there. Try again or click Start to retry.');
+        // }
         if (similarity > 0.9) {
             setMessage('Great! You read it accurately.');
-            onAccurateRead();
+            setTimeout(() => {
+                onAccurateRead(); // Go to next paragraph after short delay
+            }, 3000); // 3 seconds
         } else {
             setMessage('Not quite there. Try again or click Start to retry.');
         }
@@ -235,20 +224,7 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
                     )}
                 </CardTitle>
             </CardHeader>
-            {/* <CardContent>
-                <div className="min-h-[200px] p-4 bg-muted/30 rounded-md overflow-auto">
-                    {transcript ? (
-                        <div className="text-lg whitespace-pre-line">
-                            {formatSentencesWithSpacing(transcript)}
-                        </div>
-                    ) : (
-                        <p className="text-sm text-muted-foreground italic">
-                            {error ||
-                                'Start speaking after clicking the microphone button...'}
-                        </p>
-                    )}
-                </div>
-            </CardContent> */}
+
             {score !== null && (
                 <div className="mt-4 ml-6">
                     <p className="text-lg font-semibold">
@@ -257,15 +233,7 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
                     <p className="text-green-600">{message}</p>
                 </div>
             )}
-
-            <CardFooter className="flex justify-between">
-                {/* <Button
-                    variant="outline"
-                    // onClick={clearTranscript}
-                    disabled={!transcript || isLoading}
-                >
-                    Clear
-                </Button> */}
+            <CardFooter className="flex justify-end">
                 <div className="space-x-2">
                     {isListening ? (
                         <Button
