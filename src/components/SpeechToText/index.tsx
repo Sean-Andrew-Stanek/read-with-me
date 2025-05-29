@@ -279,7 +279,7 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
                     ) : (
                         <Button
                             onClick={startListening}
-                            className="gap-2"
+                            className="gap-2 cursor-pointer"
                             disabled={isLoading || !!error}
                         >
                             {isLoading ? (

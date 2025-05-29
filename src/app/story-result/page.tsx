@@ -96,10 +96,12 @@ const StoryResultPage = () => {
                         </div>
                     </div>
                 )}
-                <SpeechToText
-                    expectedText={paragraphs[currentParagraphIndex]}
-                    onAccurateRead={handleNextParagraph}
-                />
+                {paragraphs[currentParagraphIndex] && (
+                    <SpeechToText
+                        expectedText={paragraphs[currentParagraphIndex]}
+                        onAccurateRead={handleNextParagraph}
+                    />
+                )}
             </div>
         </div>
     );
