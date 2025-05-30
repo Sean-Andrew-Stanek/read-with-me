@@ -11,7 +11,7 @@ const Home: React.FC = async () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-900">
+        <div className="flex flex-col items-center justify-center min-h-screen text-gray-900">
             <h1 className="text-lg md:text-5xl font-bold mt-10">
                 {strings.welcome}
             </h1>

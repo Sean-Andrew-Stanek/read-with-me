@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
 
     return (
         <>
-            <nav className="flex bg-gradient-to-r from-blue-100 to-red-50 justify-between items-center px-6 py-4 rounded-t-3xl shadow-md">
+            <nav className="flex bg-transparent justify-between items-center px-6 py-4 rounded-t-3xl">
 
                 <Logo />
 

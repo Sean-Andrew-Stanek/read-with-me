@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <html lang="en">
-            <body className={literata.className}>
+            <body className={`${literata.className} bg-gradient-to-b from-blue-100 to-red-100`}>
                 <SessionProvider>
                     <Navbar />
                     {children}

@@ -32,7 +32,7 @@ const Sidebar = () => {
         setShowDialog(false);
     };
     return (
-        <div className="w-70 h-screen bg-gradient-to-b from-blue-100 to-red-100 p-6 flex flex-col items-center shadow-lg">
+        <div className="w-70 h-screen bg-transparent p-6 flex flex-col items-center">
             <div className="flex flex-col items-center mb-10">
                 <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white p-1 mt-0">
                     <Image
