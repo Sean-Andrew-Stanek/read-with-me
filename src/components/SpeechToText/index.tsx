@@ -31,35 +31,78 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
     const transcriptRef = useRef('');
     const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
     const shouldStopRef = useRef(false);
+    const latestExpectedRef = useRef(expectedText);
 
-    const evaluateTranscript = useCallback(() => {
-        if (!transcriptRef.current || !expectedText) return;
+    useEffect(() => {
+        latestExpectedRef.current = expectedText;
+    }, [expectedText]);
+
+    // const evaluateTranscript = useCallback(() => {
+    // To prevent re-creating evaluateTranscript() every time the component re-renders
+    // — especially when used inside setTimeout() or event handlers.
+    //     if (!transcriptRef.current || !expectedText) return;
+
+    //     if (expectedText !== latestExpectedRef.current) {
+    //         console.warn('Skipping scoring: expectedText changed too recently');
+    //         return;
+    //     }
+
+    //     const similarity = stringSimilarity.compareTwoStrings(
+    //         transcriptRef.current.toLowerCase(),
+    //         expectedText.toLowerCase()
+    //     );
+    //     console.log('Similarity:', similarity);
+
+    //     console.log('Evaluating:', {
+    //         expected: expectedText,
+    //         actual: transcriptRef.current
+    //     });
+
+    //     const newScore = Math.round(similarity * 100);
+    //     console.log('score:', newScore);
+
+    //     setScore(newScore);
+    //     setMessage(`Your accuracy score is: ${newScore}%`); // force re-render
+
+    //     if (similarity > 0.9) {
+    //         setMessage(
+    //             'Great! You read it accurately. You will be redirected to next paragraph shortly.'
+    //         );
+    //         setTimeout(() => {
+    //             onAccurateRead(); // Go to next paragraph after short delay
+    //         }, 3000);
+    //     } else {
+    //         setMessage('Not quite there. Try again or click Start to retry.');
+    //     }
+    // }, [expectedText, onAccurateRead]);
+    const evaluateTranscript = () => {
+        const currentExpected = latestExpectedRef.current;
+        const currentTranscript = transcriptRef.current;
+
+        if (!currentTranscript || !currentExpected) return;
 
         const similarity = stringSimilarity.compareTwoStrings(
-            transcriptRef.current.toLowerCase(),
-            expectedText.toLowerCase()
+            currentTranscript.toLowerCase(),
+            currentExpected.toLowerCase()
         );
+
+        console.log('Evaluating:', {
+            expected: currentExpected,
+            actual: currentTranscript
+        });
         const newScore = Math.round(similarity * 100);
         console.log('score:', newScore);
 
         setScore(newScore);
-        setMessage(`Your accuracy score is: ${newScore}%`); // force re-render
-
-        // if (similarity > 0.9) {
-        //     setMessage('Great! You read it accurately.');
-        //     onAccurateRead();
-        // } else {
-        //     setMessage('Not quite there. Try again or click Start to retry.');
-        // }
         if (similarity > 0.9) {
             setMessage('Great! You read it accurately.');
             setTimeout(() => {
-                onAccurateRead(); // Go to next paragraph after short delay
-            }, 3000); // 3 seconds
+                onAccurateRead();
+            }, 3000);
         } else {
             setMessage('Not quite there. Try again or click Start to retry.');
         }
-    }, [expectedText, onAccurateRead]);
+    };
 
     useEffect(() => {
         const SpeechRecognitionAPI =
@@ -81,24 +124,6 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
             setIsLoading(false);
             setIsListening(true);
         };
-
-        // recognitionRef.current.onend = () => {
-        //     setIsListening(false);
-
-        //     setTimeout(() => {
-        //         if (transcriptRef.current) {
-        //             evaluateTranscript();
-        //         }
-
-        //         if (!shouldStopRef.current) {
-        //             try {
-        //                 recognitionRef.current?.start();
-        //             } catch (error) {
-        //                 console.warn('Failed to restart:', error);
-        //             }
-        //         }
-        //     }, 300); // Let onresult finish before evaluating
-        // };
 
         recognitionRef.current.onend = () => {
             setIsListening(false);
@@ -138,7 +163,9 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
             if (finalTranscript) {
                 console.log('Final transcript:', finalTranscript);
 
-                const full = (transcript + ' ' + finalTranscript).trim();
+                // const full = (transcript + ' ' + finalTranscript).trim();
+                const full = finalTranscript.trim();
+
                 setTranscript(full);
                 transcriptRef.current = full;
 
@@ -166,17 +193,33 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
         };
     }, []);
 
+    // useEffect(() => {
+    //     setTranscript('');
+    //     transcriptRef.current = '';
+    //     setScore(null);
+    //     setMessage('');
+    // }, [expectedText]);
+
     useEffect(() => {
         setTranscript('');
         transcriptRef.current = '';
         setScore(null);
         setMessage('');
+        shouldStopRef.current = true;
+        if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+        recognitionRef.current?.stop();
     }, [expectedText]);
 
     const startListening = () => {
         setError(null);
         setIsLoading(true);
         shouldStopRef.current = false;
+
+        // FULL reset
+        setTranscript('');
+        transcriptRef.current = '';
+        setScore(null);
+        setMessage('');
 
         try {
             recognitionRef.current?.start();
