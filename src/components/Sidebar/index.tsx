@@ -1,80 +1,71 @@
-'use client';
+import React from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Home, BookOpen, Sparkles, Trophy } from "lucide-react";
+import { useSession } from "next-auth/react";
 
-import { FC } from 'react';
-import { useState } from 'react';
-import DashboardSidebarLink from './DashboardSidebar';
-import { useSession } from 'next-auth/react';
-import OnboardingDialog from '@/components/OnBoardingDialog';
-import { Check } from 'lucide-react';
-import { toast } from 'sonner';
-import { grades } from '@/lib/constants/grades';
 
-const Sidebar: FC = () => {
+const Sidebar = () => {
     const { data: session } = useSession();
-    const [showDialog, setShowDialog] = useState<boolean>(false);
-
-    const grade = session?.user?.grade;
-    const isParent = session?.user?.isParent;
-
-    const handleOnboarded = (): void => {
-        const toastType = localStorage.getItem('toast');
-
-        if (toastType === 'grade-saved') {
-            toast.success('Grade level saved successfully!', {
-                icon: <Check className="h-5 w-5 text-green-500" />,
-                style: {
-                    color: 'rgb(22 163 74)',
-                    borderColor: 'rgb(134 239 172)'
-                }
-            });
-        }
-
-        localStorage.removeItem('toast');
-        setShowDialog(false);
-    };
-
     return (
-        <>
-            <aside className="w-64 m-h-screen bg-white border-r border-gray-200 top-16 left-0 z-40 p-4 shadow-sm font-literata-variable font-semibold text-lg">
-                <div className="flex items-center justify-between mb-4">
-                    {!isParent && typeof grade === 'number' ? (
-                        <span className="text-xs  text-gray-500 ">
-                            {session?.user?.name}'s grade level: {grades[grade]}
-                        </span>
-                    ) : !isParent ? (
-                        <div className="text-sm">
-                            <span className="text-xs text-gray-500 block">
-                                {session?.user?.name}'s grade level:
-                            </span>
-                            <span
-                                className="text-blue-600 text-xs underline cursor-pointer hover:text-blue-800"
-                                onClick={() => setShowDialog(true)}
-                            >
-                                Select your grade level
-                            </span>
-                        </div>
-                    ) : null}
+        <div className="w-70 h-screen bg-gradient-to-b from-blue-100 to-red-100 p-6 flex flex-col items-center shadow-lg">
+            <div className="flex flex-col items-center mb-10">
+                <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white p-1 mt-0">
+                    <Image
+                            src="/profile.png"
+                            width={500}
+                            height={500}
+                            alt="Picture of the user"
+                            className="rounded-xl "
+                        />
+                    <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-md">
+                        <div className="text-xs font-bold text-gray-700">...</div>
+                    </div>
                 </div>
-                {/* ^ top-16 to be placed under a navbar that is 64px tall */}
-                <nav className="space-y-4">
-                    <DashboardSidebarLink href="/story-board" title="Story Board" />
-                    <DashboardSidebarLink
-                        href="/create-story"
-                        title="Create Story"
-                    />
-                    <DashboardSidebarLink
-                        href="#"
-                        title="Account"
-                    />
-                </nav>
-            </aside>
-            {showDialog && (
-                <OnboardingDialog
-                    open={showDialog}
-                    onOnboarded={handleOnboarded}
-                />
-            )}
-        </>
+                <p className="mt-3 text-lg font-medium text-gray-800">{session?.user.name}</p>
+            </div>
+
+            <div className="w-full flex flex-col gap-4">
+                <Button
+                    variant="ghost"
+                    className="pl-0 h-10 group w-full justify-start mb-5 bg-blue-200 hover:bg-yellow-400 text-gray-700 hover:text-white shadow-sm rounded-3xl"
+                >
+                    <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                        <Home className="size-9 mr-2 bg-amber-200 rounded-3xl p-1" />
+                    </span>
+                    Home
+                </Button>
+                <Button
+                    variant="ghost"
+                    className="pl-0 h-10 group w-full justify-start mb-5 bg-blue-200 hover:bg-yellow-400 text-gray-700 hover:text-white shadow-sm rounded-3xl"
+                >
+                    <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                        <BookOpen className="size-9 mr-2 bg-amber-200 rounded-3xl p-1" />
+                    </span>
+                    My Stories
+                </Button>
+
+                <Button
+                    variant="ghost"
+                    className="pl-0 h-10 group w-full justify-start mb-5 bg-blue-200 hover:bg-yellow-400 text-gray-700 hover:text-white shadow-sm rounded-3xl"
+                >
+                    <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                        <Sparkles className="size-9 mr-2 bg-amber-200 rounded-3xl p-1" />
+                    </span>
+                    Create a Story
+                </Button>
+
+                <Button
+                    variant="ghost"
+                    className="pl-0 h-10 group w-full justify-start mb-5 bg-blue-200 hover:bg-yellow-400 text-gray-700 hover:text-white shadow-sm rounded-3xl"
+                >
+                    <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                        <Trophy className="size-9 mr-2 bg-amber-200 rounded-3xl p-1" />
+                    </span>
+                    My Progress
+                </Button>
+            </div>
+        </div >
     );
 };
 

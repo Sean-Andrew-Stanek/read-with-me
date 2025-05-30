@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import AuthDialog from './AuthDialog';
 import { useSession } from 'next-auth/react';
 import { signOut } from 'next-auth/react';
-import { LogOut, Search } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useOnboardingStore } from '@/lib/store/onboardingStore';
 import OnboardingDialog from '@/components/OnBoardingDialog';
 import { usePathname } from 'next/navigation';
@@ -27,8 +27,8 @@ const Navbar: React.FC = () => {
     const backPath = isSelectedPath
         ? '/home'
         : isReadingPage
-            ? '/story-board'
-            : null
+        ? '/story-board'
+        : null
 
     const { data: session, status } = useSession();
     if (status === 'loading') return null;
@@ -37,22 +37,23 @@ const Navbar: React.FC = () => {
 
     return (
         <>
-            <nav className="flex bg-gradient-to-r from-blue-100 to-red-50 justify-between items-center px-6 py-4 rounded-t-3xl shadow-md">
-
+            <nav className="flex justify-between items-center py-4 bg-red-400 text-white p-4">
                 <Logo />
 
-                <div className="flex items-center gap-4 ml-auto">
+                <div className="flex items-center gap-2 ">
                     {isLoggedIn ? (
                         <div className="flex items-center gap-2">
-                            
+                            <span className="text-white font-semibold not-odd:text-md md:text-base break-words whitespace-normal">
+                                {session?.user?.name}
+                            </span>
                             {backPath && (
                                 <Link href={backPath}>
                                     <Button
                                         variant='outline'
                                         className='text-black cursor-pointer'
                                     >
-                                        Back
-                                    </Button>
+                                            Back
+                                        </Button>
                                 </Link>
                             )}
                             <Button
@@ -62,6 +63,7 @@ const Navbar: React.FC = () => {
                                 variant="outline"
                                 className="h-auto px-3 py-1 text-xs sm:text-sm md:text-base text-black flex items-center gap-2"
                             >
+                                {/* Logout Icon */}
                                 <LogOut className="h-4 w-4" />
                                 Sign Out
                             </Button>
@@ -72,21 +74,15 @@ const Navbar: React.FC = () => {
                             <AuthDialog />
                         </>
                     )}
-
-                    <Button className="p-2 bg-white rounded-full shadow-md hover:bg-blue-50">
-                        <Search className="text-gray-600 w-6 h-6" />
-                    </Button>
                 </div>
-
-                <OnboardingDialog
-                    open={showOnboarding}
-                    onOnboarded={() => {
-                        setShowOnboarding(false);
-                        window.location.href = '/home';
-                    }}
-                />
             </nav>
-
+            <OnboardingDialog
+                open={showOnboarding}
+                onOnboarded={() => {
+                    setShowOnboarding(false);
+                    window.location.href = '/home';
+                }}
+            />
         </>
     );
 };
