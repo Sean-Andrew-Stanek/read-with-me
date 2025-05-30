@@ -12,7 +12,7 @@ import {
     CardTitle
 } from '@/components/ui/card'; // npx shadcn add card
 import Link from 'next/link';
-import { BookOpen, Sparkles } from 'lucide-react';
+import { ArrowRightIcon, BookOpen, Sparkles } from 'lucide-react';
 import { Check } from 'lucide-react';
 import { Info } from 'lucide-react';
 
@@ -56,55 +56,28 @@ const Dashboard: FC = () => {
 
     return (
         <div className=" flex flex-col gap-5 items-center py-10 px-4 mt-10">
-            <h1 className="font-literata text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-primary-500 text-center mb-8">
-                Welcome to Reading Assistant!
-            </h1>
+            <div className="flex-1 p-8 bg-white rounded-4xl shadow-md max-w-4xl mx-auto my-0 w-600">
+                <div className="flex flex-col space-y-4">
+        {/* Read a Story Button */}
+        <Button className="w-full h-16 flex items-center justify-between text-lg bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-6">
+          <div className="flex items-center space-x-3">
+            {/* Replace with your desired icon for "Read a Story" */}
+            <span className="text-2xl">✨</span> {/* Example icon */}
+            <span>Read a Story</span>
+          </div>
+          <ArrowRightIcon className="h-6 w-6" />
+        </Button>
 
-            <div className=" flex flex-col gap-6 lg:w-[80%] xl:w-[60%]">
-                <Card className="w-full bg-blue-50 border-blue-200 dark:bg-blue-950 dark:border-blue-800">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <Sparkles className="h-5 w-5 text-blue-500" />
-                            Create a Story
-                        </CardTitle>
-                        <CardDescription>
-                            Ask AI to create a story just for you
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <p>
-                            Tell the AI what kind of story you want to read, and
-                            it will create one just for you!
-                        </p>
-                    </CardContent>
-                    <CardFooter>
-                        <Button asChild className="w-full">
-                            <Link href="/create-story">Create a Story</Link>
-                        </Button>
-                    </CardFooter>
-                </Card>
-                <Card className=" w-full bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <BookOpen className="h-5 w-5 text-green-500" />
-                            Read a Story
-                        </CardTitle>
-                        <CardDescription>
-                            Practice your reading skills
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <p>
-                            Read your stories out loud and get helpful feedback
-                            to improve your reading!
-                        </p>
-                    </CardContent>
-                    <CardFooter>
-                        <Button asChild variant="outline" className="w-full">
-                            <Link href="/story-board">My Stories</Link>
-                        </Button>
-                    </CardFooter>
-                </Card>
+        {/* Challenges Button */}
+        <Button className="w-full h-16 flex items-center justify-between text-lg bg-purple-200 hover:bg-purple-300 text-white rounded-lg px-6">
+          <div className="flex items-center space-x-3">
+            {/* Replace with your desired icon for "Challenges" */}
+            <span className="text-2xl">🏆</span> {/* Example icon */}
+            <span>Challenges</span>
+          </div>
+          <ArrowRightIcon className="h-6 w-6" />
+        </Button>
+      </div>
             </div>
         </div>
     );
