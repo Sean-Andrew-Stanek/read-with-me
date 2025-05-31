@@ -3,9 +3,10 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 import type { FC } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRightIcon, CircleArrowRight, Sparkles, Trophy } from 'lucide-react';
+import { CircleArrowRight, Flame, Sparkles } from 'lucide-react';
 import { Check } from 'lucide-react';
 import { Info } from 'lucide-react';
+import Link from 'next/link';
 
 const Dashboard: FC = () => {
     useEffect(() => {
@@ -45,31 +46,35 @@ const Dashboard: FC = () => {
         }, 600); // Delay to allow the toast to be displayed after the page load
     }, []);
 
+    const buttonSet = 'w-full h-14 flex items-center justify-between text-lg sm:text-xl md:text-2xl lg:text-3xl bg-indigo-300 hover:bg-indigo-400 text-white rounded-2xl px-3 sm:px-5 md:px-6 lg:px-8 font-normal py-3'
     return (
-    <div className="flex flex-col gap-5 items-center py-10 px-4 mt-10">
-        <div className="flex flex-col space-y-6 p-8 bg-white rounded-4xl shadow-md max-w-4xl mx-auto my-0 w-700 h-10/12">
-            <Button className="w-full h-16 flex items-center justify-between text-4xl bg-indigo-300 hover:bg-indigo-400 text-white rounded-2xl px-8 font-normal">
-                <div className="flex items-center space-x-3">
-                    <Sparkles className='size-9 mr-9' /> 
-                    <span>Read a Story</span>
-                </div>
-                <div className="flex items-center justify-center ml-6 rounded-full p-1 bg-transparent">
-                    <CircleArrowRight className="size-11 mr-2 p-0 bg-transparent rounded-3xl text-gray-500"  />
-                </div>
-            </Button>
-
-            <Button className="w-full h-16 flex items-center justify-between text-4xl bg-indigo-300 hover:bg-indigo-400 text-white rounded-3xl px-8 font-normal">
-                <div className="flex items-center space-x-3">
-                    <Trophy className='size-9 mr-9' />
-                    <span>Challenges</span>
-                </div>
-                <div className="flex items-center justify-center ml-6 rounded-full p-1 bg-transparent">
-                    <CircleArrowRight className="size-11 mr-2 p-0 bg-transparent rounded-3xl text-gray-500"  />
-                </div>
-            </Button>
+        <div className="flex flex-col gap-5 items-center py-10 px-4 mt-10 min-h-screen sm:px-4 lg:px-8">
+            <div className="flex flex-col space-y-4 p-16 bg-white rounded-[2rem] shadow-md max-w-4xl mx-auto my-0 w-full sm:w-[90%] md:w-[700px] h-10/12">
+                <Link href='/story-board'>
+                    <Button className={buttonSet} >
+                        <div className="flex items-center space-x-2 sm:space-x-3">
+                            <Sparkles className='sm:size-6 md:size-8 lg:size-9 mr-9' />
+                            <span>Read a Story</span>
+                        </div>
+                        <div className="flex items-center justify-center ml-6 rounded-full p-1 bg-transparent">
+                            <CircleArrowRight className="sm:size-9 md:size-10 lg:size-11 mr-0 p-2 bg-transparent rounded-3xl text-gray-500" />
+                        </div>
+                    </Button>
+                </Link>
+                <Link href='#'>
+                    <Button className={buttonSet} >
+                        <div className="flex items-center space-x-3">
+                            <Flame className='sm:size-6 md:size-8 mr-9' />
+                            <span>Challenges</span>
+                        </div>
+                        <div className="flex items-center justify-center ml-6 rounded-full p-1 bg-transparent">
+                            <CircleArrowRight className="sm:size-9 md:size-10 lg:size-11 mr-0 p-2 bg-transparent rounded-3xl text-gray-500" />
+                        </div>
+                    </Button>
+                </Link>
+            </div>
         </div>
-    </div>
-);
+    );
 };
 
 export default Dashboard;

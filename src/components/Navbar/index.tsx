@@ -74,7 +74,7 @@ const Navbar: React.FC = () => {
                     )}
 
                     <Button className="p-2 bg-white rounded-full shadow-md hover:bg-blue-50">
-                        <Search className="text-gray-600 w-6 h-6" />
+                        <Search className="text-gray-600 size-6" />
                     </Button>
                 </div>
 
