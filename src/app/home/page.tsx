@@ -3,16 +3,7 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 import type { FC } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle
-} from '@/components/ui/card'; // npx shadcn add card
-import Link from 'next/link';
-import { ArrowRightIcon, BookOpen, Sparkles } from 'lucide-react';
+import { ArrowRightIcon, CircleArrowRight, Sparkles, Trophy } from 'lucide-react';
 import { Check } from 'lucide-react';
 import { Info } from 'lucide-react';
 
@@ -55,32 +46,30 @@ const Dashboard: FC = () => {
     }, []);
 
     return (
-        <div className=" flex flex-col gap-5 items-center py-10 px-4 mt-10">
-            <div className="flex-1 p-8 bg-white rounded-4xl shadow-md max-w-4xl mx-auto my-0 w-600">
-                <div className="flex flex-col space-y-4">
-        {/* Read a Story Button */}
-        <Button className="w-full h-16 flex items-center justify-between text-lg bg-blue-500 hover:bg-blue-600 text-white rounded-lg px-6">
-          <div className="flex items-center space-x-3">
-            {/* Replace with your desired icon for "Read a Story" */}
-            <span className="text-2xl">✨</span> {/* Example icon */}
-            <span>Read a Story</span>
-          </div>
-          <ArrowRightIcon className="h-6 w-6" />
-        </Button>
+    <div className="flex flex-col gap-5 items-center py-10 px-4 mt-10">
+        <div className="flex flex-col space-y-6 p-8 bg-white rounded-4xl shadow-md max-w-4xl mx-auto my-0 w-700 h-10/12">
+            <Button className="w-full h-16 flex items-center justify-between text-4xl bg-indigo-300 hover:bg-indigo-400 text-white rounded-2xl px-8 font-normal">
+                <div className="flex items-center space-x-3">
+                    <Sparkles className='size-9 mr-9' /> 
+                    <span>Read a Story</span>
+                </div>
+                <div className="flex items-center justify-center ml-6 rounded-full p-1 bg-transparent">
+                    <CircleArrowRight className="size-11 mr-2 p-0 bg-transparent rounded-3xl text-gray-500"  />
+                </div>
+            </Button>
 
-        {/* Challenges Button */}
-        <Button className="w-full h-16 flex items-center justify-between text-lg bg-purple-200 hover:bg-purple-300 text-white rounded-lg px-6">
-          <div className="flex items-center space-x-3">
-            {/* Replace with your desired icon for "Challenges" */}
-            <span className="text-2xl">🏆</span> {/* Example icon */}
-            <span>Challenges</span>
-          </div>
-          <ArrowRightIcon className="h-6 w-6" />
-        </Button>
-      </div>
-            </div>
+            <Button className="w-full h-16 flex items-center justify-between text-4xl bg-indigo-300 hover:bg-indigo-400 text-white rounded-3xl px-8 font-normal">
+                <div className="flex items-center space-x-3">
+                    <Trophy className='size-9 mr-9' />
+                    <span>Challenges</span>
+                </div>
+                <div className="flex items-center justify-center ml-6 rounded-full p-1 bg-transparent">
+                    <CircleArrowRight className="size-11 mr-2 p-0 bg-transparent rounded-3xl text-gray-500"  />
+                </div>
+            </Button>
         </div>
-    );
+    </div>
+);
 };
 
 export default Dashboard;
