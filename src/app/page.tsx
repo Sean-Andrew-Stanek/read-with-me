@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { frontPageStrings as strings } from '@/config/strings';
 import { navLink } from '@/config/navigation';
 import Image from 'next/image';
+import { roboto, literata } from './fonts';
 
 const Home: React.FC = async () => {
     const session = await auth();
@@ -11,13 +12,10 @@ const Home: React.FC = async () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen text-gray-900">
+            <div className={`${roboto.variable} ${literata.variable} flex flex-col items-center justify-center min-h-screen text-gray-900`} >
             <h1 className="text-lg md:text-5xl font-bold mt-10">
                 {strings.welcome}
             </h1>
-            {/* <p className="text-gray-600 mt-2 text-lg md:text-xl lg:text-2xl">
-                {strings.description}
-            </p> */}
             <Image
                 src="/simple-logo.png"
                 alt="Read With Me First Page"
