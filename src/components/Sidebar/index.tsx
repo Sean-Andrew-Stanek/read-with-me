@@ -31,6 +31,10 @@ const Sidebar = () => {
         localStorage.removeItem('toast');
         setShowDialog(false);
     };
+
+    const buttonSet = 'pl-0 h-12 group w-full justify-start mb-5 text-white bg-yellow-400 hover:bg-blue-200 hover:text-gray-700 shadow-sm rounded-3xl';
+    const iconSet = 'size-9 mr-2 bg-amber-200 rounded-3xl p-1'
+
     return (
         <div className="w-70 h-screen bg-transparent p-6 flex flex-col items-center">
             <div className="flex flex-col items-center mb-10">
@@ -49,7 +53,7 @@ const Sidebar = () => {
 
                 <p className="mt-3 text-lg font-medium text-gray-800">{session?.user.name}</p>
 
-                {/* Grade display goes here */}
+                {/* Grade display */}
                 {!isParent && typeof grade === 'number' ? (
                     <span className="text-sm text-gray-600 -mt-1">
                         Grade Level: {grades[grade]}
@@ -67,40 +71,40 @@ const Sidebar = () => {
             </div>
             <div className="w-full flex flex-col gap-4">
                 <Button
-                    variant="ghost"
-                    className="pl-0 h-10 group w-full justify-start mb-5 bg-blue-200 hover:bg-yellow-400 text-gray-700 hover:text-white shadow-sm rounded-3xl"
+                    variant="default"
+                    className={buttonSet}
                 >
                     <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                        <Home className="size-9 mr-2 bg-amber-200 rounded-3xl p-1" />
+                        <Home className={iconSet} />
                     </span>
                     Home
                 </Button>
                 <Button
                     variant="ghost"
-                    className="pl-0 h-10 group w-full justify-start mb-5 bg-blue-200 hover:bg-yellow-400 text-gray-700 hover:text-white shadow-sm rounded-3xl"
+                    className={buttonSet}
                 >
                     <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                        <BookOpen className="size-9 mr-2 bg-amber-200 rounded-3xl p-1" />
+                        <BookOpen className={iconSet} />
                     </span>
                     My Stories
                 </Button>
 
                 <Button
                     variant="ghost"
-                    className="pl-0 h-10 group w-full justify-start mb-5 bg-blue-200 hover:bg-yellow-400 text-gray-700 hover:text-white shadow-sm rounded-3xl"
+                    className={buttonSet}
                 >
                     <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                        <Sparkles className="size-9 mr-2 bg-amber-200 rounded-3xl p-1" />
+                        <Sparkles className={iconSet} />
                     </span>
                     Create a Story
                 </Button>
 
                 <Button
                     variant="ghost"
-                    className="pl-0 h-10 group w-full justify-start mb-5 bg-blue-200 hover:bg-yellow-400 text-gray-700 hover:text-white shadow-sm rounded-3xl"
+                    className={buttonSet}
                 >
                     <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                        <Trophy className="size-9 mr-2 bg-amber-200 rounded-3xl p-1" />
+                        <Trophy className={iconSet} />
                     </span>
                     My Progress
                 </Button>
