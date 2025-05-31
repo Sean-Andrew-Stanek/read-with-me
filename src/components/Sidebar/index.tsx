@@ -33,12 +33,11 @@ const Sidebar = () => {
         setShowDialog(false);
     };
 
-    const buttonSet = 'pl-0 h-12 group w-full justify-start mb-5 text-white bg-yellow-400 hover:bg-blue-200 hover:text-gray-700 shadow-sm rounded-3xl';
+    const buttonSet = 'pl-0 h-14 group w-full justify-start mb-5 text-2xl text-white bg-yellow-400 hover:bg-blue-200 hover:text-gray-700 shadow-sm rounded-3xl';
     const iconSet = 'size-9 mr-2 bg-amber-200 rounded-3xl p-1 text-gray-500'
 
     return (
-        <div className="w-16 sm:w-60 lg:w-70 h-screen bg-transparent p-2 sm:p-4 flex flex-col items-center transition-all duration-300 sm:text-black">
-
+        <div className="w-[30%] h-screen bg-transparent p-2 sm:p-4 flex flex-col items-center transition-all duration-300 sm:text-black">
             <div className="flex flex-col items-center mb-10">
                 <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white p-1 mt-2">
                     <Image
