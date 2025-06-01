@@ -12,4 +12,4 @@ export const literata = Literata({
     subsets: ['latin'],
     display: 'swap',
     variable: '--font-literata',
-})
+});

@@ -14,7 +14,10 @@ export const metadata: Metadata = {
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
         <html lang="en">
-            <body className={`${literata.variable} ${roboto.variable} bg-gradient-to-b from-blue-100 to-red-100`}>
+            <body 
+                className={`${literata.variable} ${roboto.variable} font-sans bg-gradient-to-b from-blue-100 to-red-100 min-h-screen`}
+                style={{fontFamily:'var(--font-roboto)'}}
+            >
                 <SessionProvider>
                     <Navbar />
                     {children}
