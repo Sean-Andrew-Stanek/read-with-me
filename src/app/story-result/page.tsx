@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useStoryStore } from '@/lib/store/storyStore';
 import { SpeechToText } from '@/components/SpeechToText';
 import { Button } from '@/components/ui/button';
+import { literata } from '@/app/fonts';
 
 const StoryResultPage = () => {
     const { storyContent } = useStoryStore();
@@ -63,7 +64,7 @@ const StoryResultPage = () => {
                         <h2 className="text-xl font-bold mb-2">
                             Generated Story:
                         </h2>
-                        <div className="text-lg leading-loose mb-6">
+                         <div className={`${literata.variable} text-lg leading-loose mb-6`} style={{fontFamily:'var(--font-literata)'}}>
                             {paragraphs[currentParagraphIndex]}
                         </div>
 
