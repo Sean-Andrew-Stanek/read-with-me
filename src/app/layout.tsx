@@ -8,7 +8,7 @@ import { roboto, literata } from './fonts';
 
 export const metadata: Metadata = {
     title: 'Read With Me',
-    description: ''
+    description: '',
 };
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
