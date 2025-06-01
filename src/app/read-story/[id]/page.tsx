@@ -76,12 +76,12 @@ const ReadStory = () => {
     const hasPreviousParagraph = currentParagraphIndex > 0;
 
     return (
-        <div className="container font-literata mx-auto py-10 px-4 max-w-6xl flex flex-col gap-4 items-center jestifyContent-center">
+        <div className="font-literata mx-auto py-10 px-4 w-[50%] flex flex-col gap-4 items-center jestifyContent-center">
             <h1 className="text-3xl sm:text-3xl md:text-4xl font-bold mb-1">
                 {convertToTitleCase(`${story.title}`)}
             </h1>
                 <div className='flex flex-col lg:flex-row gap-4' >
-                <div className="flex-1 p-4 mt-6 border rounded bg-white max-w-2xl shadow relative  min-h-[200px] sm:min-h-[250px] md:min-h-[300px]">
+                <div className="flex-1 p-4 mt-6 border rounded-lg bg-white shadow relative  min-h-[200px] sm:min-h-[250px] md:min-h-[300px]">
                     <div className={`${literata.variable} text-2xl whitespace-pre-line leading-loose line-height-2 mb-18`} style={{fontFamily:'var(--font-literata)'}}>
                         {paragraphs[currentParagraphIndex]}
                     </div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Home, BookOpen, Sparkles, Trophy, UserRoundPen } from "lucide-react";
+import { Home, LibraryBig, Sparkles, Trophy, UserRoundPen } from "lucide-react";
 import { useSession } from "next-auth/react";
 import OnboardingDialog from "../OnBoardingDialog";
 import { Check } from "lucide-react";
@@ -99,7 +99,7 @@ const Sidebar = () => {
                         className={buttonSet}
                     >
                         <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                            <BookOpen className={iconSet} />
+                            <LibraryBig className={iconSet} />
                         </span>
                         <span className="hidden sm:inline ml-2 truncate">My Stories</span>
                     </Button>

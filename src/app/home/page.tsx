@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 import type { FC } from 'react';
 import { Button } from '@/components/ui/button';
-import { CircleArrowRight, Flame, Sparkles, LibraryBig } from 'lucide-react';
+import { CircleArrowRight, Flame, LibraryBig } from 'lucide-react';
 import { Check } from 'lucide-react';
 import { Info } from 'lucide-react';
 import Link from 'next/link';
@@ -57,8 +57,8 @@ const Dashboard: FC = () => {
                             <LibraryBig className='sm:size-6 md:size-8 lg:size-9 mr-9' />
                             <span>Read a Story</span>
                         </div>
-                        <div className="flex items-center justify-center ml-6 rounded-full p-1 bg-transparent">
-                            <CircleArrowRight className="sm:size-9 md:size-10 lg:size-11 mr-0 p-2 bg-transparent rounded-3xl text-gray-500" />
+                        <div className="flex items-center ml-6 rounded-full p-1 bg-transparent">
+                            <CircleArrowRight className="size-12 sm:size-16 md:size-17 lg:size-18 mr-0 p-2 bg-transparent rounded-3xl text-gray-500" />
                         </div>
                     </Button>
                 </Link>
@@ -68,8 +68,8 @@ const Dashboard: FC = () => {
                             <Flame className='sm:size-6 md:size-8 mr-9' />
                             <span>Challenges</span>
                         </div>
-                        <div className="flex items-center justify-center ml-6 rounded-full p-1 bg-transparent">
-                            <CircleArrowRight className="sm:size-9 md:size-10 lg:size-11 mr-0 p-2 bg-transparent rounded-3xl text-gray-500" />
+                        <div className="flex items-center ml-6 rounded-full p-1 bg-transparent">
+                            <CircleArrowRight className="size-12 sm:size-16 md:size-17 lg:size-18 mr-0 p-2 bg-transparent rounded-3xl text-gray-500" />
                         </div>
                     </Button>
                 </Link>
