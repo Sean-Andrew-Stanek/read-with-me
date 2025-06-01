@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Home, BookOpen, Sparkles, Trophy } from "lucide-react";
+import { Home, BookOpen, Sparkles, Trophy, UserRoundPen } from "lucide-react";
 import { useSession } from "next-auth/react";
 import OnboardingDialog from "../OnBoardingDialog";
 import { Check } from "lucide-react";
@@ -33,7 +33,7 @@ const Sidebar = () => {
         setShowDialog(false);
     };
 
-    const buttonSet = 'pl-0 h-14 group w-full justify-start mb-5 text-2xl text-white bg-yellow-400 hover:bg-blue-200 hover:text-gray-700 shadow-sm rounded-3xl';
+    const buttonSet = 'w-[90%] pl-0 h-16 group w-full justify-start mb-5 text-2xl text-white bg-yellow-400 hover:bg-blue-200 hover:text-gray-700 shadow-sm rounded-3xl';
     const iconSet = 'size-9 mr-2 bg-amber-200 rounded-3xl p-1 text-gray-500'
 
     return (
@@ -79,7 +79,7 @@ const Sidebar = () => {
                     <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                         <Home className={iconSet} />
                     </span>
-                    <span className="hidden sm:inline ml-2">Home</span>
+                    <span className="hidden sm:inline ml-2 truncate">Home</span>
                 </Button>
                 </Link>
                 <Link href="/story-board">
@@ -90,7 +90,7 @@ const Sidebar = () => {
                         <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                             <BookOpen className={iconSet} />
                         </span>
-                        <span className="hidden sm:inline ml-2">My Stories</span>
+                        <span className="hidden sm:inline ml-2 truncate">My Stories</span>
                     </Button>
                 </Link>
 
@@ -102,7 +102,7 @@ const Sidebar = () => {
                     <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                         <Sparkles className={iconSet} />
                     </span>
-                    <span className="hidden sm:inline ml-2">Create a Story</span>
+                    <span className="hidden sm:inline ml-2 truncate">Create a Story</span>
 
                 </Button>
                 </Link>
@@ -114,7 +114,18 @@ const Sidebar = () => {
                     <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                         <Trophy className={iconSet} />
                     </span>
-                    <span className="hidden sm:inline ml-2">My Progress</span>
+                    <span className="hidden sm:inline ml-2 truncate">My Progress</span>
+                </Button>
+                </Link>
+                <Link href='#'>
+                    <Button
+                    variant="ghost"
+                    className={buttonSet}
+                >
+                    <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                        <UserRoundPen className={iconSet} />
+                    </span>
+                    <span className="hidden sm:inline ml-2 truncate">Profile</span>
                 </Button>
                 </Link>
             </div>
