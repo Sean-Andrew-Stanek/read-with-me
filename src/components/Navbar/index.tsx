@@ -11,7 +11,6 @@ import OnboardingDialog from '@/components/OnBoardingDialog';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { roboto } from '@/app/fonts';
 
 const Navbar: React.FC = () => {
     const { showOnboarding, setShowOnboarding } = useOnboardingStore();
@@ -38,7 +37,7 @@ const Navbar: React.FC = () => {
 
     return (
         <>
-            <nav className="var(--font-roboto) flex bg-transparent justify-between items-center px-6 py-4 rounded-t-3xl">
+            <nav className="flex bg-transparent justify-between items-center px-6 py-4 rounded-t-3xl">
                 <Logo />
                 <div className="flex items-center gap-4 ml-auto">
                     {isLoggedIn ? (
