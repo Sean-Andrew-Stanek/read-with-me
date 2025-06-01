@@ -39,7 +39,7 @@ const Sidebar = () => {
     return (
         <div className="w-[30%] h-screen bg-transparent mr-4 p-2 sm:p-4 flex flex-col items-center transition-all duration-300 sm:text-black">
             <div className="flex flex-col items-center mb-10">
-                <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white p-1 mt-2">
+                <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
                     <Image
                         src="/profile.png"
                         width={500}
