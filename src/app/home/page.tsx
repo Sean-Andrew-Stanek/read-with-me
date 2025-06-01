@@ -48,8 +48,9 @@ const Dashboard: FC = () => {
 
     const buttonSet = 'w-full h-14 flex items-center justify-between text-lg sm:text-xl md:text-2xl lg:text-3xl bg-indigo-300 hover:bg-indigo-400 text-white rounded-2xl px-3 sm:px-5 md:px-6 lg:px-8 font-normal py-3'
     return (
-        <div className="flex flex-col gap-5 items-center py-10 px-4 mt-10 min-h-screen sm:px-4 lg:px-8">
-            <div className="flex flex-col space-y-4 p-16 bg-white rounded-[2rem] shadow-md max-w-4xl mx-auto my-0 w-full sm:w-[90%] md:w-[700px] h-10/12">
+        <div className="flex flex-col w-[100%] gap-5 items-center py-10 px-4 mt-10 min-h-screen sm:px-4 lg:px-8">
+            <div className="flex flex-col space-y-4 p-16 bg-white rounded-[2rem] shadow-md w-[100%] mx-auto my-0 h-10/12">
+
                 <Link href='/story-board'>
                     <Button className={buttonSet} >
                         <div className="flex items-center space-x-2 sm:space-x-3">
