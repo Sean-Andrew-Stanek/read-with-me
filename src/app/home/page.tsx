@@ -46,7 +46,7 @@ const Dashboard: FC = () => {
         }, 600); // Delay to allow the toast to be displayed after the page load
     }, []);
 
-    const buttonSet = 'w-full h-28 flex items-center justify-between text-lg sm:text-xl md:text-2xl lg:text-3xl bg-indigo-300 hover:bg-indigo-400 text-white rounded-2xl px-3 sm:px-5 md:px-6 lg:px-8 font-normal py-3'
+    const buttonSet = 'w-full h-16 sm:h-20 md:h-24 lg:h-28 flex items-center justify-between text-xl sm:text-2xl md:text-3xl lg:text-4xl bg-indigo-300 hover:bg-indigo-400 text-white rounded-2xl px-3 sm:px-5 md:px-6 lg:px-8 font-normal py-3'
     return (
         <div className="flex flex-col w-[100%] gap-5 items-center py-10 px-4 mt-10 min-h-screen sm:px-4 lg:px-8">
             <div className="flex flex-col space-y-4 p-16 bg-white rounded-[2rem] shadow-md w-[100%] mx-auto my-0 h-10/12">
