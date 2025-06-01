@@ -33,7 +33,7 @@ const Sidebar = () => {
         setShowDialog(false);
     };
 
-    const buttonSet = 'w-[90%] pl-0 h-16 group w-full justify-start mb-5 text-2xl text-white bg-yellow-400 hover:bg-blue-200 hover:text-gray-700 shadow-sm rounded-3xl';
+    const buttonSet = 'w-[90%] pl-0 h-16 group justify-start mb-9 text-2xl text-white bg-yellow-400 hover:bg-blue-200 hover:text-gray-700 shadow-sm rounded-3xl';
     const iconSet = 'size-9 mr-2 bg-amber-200 rounded-3xl p-1 text-gray-500'
 
     return (
@@ -71,6 +71,17 @@ const Sidebar = () => {
                 ) : null}
             </div>
             <div className="w-full flex flex-col gap-4">
+                <Link href='#'>
+                    <Button
+                    variant="ghost"
+                    className={buttonSet}
+                >
+                    <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                        <UserRoundPen className={iconSet} />
+                    </span>
+                    <span className="hidden sm:inline ml-2 truncate">Profile</span>
+                </Button>
+                </Link>
                 <Link href={'/home'}>
                     <Button
                     variant="default"
@@ -115,17 +126,6 @@ const Sidebar = () => {
                         <Trophy className={iconSet} />
                     </span>
                     <span className="hidden sm:inline ml-2 truncate">My Progress</span>
-                </Button>
-                </Link>
-                <Link href='#'>
-                    <Button
-                    variant="ghost"
-                    className={buttonSet}
-                >
-                    <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                        <UserRoundPen className={iconSet} />
-                    </span>
-                    <span className="hidden sm:inline ml-2 truncate">Profile</span>
                 </Button>
                 </Link>
             </div>
