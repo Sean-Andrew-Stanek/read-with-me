@@ -1,18 +1,10 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle
-} from '@/components/ui/card';
+import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Mic, MicOff, Loader2 } from 'lucide-react';
-import { formatSentencesWithSpacing } from '@/lib/utils/formatters';
 import stringSimilarity from 'string-similarity';
-import { useCallback } from 'react';
 
 type Props = {
     expectedText: string;
@@ -152,7 +144,9 @@ const SpeechToText: React.FC<Props> = ({
             setIsLoading(false);
         };
 
-        recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+        recognitionRef.current.onresult = (
+            event: SpeechRecognitionEvent
+        ): void => {
             let finalTranscript = '';
             let isFinal = false;
 
@@ -165,8 +159,6 @@ const SpeechToText: React.FC<Props> = ({
             }
 
             if (finalTranscript) {
-                console.log('Final transcript:', finalTranscript);
-
                 // const full = (transcript + ' ' + finalTranscript).trim();
                 const full = finalTranscript.trim();
 
@@ -189,20 +181,13 @@ const SpeechToText: React.FC<Props> = ({
             }
         };
 
-        return () => {
+        return (): void => {
             recognitionRef.current?.stop();
             if (silenceTimerRef.current) {
                 clearTimeout(silenceTimerRef.current);
             }
         };
     }, []);
-
-    // useEffect(() => {
-    //     setTranscript('');
-    //     transcriptRef.current = '';
-    //     setScore(null);
-    //     setMessage('');
-    // }, [expectedText]);
 
     useEffect(() => {
         setTranscript('');
@@ -214,7 +199,7 @@ const SpeechToText: React.FC<Props> = ({
         recognitionRef.current?.stop();
     }, [expectedText]);
 
-    const startListening = () => {
+    const startListening = (): void => {
         setError(null);
         setIsLoading(true);
         shouldStopRef.current = false;
@@ -227,13 +212,13 @@ const SpeechToText: React.FC<Props> = ({
 
         try {
             recognitionRef.current?.start();
-        } catch (error) {
+        } catch {
             recognitionRef.current?.stop();
             setTimeout(() => recognitionRef.current?.start(), 100);
         }
     };
 
-    const stopListening = () => {
+    const stopListening = (): void => {
         shouldStopRef.current = true;
         recognitionRef.current?.stop();
 
@@ -242,24 +227,12 @@ const SpeechToText: React.FC<Props> = ({
         }
     };
 
-    // const clearTranscript = () => {
-    //     setTranscript('');
-    //     transcriptRef.current = '';
-    //     setScore(null);
-    //     setMessage('');
-    // };
-
     useEffect(() => {
         setTranscript('');
         transcriptRef.current = '';
         setScore(null);
         setMessage('');
-        console.log('Score after reset:', score);
     }, [expectedText]);
-
-    useEffect(() => {
-        console.log('Score changed:', score);
-    }, [score]);
 
     return (
         <Card className="w-full mx-auto">
