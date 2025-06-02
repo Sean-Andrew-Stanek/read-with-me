@@ -8,6 +8,7 @@ import SpeechToText from '../../../components/SpeechToText';
 import { Button } from '@/components/ui/button';
 import { convertToTitleCase } from '@/lib/utils/formatters';
 import { literata } from '@/app/fonts';
+import Image from 'next/image';
 
 const ReadStory = (): JSX.Element => {
     const { id } = useParams();
@@ -55,7 +56,15 @@ const ReadStory = (): JSX.Element => {
                     minHeight: '100vh'
                 }}
             >
-                <img src="/loading.gif" alt="Loading story..." />
+                {/* <img src="/loading.gif" alt="Loading story..." /> */}
+                <Image
+                    src="/loading.gif"
+                    alt="Loading story..."
+                    width={100}
+                    height={100}
+                    priority
+                    unoptimized
+                />
             </div>
         );
     if (!story) return <p>Story not found.</p>;
