@@ -5,7 +5,7 @@ import clientPromise from '@/lib/mongodb';
 export const GET = async (
     _request: NextRequest,
     { params }: { params: { id: string } }
-): Promise<Response> => {
+): Promise<NextResponse> => {
     try {
         const session = await auth();
         if (!session || !session.user?.uuid) {
