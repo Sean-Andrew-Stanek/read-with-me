@@ -1,15 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, JSX } from 'react';
 import { useParams } from 'next/navigation';
 import { getStoryById } from '../../../services/apiServices';
 import { Story } from '../../../lib/types/story';
-import { SpeechToText } from '../../../components/SpeechToText';
+import SpeechToText from '../../../components/SpeechToText';
 import { Button } from '@/components/ui/button';
 import { convertToTitleCase } from '@/lib/utils/formatters';
 import { literata } from '@/app/fonts';
 
-const ReadStory = () => {
+const ReadStory = (): JSX.Element => {
     const { id } = useParams();
     const [story, setStory] = useState<Story | null>(null);
     const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ const ReadStory = () => {
     const [currentParagraphIndex, setCurrentParagraphIndex] = useState(0);
 
     useEffect(() => {
-        const fetchStory = async () => {
+        const fetchStory = async (): Promise<void> => {
             if (!id) return;
             try {
                 const fetchedStory: Story | null = await getStoryById(
@@ -32,8 +32,12 @@ const ReadStory = () => {
                         .filter((p: string) => p.trim() !== '');
                 }
                 setParagraphs(splitParagraphs);
-            } catch (error) {
-                console.error('Error fetching story:', error);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    throw new Error(`Error fetching story: ${error.message}`);
+                } else {
+                    throw new Error('Unknown error occurred.');
+                }
             } finally {
                 setLoading(false);
             }
@@ -56,19 +60,19 @@ const ReadStory = () => {
         );
     if (!story) return <p>Story not found.</p>;
 
-    const handleNextParagraph = () => {
+    const handleNextParagraph = (): void => {
         if (currentParagraphIndex < paragraphs.length - 1) {
             setCurrentParagraphIndex(currentParagraphIndex + 1);
         }
     };
 
-    const handlePreviousParagraph = () => {
+    const handlePreviousParagraph = (): void => {
         if (currentParagraphIndex > 0) {
             setCurrentParagraphIndex(currentParagraphIndex - 1);
         }
     };
 
-    const handleFirstParagraph = () => {
+    const handleFirstParagraph = (): void => {
         setCurrentParagraphIndex(0);
     };
 
@@ -80,9 +84,12 @@ const ReadStory = () => {
             <h1 className="text-3xl sm:text-3xl md:text-4xl font-bold mb-1">
                 {convertToTitleCase(`${story.title}`)}
             </h1>
-                <div className='flex flex-col lg:flex-row gap-4' >
+            <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1 p-4 mt-6 border rounded-lg bg-white shadow relative  min-h-[200px] sm:min-h-[250px] md:min-h-[300px]">
-                    <div className={`${literata.variable} text-2xl whitespace-pre-line leading-loose line-height-2 mb-18`} style={{fontFamily:'var(--font-literata)'}}>
+                    <div
+                        className={`${literata.variable} text-2xl whitespace-pre-line leading-loose line-height-2 mb-18`}
+                        style={{ fontFamily: 'var(--font-literata)' }}
+                    >
                         {paragraphs[currentParagraphIndex]}
                     </div>
                     <div className="absolute bottom-4 left-4 flex gap-2">
