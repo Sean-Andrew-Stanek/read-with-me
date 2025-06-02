@@ -5,7 +5,10 @@ import { useSession } from 'next-auth/react';
 import { Story } from '@/lib/types/story';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { convertToTitleCase, formatSentencesWithSpacing } from '@/lib/utils/formatters';
+import {
+    convertToTitleCase,
+    formatSentencesWithSpacing
+} from '@/lib/utils/formatters';
 
 type CreateStoryPageProps = {
     parentId?: string;
@@ -73,7 +76,7 @@ const StoryBoard: React.FC<CreateStoryPageProps> = () => {
         );
     }
 
-    const truncateContent = (content: string, wordLimit: number) => {
+    const truncateContent = (content: string, wordLimit: number): string => {
         const words = content.split(' ');
         if (words.length > wordLimit) {
             return words.slice(0, wordLimit).join(' ') + '...';
@@ -83,7 +86,9 @@ const StoryBoard: React.FC<CreateStoryPageProps> = () => {
 
     return (
         <div className="container mx-auto py-10 px-4 sm:px-6 max-w-5xl">
-            <h1 className="text-2xl font-bold mb-8 text-center">Generated Stories</h1>
+            <h1 className="text-2xl font-bold mb-8 text-center">
+                Generated Stories
+            </h1>
 
             {loading && <p className="text-center">Loading stories...</p>}
             {error && <p className="text-red-500 text-center">{error}</p>}
@@ -93,7 +98,10 @@ const StoryBoard: React.FC<CreateStoryPageProps> = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {stories.map(story => (
-                    <div key={story.id} className="mb-5 p-6 border rounded-lg shadow-md flex flex-col justify-between">
+                    <div
+                        key={story.id}
+                        className="mb-5 p-6 border rounded-lg shadow-md flex flex-col justify-between"
+                    >
                         <div>
                             <h2 className="text-xl font-semibold mb-2 line-clamp-2">
                                 {convertToTitleCase(`${story.title}`)}
@@ -101,8 +109,10 @@ const StoryBoard: React.FC<CreateStoryPageProps> = () => {
                             <p className="text-sm text-gray-600 mb-4">
                                 {new Date(story.createdAt).toLocaleDateString()}
                             </p>
-                            <div className='text-base text-gray-800 mb-4'>
-                                {formatSentencesWithSpacing(truncateContent(story.content, 50))}
+                            <div className="text-base text-gray-800 mb-4">
+                                {formatSentencesWithSpacing(
+                                    truncateContent(story.content, 50)
+                                )}
                             </div>
                         </div>
                         <div className="flex justify-end items-center mt-auto">

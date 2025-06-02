@@ -19,9 +19,12 @@ type Props = {
     onAccurateRead: () => void;
 };
 
-export function SpeechToText({ expectedText, onAccurateRead }: Props) {
+const SpeechToText: React.FC<Props> = ({
+    expectedText,
+    onAccurateRead
+}: Props) => {
     const [isListening, setIsListening] = useState(false);
-    const [transcript, setTranscript] = useState('');
+    const [, setTranscript] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [score, setScore] = useState<number | null>(null);
@@ -75,7 +78,7 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
     //         setMessage('Not quite there. Try again or click Start to retry.');
     //     }
     // }, [expectedText, onAccurateRead]);
-    const evaluateTranscript = () => {
+    const evaluateTranscript = (): void => {
         const currentExpected = latestExpectedRef.current;
         const currentTranscript = transcriptRef.current;
 
@@ -86,12 +89,7 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
             currentExpected.toLowerCase()
         );
 
-        console.log('Evaluating:', {
-            expected: currentExpected,
-            actual: currentTranscript
-        });
         const newScore = Math.round(similarity * 100);
-        console.log('score:', newScore);
 
         setScore(newScore);
         if (similarity > 0.9) {
@@ -120,12 +118,12 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
         recognitionRef.current.interimResults = true;
         recognitionRef.current.lang = 'en-US';
 
-        recognitionRef.current.onstart = () => {
+        recognitionRef.current.onstart = (): void => {
             setIsLoading(false);
             setIsListening(true);
         };
 
-        recognitionRef.current.onend = () => {
+        recognitionRef.current.onend = (): void => {
             setIsListening(false);
 
             // Wait briefly to ensure transcriptRef has updated
@@ -136,14 +134,20 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
                     try {
                         recognitionRef.current?.start();
                     } catch (error) {
-                        console.warn('Failed to restart:', error);
+                        // eslint-disable-next-line no-console
+                        console.error('Failed to restart:', error);
                     }
                 }
             }, 200);
         };
 
-        recognitionRef.current.onerror = event => {
-            setError(`Speech recognition error: ${(event as any).error}`);
+        type SpeechRecognitionErrorEvent = Event & {
+            error: string;
+        };
+
+        recognitionRef.current.onerror = (event: Event): void => {
+            const errorEvent = event as SpeechRecognitionErrorEvent;
+            setError(`Speech recognition error: ${errorEvent.error}`);
             setIsListening(false);
             setIsLoading(false);
         };
@@ -310,4 +314,6 @@ export function SpeechToText({ expectedText, onAccurateRead }: Props) {
             </CardFooter>
         </Card>
     );
-}
+};
+
+export default SpeechToText;

@@ -12,7 +12,6 @@ const Dashboard: FC = () => {
     useEffect(() => {
         const toastType = localStorage.getItem('toast');
         localStorage.removeItem('toast');
-        console.log('Toast flag:', toastType);
 
         setTimeout(() => {
             if (toastType === 'grade-saved') {
@@ -46,15 +45,15 @@ const Dashboard: FC = () => {
         }, 600); // Delay to allow the toast to be displayed after the page load
     }, []);
 
-    const buttonSet = 'w-full h-16 sm:h-20 md:h-24 lg:h-28 flex items-center justify-between text-xl sm:text-2xl md:text-3xl lg:text-4xl bg-indigo-300 hover:bg-indigo-400 text-white rounded-2xl px-3 sm:px-5 md:px-6 lg:px-8 font-normal py-3'
+    const buttonSet =
+        'w-full h-16 sm:h-20 md:h-24 lg:h-28 flex items-center justify-between text-xl sm:text-2xl md:text-3xl lg:text-4xl bg-indigo-300 hover:bg-indigo-400 text-white rounded-2xl px-3 sm:px-5 md:px-6 lg:px-8 font-normal py-3';
     return (
         <div className="flex flex-col w-[100%] gap-5 items-center py-10 px-4 mt-10 min-h-screen sm:px-4 lg:px-8">
             <div className="flex flex-col space-y-4 p-4 sm:p-8 md:p-16 bg-white rounded-[2rem] shadow-md w-full max-w-5xl mx-auto my-0 h-10/12">
-
-                <Link href='/create-story'>
-                    <Button className={buttonSet} >
+                <Link href="/create-story">
+                    <Button className={buttonSet}>
                         <div className="flex items-center space-x-2 sm:space-x-3">
-                            <Sparkles className='sm:size-6 md:size-8 lg:size-9 mr-9' />
+                            <Sparkles className="sm:size-6 md:size-8 lg:size-9 mr-9" />
                             <span>Create a Story</span>
                         </div>
                         <div className="flex items-center ml-6 rounded-full p-1 bg-transparent">
@@ -62,10 +61,10 @@ const Dashboard: FC = () => {
                         </div>
                     </Button>
                 </Link>
-                <Link href='#'>
-                    <Button className={buttonSet} >
+                <Link href="#">
+                    <Button className={buttonSet}>
                         <div className="flex items-center space-x-3">
-                            <Flame className='sm:size-6 md:size-8 mr-9' />
+                            <Flame className="sm:size-6 md:size-8 mr-9" />
                             <span>Challenges</span>
                         </div>
                         <div className="flex items-center ml-6 rounded-full p-1 bg-transparent">
