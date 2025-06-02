@@ -30,15 +30,6 @@ const Navbar: React.FC = () => {
             ? '/story-board'
             : null
 
-    const handleSignout = (): any => {
-        const pathname = usePathname()
-        if (pathname !== '/profile') return null;
-        return (
-            <>
-            </>
-        )
-    }
-
     const { data: session, status } = useSession();
     if (status === 'loading') return null;
 
@@ -62,7 +53,9 @@ const Navbar: React.FC = () => {
                                     </Button>
                                 </Link>
                             )}
-                            <Button
+
+                            {pathname === '/profile' && (
+                                <Button
                                 onClick={() => {
                                     signOut({ callbackUrl: '/' });
                                 }}
@@ -72,6 +65,7 @@ const Navbar: React.FC = () => {
                                 <LogOut className="h-4 w-4" />
                                 Sign Out
                             </Button>
+                            )}
                         </div>
                     ) : (
                         <>
