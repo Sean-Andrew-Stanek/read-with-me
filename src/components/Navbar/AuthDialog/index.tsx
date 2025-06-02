@@ -45,7 +45,7 @@ const AuthDialog: React.FC = () => {
         try {
             await signIn('google', { callbackUrl: '/home' });
             setIsOpen(false);
-        } catch (error) {
+        } catch {
             toast.error('Failed to sign in with Google. Please try again.', {
                 icon: <AlertCircle className="h-5 w-5 text-red-500" />,
                 style: {

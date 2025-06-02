@@ -1,10 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { JSX } from 'react';
+// import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button'; // if you're using shadcn/ui or similar
 
-export default function LandingPage() {
-    const router = useRouter();
+const LandingPage = (): JSX.Element => {
+    // const router = useRouter();
 
     return (
         <div className="min-h-screen mt:1 bg-gray-100 flex flex-col items-center justify-center px-6 text-center">
@@ -22,8 +23,10 @@ export default function LandingPage() {
             </div>
 
             <Button className="rounded-full w-50 h-50 bg-blue-600 text-white text-xl font-semibold shadow-md hover:bg-blue-700 transition cursor-pointer">
-                Let's Go
+                Let&apos;s go
             </Button>
         </div>
     );
-}
+};
+
+export default LandingPage;

@@ -54,7 +54,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 if (!isValidPassword) {
                     throw new Error('Incorrect password');
                 }
-                console.log(user)
                 return {
                     id: user._id.toString(),
                     name: user.userName,

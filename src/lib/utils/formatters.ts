@@ -1,6 +1,6 @@
 export function formatSentencesWithSpacing(text: string): string {
     const sentences = text
-        .split('/(?<=[.!?]\s+/')
+        .split(/(?<=[.!?])\s+/)
         .filter(sentence => sentence.trim().length > 0);
 
     let formatted = '';
@@ -17,6 +17,9 @@ export function convertToTitleCase(text: string): string {
     return text
         .toLowerCase()
         .split(' ')
-        .map(storyTitle => storyTitle.charAt(0).toUpperCase() + storyTitle.slice(1))
+        .map(
+            storyTitle =>
+                storyTitle.charAt(0).toUpperCase() + storyTitle.slice(1)
+        )
         .join(' ');
 }
