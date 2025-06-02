@@ -30,6 +30,15 @@ const Navbar: React.FC = () => {
             ? '/story-board'
             : null
 
+    const handleSignout = (): any => {
+        const pathname = usePathname()
+        if (pathname !== '/profile') return null;
+        return (
+            <>
+            </>
+        )
+    }
+
     const { data: session, status } = useSession();
     if (status === 'loading') return null;
 

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { toast } from 'sonner';
 import type { FC } from 'react';
 import { Button } from '@/components/ui/button';
-import { CircleArrowRight, Flame, LibraryBig } from 'lucide-react';
+import { CircleArrowRight, Flame, Sparkles } from 'lucide-react';
 import { Check } from 'lucide-react';
 import { Info } from 'lucide-react';
 import Link from 'next/link';
@@ -51,11 +51,11 @@ const Dashboard: FC = () => {
         <div className="flex flex-col w-[100%] gap-5 items-center py-10 px-4 mt-10 min-h-screen sm:px-4 lg:px-8">
             <div className="flex flex-col space-y-4 p-4 sm:p-8 md:p-16 bg-white rounded-[2rem] shadow-md w-full max-w-5xl mx-auto my-0 h-10/12">
 
-                <Link href='/story-board'>
+                <Link href='/create-story'>
                     <Button className={buttonSet} >
                         <div className="flex items-center space-x-2 sm:space-x-3">
-                            <LibraryBig className='sm:size-6 md:size-8 lg:size-9 mr-9' />
-                            <span>Read a Story</span>
+                            <Sparkles className='sm:size-6 md:size-8 lg:size-9 mr-9' />
+                            <span>Create a Story</span>
                         </div>
                         <div className="flex items-center ml-6 rounded-full p-1 bg-transparent">
                             <CircleArrowRight className="size-12 sm:size-16 md:size-17 lg:size-18 mr-0 p-2 bg-transparent rounded-3xl text-gray-500" />

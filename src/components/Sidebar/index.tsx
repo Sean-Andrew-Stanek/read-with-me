@@ -33,7 +33,7 @@ const Sidebar = () => {
         setShowDialog(false);
     };
 
-    const buttonSet = 'w-[40%] sm:w-[45%] md:w-[70%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-2xl text-white bg-yellow-400 hover:bg-blue-200 hover:text-gray-700 shadow-sm rounded-3xl';
+    const buttonSet = 'w-[40%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-2xl text-white bg-yellow-400 hover:bg-transparent hover:text-gray-700 shadow-lg rounded-3xl';
     const iconSet = 'size-9 mr-2 bg-amber-200 rounded-3xl p-1 text-gray-500'
 
     return (
@@ -71,7 +71,7 @@ const Sidebar = () => {
                 ) : null}
             </div>
             <div className="w-full flex flex-col space-y-12">
-                <Link href='#'>
+                {/* <Link href='/profile'>
                     <Button
                     variant="ghost"
                     className={buttonSet}
@@ -81,7 +81,7 @@ const Sidebar = () => {
                     </span>
                     <span className="hidden sm:inline ml-2 truncate">Profile</span>
                 </Button>
-                </Link>
+                </Link> */}
                 <Link href={'/home'}>
                     <Button
                     variant="default"
@@ -105,7 +105,7 @@ const Sidebar = () => {
                     </Button>
                 </Link>
 
-                <Link href={'/create-story'}>
+                {/* <Link href={'/create-story'}>
                     <Button
                     variant="ghost"
                     className={buttonSet}
@@ -116,7 +116,7 @@ const Sidebar = () => {
                     <span className="hidden sm:inline ml-2 truncate">Create a Story</span>
 
                 </Button>
-                </Link>
+                </Link> */}
                 <Link href='#'>
                     <Button
                     variant="ghost"
