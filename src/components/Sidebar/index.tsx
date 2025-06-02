@@ -96,7 +96,7 @@ const Sidebar = () => {
                     </Button>
                 </Link>
 
-                <Link href={'#'}>
+                <Link href={'/favorites'}>
                     <Button
                         variant="ghost"
                         className={buttonSet}
