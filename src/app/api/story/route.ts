@@ -56,11 +56,10 @@ export const POST = async (req: Request): Promise<Response> => {
 
         const storyContent: string = response.choices[0].message?.content || '';
 
-
-        // eslint-disable-next-line no-console
+        /* eslint-disable no-console */
         console.log('Backend received grade:', grade);
-        // eslint-disable-next-line no-console
         console.log('System message:', gradeLevel);
+        /* eslint-enable no-console */
 
         if (!storyContent) {
             throw new Error('Failed to generate story');

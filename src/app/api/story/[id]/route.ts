@@ -4,9 +4,11 @@ import clientPromise from '@/lib/mongodb';
 
 export const GET = async (
     _request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> => {
     try {
+        // const { id } = params;
+        const id = (await params).id;
         const session = await auth();
         if (!session || !session.user?.uuid) {
             return NextResponse.json(
@@ -15,7 +17,6 @@ export const GET = async (
             );
         }
 
-        const { id } = params;
         const client = await clientPromise;
         const db = client.db('read-with-me');
 
