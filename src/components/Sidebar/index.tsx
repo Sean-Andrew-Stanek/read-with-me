@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Home, LibraryBig, Trophy } from "lucide-react";
+import { Heart, Home, LibraryBig, Trophy } from "lucide-react";
 import { useSession } from "next-auth/react";
 import OnboardingDialog from "../OnBoardingDialog";
 import { Check } from "lucide-react";
@@ -73,17 +73,6 @@ const Sidebar = () => {
                 ) : null}
             </div>
             <div className="w-full flex flex-col space-y-12">
-                {/* <Link href='/profile'>
-                    <Button
-                    variant="ghost"
-                    className={buttonSet}
-                >
-                    <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                        <UserRoundPen className={iconSet} />
-                    </span>
-                    <span className="hidden sm:inline ml-2 truncate">Profile</span>
-                </Button>
-                </Link> */}
                 <Link href={'/home'}>
                     <Button
                     variant="default"
@@ -107,18 +96,18 @@ const Sidebar = () => {
                     </Button>
                 </Link>
 
-                {/* <Link href={'/create-story'}>
+                <Link href={'#'}>
                     <Button
                     variant="ghost"
                     className={buttonSet}
                 >
                     <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                        <Sparkles className={iconSet} />
+                        <Heart className={iconSet} />
                     </span>
-                    <span className="hidden sm:inline ml-2 truncate">Create a Story</span>
+                    <span className="hidden sm:inline ml-2 truncate">Top Stories</span>
 
                 </Button>
-                </Link> */}
+                </Link>
                 <Link href='#'>
                     <Button
                     variant="ghost"
