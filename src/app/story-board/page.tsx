@@ -10,12 +10,12 @@ import {
     formatSentencesWithSpacing
 } from '@/lib/utils/formatters';
 
-type CreateStoryPageProps = {
+/* type CreateStoryPageProps = {
     parentId?: string;
     childId?: string;
-};
+}; */
 
-const StoryBoard: React.FC<CreateStoryPageProps> = () => {
+const StoryBoard: React.FC = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
 
