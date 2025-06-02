@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Home, LibraryBig, Sparkles, Trophy, UserRoundPen } from "lucide-react";
+import { Home, LibraryBig, Trophy } from "lucide-react";
 import { useSession } from "next-auth/react";
 import OnboardingDialog from "../OnBoardingDialog";
 import { Check } from "lucide-react";
@@ -39,7 +39,8 @@ const Sidebar = () => {
     return (
         <div className="w-[30%] h-screen bg-transparent mr-4 p-2 sm:p-4 flex flex-col items-center transition-all duration-300 sm:text-black">
             <div className="flex flex-col items-center mb-10">
-                <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
+                <Link href='/profile'>
+                    <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
                     <Image
                         src="/profile.png"
                         width={500}
@@ -51,6 +52,7 @@ const Sidebar = () => {
                         <div className="text-xs font-bold text-gray-700">...</div>
                     </div>
                 </div>
+                </Link>
 
                 <p className="mt-3 sm:text-lg text-md font-medium text-gray-800">{session?.user.name}</p>
 
