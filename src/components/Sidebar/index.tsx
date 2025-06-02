@@ -41,17 +41,17 @@ const Sidebar = () => {
             <div className="flex flex-col items-center mb-10">
                 <Link href='/profile'>
                     <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
-                    <Image
-                        src="/profile.png"
-                        width={500}
-                        height={500}
-                        alt="Picture of the user"
-                        className="rounded-xl p-0"
-                    />
-                    <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-md">
-                        <div className="text-xs font-bold text-gray-700">...</div>
+                        <Image
+                            src="/profile.png"
+                            width={500}
+                            height={500}
+                            alt="Picture of the user"
+                            className="rounded-xl p-0"
+                        />
+                        <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-md">
+                            <div className="text-xs font-bold text-gray-700">...</div>
+                        </div>
                     </div>
-                </div>
                 </Link>
 
                 <p className="mt-3 sm:text-lg text-md font-medium text-gray-800">{session?.user.name}</p>
@@ -75,14 +75,14 @@ const Sidebar = () => {
             <div className="w-full flex flex-col space-y-12">
                 <Link href={'/home'}>
                     <Button
-                    variant="default"
-                    className={buttonSet}
-                >
-                    <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                        <Home className={iconSet} />
-                    </span>
-                    <span className="hidden sm:inline ml-2 truncate">Home</span>
-                </Button>
+                        variant="default"
+                        className={buttonSet}
+                    >
+                        <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                            <Home className={iconSet} />
+                        </span>
+                        <span className="hidden sm:inline ml-2 truncate">Home</span>
+                    </Button>
                 </Link>
                 <Link href="/story-board">
                     <Button
@@ -98,26 +98,25 @@ const Sidebar = () => {
 
                 <Link href={'#'}>
                     <Button
-                    variant="ghost"
-                    className={buttonSet}
-                >
-                    <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                        <Heart className={iconSet} />
-                    </span>
-                    <span className="hidden sm:inline ml-2 truncate">Top Stories</span>
-
-                </Button>
+                        variant="ghost"
+                        className={buttonSet}
+                    >
+                        <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                            <Heart className={iconSet} />
+                        </span>
+                        <span className="hidden sm:inline ml-2 truncate">Top Stories</span>
+                    </Button>
                 </Link>
                 <Link href='#'>
                     <Button
-                    variant="ghost"
-                    className={buttonSet}
-                >
-                    <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                        <Trophy className={iconSet} />
-                    </span>
-                    <span className="hidden sm:inline ml-2 truncate">My Progress</span>
-                </Button>
+                        variant="ghost"
+                        className={buttonSet}
+                    >
+                        <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                            <Trophy className={iconSet} />
+                        </span>
+                        <span className="hidden sm:inline ml-2 truncate">My Progress</span>
+                    </Button>
                 </Link>
             </div>
             {showDialog && (

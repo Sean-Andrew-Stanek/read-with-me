@@ -42,7 +42,7 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center gap-4 ml-auto">
                     {isLoggedIn ? (
                         <div className="flex items-center gap-2">
-                            
+
                             {backPath && (
                                 <Link href={backPath}>
                                     <Button
@@ -56,15 +56,15 @@ const Navbar: React.FC = () => {
 
                             {pathname === '/profile' && (
                                 <Button
-                                onClick={() => {
-                                    signOut({ callbackUrl: '/' });
-                                }}
-                                variant="outline"
-                                className="h-auto px-3 py-1 text-xs sm:text-sm md:text-base text-black flex items-center gap-2"
-                            >
-                                <LogOut className="h-4 w-4" />
-                                Sign Out
-                            </Button>
+                                    onClick={() => {
+                                        signOut({ callbackUrl: '/' });
+                                    }}
+                                    variant="outline"
+                                    className="h-auto px-3 py-1 text-xs sm:text-sm md:text-base text-black flex items-center gap-2"
+                                >
+                                    <LogOut className="h-4 w-4" />
+                                    Sign Out
+                                </Button>
                             )}
                         </div>
                     ) : (
