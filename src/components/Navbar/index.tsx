@@ -19,7 +19,6 @@ const Navbar: React.FC = () => {
 
     const { id } = useParams();
     // console.log(`ID: ${id}`)
-
     const staticPaths = ['/create-story', '/story-result', '/story-board'];
     const dynamicPath = id ? `/read-story/${id}` : null;
 
@@ -74,11 +73,9 @@ const Navbar: React.FC = () => {
                             <AuthDialog />
                         </>
                     )}
-
-                    {/* <Button className="p-2 bg-white rounded-full shadow-md hover:bg-blue-50">
-                        <Search className="text-gray-600 size-6" />
-                    </Button> */}
-                    <SearchDropdown />
+                    {pathname !== '/' && (
+                        <SearchDropdown />
+                    )}
                 </div>
 
                 <OnboardingDialog
