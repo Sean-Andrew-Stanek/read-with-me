@@ -5,12 +5,13 @@ import { Button } from '@/components/ui/button';
 import AuthDialog from './AuthDialog';
 import { useSession } from 'next-auth/react';
 import { signOut } from 'next-auth/react';
-import { LogOut, Search } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useOnboardingStore } from '@/lib/store/onboardingStore';
 import OnboardingDialog from '@/components/OnBoardingDialog';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import SearchDropdown from '../SearchDropdown';
 
 const Navbar: React.FC = () => {
     const { showOnboarding, setShowOnboarding } = useOnboardingStore();
@@ -74,9 +75,10 @@ const Navbar: React.FC = () => {
                         </>
                     )}
 
-                    <Button className="p-2 bg-white rounded-full shadow-md hover:bg-blue-50">
+                    {/* <Button className="p-2 bg-white rounded-full shadow-md hover:bg-blue-50">
                         <Search className="text-gray-600 size-6" />
-                    </Button>
+                    </Button> */}
+                    <SearchDropdown />
                 </div>
 
                 <OnboardingDialog
