@@ -27,7 +27,8 @@ const SearchDropdown: React.FC = () => {
             const parentId = isParent ? uuid : undefined;
             const childId = !isParent ? uuid : undefined;
             const stories = await getStories(parentId, childId);
-            const filtered = stories.filter(story => story.title.toLowerCase().includes(query.toLowerCase()));
+            const filtered = stories.filter(story => story.title.toLowerCase().includes(query.toLowerCase())
+                || story.content.toLowerCase().includes(query.toLowerCase()));
             setResults(filtered);
         } catch {
             setError('Failed to fetch stories');
