@@ -10,11 +10,6 @@ import {
     formatSentencesWithSpacing
 } from '@/lib/utils/formatters';
 
-/* type CreateStoryPageProps = {
-    parentId?: string;
-    childId?: string;
-}; */
-
 const StoryBoard: React.FC = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -100,7 +95,7 @@ const StoryBoard: React.FC = () => {
                 {stories.map(story => (
                     <div
                         key={story.id}
-                        className="mb-5 p-6 border rounded-lg shadow-md flex flex-col justify-between"
+                        className="mb-5 p-6 bg-white border rounded-lg shadow-md flex flex-col justify-between"
                     >
                         <div>
                             <h2 className="text-xl font-semibold mb-2 line-clamp-2">
@@ -117,14 +112,14 @@ const StoryBoard: React.FC = () => {
                         </div>
                         <div className="flex justify-end items-center mt-auto">
                             <Button
-                                className="mr-4 hover:bg-gray-300 hover:text-black"
+                                className="mr-4 bg-violet-400 hover:bg-gray-200 hover:text-violet-500 hover:border hover:border-violet-500"
                                 onClick={() =>
                                     router.push(`/read-story/${story.id}`)
                                 }
                             >
                                 Read
                             </Button>
-                            <Button className="hover:bg-red-700 hover:text-white bg-red-500">
+                            <Button className="bg-violet-400 hover:bg-gray-200 hover:text-violet-500 hover:border hover:border-violet-500">
                                 Delete
                             </Button>
                         </div>
