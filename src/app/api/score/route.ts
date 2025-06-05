@@ -18,18 +18,29 @@ export async function POST(req: Request) {
             expectedText: parsed.expectedText,
             userTranscript: parsed.userTranscript,
             score: parsed.score,
+            childId: parsed.childId,
             createdAt: parsed.timestamp
                 ? new Date(parsed.timestamp)
                 : new Date()
         };
 
         // insert scoreData to mongoDB
-        const result = await collection.insertOne(scoreData);
+        // const result = await collection.insertOne(scoreData);
+        // update to override the last score
+        const result = await collection.updateOne(
+            {
+                storyId: parsed.storyId,
+                expectedText: parsed.expectedText,
+                childId: parsed.childId
+            },
+            { $set: scoreData },
+            { upsert: true }
+        );
 
         // Send response that score was saved
         return NextResponse.json({
             success: true,
-            insertedId: result.insertedId
+            upsertedId: result.upsertedId
         });
     } catch (err: any) {
         console.error('[API: /score] Failed to save score:', err);
