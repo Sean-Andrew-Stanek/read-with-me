@@ -8,6 +8,7 @@ import { Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { grades } from '@/lib/constants/grades';
 import Link from 'next/link';
+import UserDropdown from './UserDrop';
 
 const Sidebar = (): JSX.Element => {
     const { data: session } = useSession();
@@ -40,23 +41,18 @@ const Sidebar = (): JSX.Element => {
     return (
         <div className="w-[30%] h-screen bg-transparent mr-4 p-2 sm:p-4 flex flex-col items-center transition-all duration-300 sm:text-black">
             <div className="flex flex-col items-center mb-10">
-                <Link href="/profile">
-                    <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
-                        <Image
-                            src="/profile.png"
-                            width={500}
-                            height={500}
-                            alt="Picture of the user"
-                            className="rounded-xl p-0"
-                        />
-                        <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-md">
-                            <div className="text-xs font-bold text-gray-700">
-                                ...
-                            </div>
-                        </div>
+                <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
+                    <Image
+                        src="/profile.png"
+                        width={500}
+                        height={500}
+                        alt="Picture of the user"
+                        className="rounded-xl p-0"
+                    />
+                    <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-md">
+                        <UserDropdown />
                     </div>
-                </Link>
-
+                </div>
                 <p className="mt-3 sm:text-lg text-md font-medium text-gray-800">
                     {session?.user.name}
                 </p>
