@@ -8,7 +8,7 @@ import { Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { grades } from '@/lib/constants/grades';
 import Link from 'next/link';
-import UserDropdown from './UserDrop';
+import UserDropdown from './UserDropdown';
 
 const Sidebar = (): JSX.Element => {
     const { data: session } = useSession();
