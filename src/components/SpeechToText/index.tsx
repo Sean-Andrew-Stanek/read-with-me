@@ -187,6 +187,7 @@ const SpeechToText: React.FC<Props> = ({
                 clearTimeout(silenceTimerRef.current);
             }
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
