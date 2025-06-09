@@ -93,7 +93,7 @@ export async function GET(req: Request): Promise<NextResponse> {
         const existingScore = await collection.findOne(query);
 
         return NextResponse.json({ score: existingScore?.score ?? null });
-    } catch (err) {
+    } catch {
         return NextResponse.json(
             { error: 'Failed to fetch score' },
             { status: 500 }
