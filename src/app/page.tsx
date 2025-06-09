@@ -19,6 +19,7 @@ const Home: React.FC = async () => {
                 <Image
                     src="/welcome.png"
                     alt="Illustration"
+                    priority={true}
                     width={900}
                     height={900}
                     className="object-contain"
