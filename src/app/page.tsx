@@ -5,6 +5,7 @@ import { navLink } from '@/config/navigation';
 import Image from 'next/image';
 import { roboto, literata } from './fonts';
 import { Button } from '@/components/ui/button';
+import { MoveRight } from 'lucide-react';
 
 const Home: React.FC = async () => {
     const session = await auth();
@@ -32,13 +33,13 @@ const Home: React.FC = async () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button className="bg-purple-600 text-white px-6 py-3 rounded-md text-sm hover:bg-purple-700">
-                        Explore the app →
+                        Explore the app <MoveRight />
                     </Button>
                     <Button
                         variant="outline"
                         className="border border-purple-500 text-purple-600 hover:bg-purple-100 px-6 py-3 rounded-md text-sm"
                     >
-                        Take a tour →
+                        Take a tour  <MoveRight />
                     </Button>
                 </div>
             </div>
