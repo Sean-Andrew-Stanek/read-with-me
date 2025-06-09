@@ -90,6 +90,7 @@ const Dashboard: FC = () => {
                             <Image
                                 src="/child-reading.png"
                                 alt="Child reading"
+                                priority={true}
                                 fill
                                 sizes="(max-width: 640px) 60px, (max-width: 768px) 80px, (max-width: 1024px) 100px, 120px"
                                 className="object-contain z-10"
@@ -113,6 +114,7 @@ const Dashboard: FC = () => {
                             <Image
                                 src="/child-survey.png"
                                 alt="Child with tablet"
+                                priority={true}
                                 fill
                                 sizes="(max-width: 640px) 60px, (max-width: 768px) 80px, (max-width: 1024px) 100px, 120px"
                                 className="object-contain z-10"
