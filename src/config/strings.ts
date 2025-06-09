@@ -1,5 +1,5 @@
 export const frontPageStrings: Record<string, string> = {
     description: 'Temporary landing page.',
-    welcome: 'Read With Me',
+    welcome: 'Welcome',
     getStarted: 'Get Started'
 };
