@@ -105,13 +105,13 @@ const Sidebar = (): JSX.Element => {
                         </span>
                     </Button>
                 </Link>
-                <Link href="#">
+                <Link href="/create-story">
                     <Button variant="ghost" className={buttonSet}>
                         <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                             <Trophy className={iconSet} />
                         </span>
                         <span className="hidden sm:inline ml-2 truncate">
-                            My Progress
+                            Create a Story
                         </span>
                     </Button>
                 </Link>
