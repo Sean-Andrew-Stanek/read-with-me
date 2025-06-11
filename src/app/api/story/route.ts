@@ -72,7 +72,9 @@ export const POST = async (req: Request): Promise<Response> => {
             prompt,
             createdAt: new Date().toISOString(),
             parentId: session.user.isParent ? session.user.uuid : null,
-            childId: session.user.isParent ? null : session.user.uuid
+            childId: session.user.isParent ? null : session.user.uuid,
+            score: 0,
+            scoresByParagraph: {}
         };
 
         StorySchema.parse(story);

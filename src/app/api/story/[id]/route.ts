@@ -39,3 +39,86 @@ export const GET = async (
         );
     }
 };
+
+// export async function PATCH(
+//     req: Request,
+//     { params }: { params: { id: string } }
+// ) {
+//     try {
+//         const { newScore, paragraphIndex } = await req.json();
+//         const storyId = params.id;
+
+//         const client = await clientPromise;
+//         const db = client.db('read-with-me');
+//         const result = await db
+//             .collection('stories')
+//             .updateOne(
+//                 { id: storyId },
+//                 { $set: { [`scoresByParagraph.${paragraphIndex}`]: newScore } }
+//             );
+
+//         if (result.matchedCount === 0) {
+//             return new Response(JSON.stringify({ error: 'Story not found' }), {
+//                 status: 404
+//             });
+//         }
+
+//         return new Response(null, { status: 204 });
+//     } catch (error) {
+//         return new Response(
+//             JSON.stringify({
+//                 error: error instanceof Error ? error.message : 'Unknown error'
+//             }),
+//             { status: 500 }
+//         );
+//     }
+// }
+
+export async function PATCH(
+    req: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        const { newScore, paragraphIndex } = await req.json();
+        const storyId = (await params).id;
+
+        const client = await clientPromise;
+        const db = client.db('read-with-me');
+        const collection = db.collection('stories');
+
+        // Fetch current story
+        const story = await collection.findOne({ id: storyId });
+
+        if (!story) {
+            return new Response(JSON.stringify({ error: 'Story not found' }), {
+                status: 404
+            });
+        }
+
+        // Merge new score
+        const existingScores = story.scoresByParagraph || {};
+        const updatedScores = {
+            ...existingScores,
+            [String(paragraphIndex)]: newScore
+        };
+        console.log(
+            'PATCH request received for paragraphIndex:',
+            paragraphIndex
+        );
+
+        // Update story with merged scores
+        await collection.updateOne(
+            { id: storyId },
+            { $set: { scoresByParagraph: updatedScores } }
+        );
+
+        return new Response(null, { status: 204 });
+    } catch (error) {
+        return new Response(
+            JSON.stringify({
+                error: error instanceof Error ? error.message : 'Unknown error'
+            }),
+            { status: 500 }
+        );
+    }
+}

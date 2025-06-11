@@ -5,15 +5,23 @@ import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Mic, MicOff, Loader2 } from 'lucide-react';
 import stringSimilarity from 'string-similarity';
+import { Story } from '@/lib/types/story';
 
 type Props = {
     expectedText: string;
-    onAccurateRead: () => void;
+    // onAccurateRead: () => void;
+    story: Story;
+    paragraphIndex: number;
+    showSavedScore?: boolean;
+    onAccurateRead: (index: number) => void;
 };
 
 const SpeechToText: React.FC<Props> = ({
     expectedText,
-    onAccurateRead
+    onAccurateRead,
+    story,
+    paragraphIndex,
+    showSavedScore
 }: Props) => {
     const [isListening, setIsListening] = useState(false);
     const [, setTranscript] = useState('');
@@ -73,6 +81,7 @@ const SpeechToText: React.FC<Props> = ({
     const evaluateTranscript = (): void => {
         const currentExpected = latestExpectedRef.current;
         const currentTranscript = transcriptRef.current;
+        // const currentParagraphIndex = paragraphIndex;
 
         if (!currentTranscript || !currentExpected) return;
 
@@ -84,10 +93,19 @@ const SpeechToText: React.FC<Props> = ({
         const newScore = Math.round(similarity * 100);
 
         setScore(newScore);
+
+        const existingScore =
+            story?.scoresByParagraph?.[String(paragraphIndex)];
+        if (existingScore === newScore) {
+            console.log('Score is the same, skipping update');
+        } else if (story) {
+            handleSubmitScore(story, paragraphIndex, newScore);
+        }
+
         if (similarity > 0.9) {
             setMessage('Great! You read it accurately.');
             setTimeout(() => {
-                onAccurateRead();
+                onAccurateRead(paragraphIndex);
             }, 3000);
         } else {
             setMessage('Not quite there. Try again or click Start to retry.');
@@ -234,6 +252,66 @@ const SpeechToText: React.FC<Props> = ({
         setScore(null);
         setMessage('');
     }, [expectedText]);
+
+    // const handleSubmitScore = async (story: Story, newScore: number) => {
+    //     const res = await fetch(`/api/story/${story.id}`, {
+    //         method: 'PATCH',
+    //         body: JSON.stringify({ newScore }),
+    //         headers: { 'Content-Type': 'application/json' }
+    //     });
+
+    //     if (res.ok) {
+    //         console.log('Score updated!');
+    //     } else {
+    //         console.error('Failed to update score');
+    //     }
+    // };
+    const handleSubmitScore = async (
+        story: Story,
+        paragraphIndex: number,
+        newScore: number
+    ) => {
+        const res = await fetch(`/api/story/${story.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ paragraphIndex, newScore }),
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (res.ok) {
+            console.log(`Score updated for paragraph ${paragraphIndex}!`);
+            console.log(
+                'Submitting score for paragraph',
+                paragraphIndex,
+                'with score',
+                newScore
+            );
+        } else {
+            console.error('Failed to update score');
+        }
+    };
+
+    // useEffect(() => {
+    //     if (story.score !== undefined) {
+    //         setScore(story.score);
+    //         setMessage(`This is your last saved score.`);
+    //     }
+    // }, [story]);
+    // useEffect(() => {
+    //     const savedScore = story.scoresByParagraph?.[paragraphIndex];
+    //     if (savedScore !== undefined) {
+    //         setScore(savedScore);
+    //         setMessage(`This is your last saved score for this paragraph.`);
+    //     }
+    // }, [story, paragraphIndex]);
+    useEffect(() => {
+        if (
+            showSavedScore &&
+            story?.scoresByParagraph?.[String(paragraphIndex)] !== undefined
+        ) {
+            setScore(story.scoresByParagraph[String(paragraphIndex)]);
+            setMessage(`This is your last saved score for this paragraph.`);
+        }
+    }, [story, paragraphIndex, showSavedScore]);
 
     return (
         <Card className="w-full mx-auto">

@@ -4,8 +4,9 @@ import { useStoryStore } from '@/lib/store/storyStore';
 import SpeechToText from '@/components/SpeechToText';
 import { Button } from '@/components/ui/button';
 import { literata } from '@/app/fonts';
+import { Story } from '@/lib/types/story';
 
-const StoryResultPage = (): JSX.Element => {
+const StoryResultPage = ({ story }: { story: Story }): JSX.Element => {
     const { storyContent } = useStoryStore();
     const [paragraphs, setParagraphs] = useState<string[]>([]);
     const [currentParagraphIndex, setCurrentParagraphIndex] = useState(0);
@@ -104,6 +105,8 @@ const StoryResultPage = (): JSX.Element => {
                     <SpeechToText
                         expectedText={paragraphs[currentParagraphIndex]}
                         onAccurateRead={handleNextParagraph}
+                        paragraphIndex={currentParagraphIndex}
+                        story={story}
                     />
                 )}
             </div>

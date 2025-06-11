@@ -75,6 +75,25 @@ const ReadStory = (): JSX.Element => {
         }
     };
 
+    const handleNextParagraphFromSpeech = (fromIndex: number) => {
+        if (
+            fromIndex === currentParagraphIndex &&
+            currentParagraphIndex < paragraphs.length - 1
+        ) {
+            setCurrentParagraphIndex(prev => prev + 1);
+        }
+    };
+
+    // const handleNextParagraph = (fromIndex?: number): void => {
+    //     if (
+    //         typeof fromIndex === 'number' &&
+    //         fromIndex === currentParagraphIndex &&
+    //         currentParagraphIndex < paragraphs.length - 1
+    //     ) {
+    //         setCurrentParagraphIndex(prev => prev + 1);
+    //     }
+    // };
+
     const handlePreviousParagraph = (): void => {
         if (currentParagraphIndex > 0) {
             setCurrentParagraphIndex(currentParagraphIndex - 1);
@@ -145,8 +164,12 @@ const ReadStory = (): JSX.Element => {
                 </div>
             </div>
             <SpeechToText
+                key={currentParagraphIndex}
                 expectedText={paragraphs[currentParagraphIndex]}
-                onAccurateRead={handleNextParagraph}
+                onAccurateRead={handleNextParagraphFromSpeech}
+                story={story}
+                paragraphIndex={currentParagraphIndex}
+                showSavedScore={true}
             />
         </div>
     );
