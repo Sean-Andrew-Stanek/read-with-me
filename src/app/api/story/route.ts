@@ -100,7 +100,7 @@ const openai = new OpenAI({
 //     }
 // };
 
-// Create a story
+//Create a story
 export const POST = async (req: Request): Promise<Response> => {
     try {
         const session = await auth();
@@ -155,7 +155,7 @@ export const POST = async (req: Request): Promise<Response> => {
         const generatedPrompt =
             typeof prompt === 'string' && prompt.trim().length > 0
                 ? prompt
-                : `Write a unique, fun, and age-appropriate ${genre} story for a ${gradeLevel}. 
+                : `Write a unique, fun, and age-appropriate ${genre} story for a ${gradeLevel}.
 The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring.`;
 
         const response = await openai.chat.completions.create({
@@ -185,7 +185,11 @@ The main character is ${character} who ${plot} in ${setting}. Make it imaginativ
         const story: Story = {
             id: new ObjectId().toString(),
             // title: prompt.slice(0, 50),
-            title: `${genre} - ${character}`.slice(0, 50),
+            // title: `${genre} - ${character}`.slice(0, 50),
+            title:
+                typeof prompt === 'string' && prompt.trim().length > 0
+                    ? prompt.slice(0, 50)
+                    : `${genre ?? 'Story'} - ${character}`.slice(0, 50),
 
             content: storyContent,
             prompt: generatedPrompt,
