@@ -116,4 +116,17 @@ const getStories = async (
     return data;
   }
 
-export { postNewStory, getUserData, getStories, putUserGrade, getStoryById};
+  const getRandomStoryId = async (): Promise<string> => {
+    const stories = await getStories();
+
+    if (!stories.length) {
+        throw new Error('No stories found.');
+    }
+
+    const randomIndex = Math.floor(Math.random() * stories.length);
+    const randomStory = stories[randomIndex];
+
+    return randomStory.id; 
+};
+
+export { postNewStory, getUserData, getStories, putUserGrade, getStoryById, getRandomStoryId};
