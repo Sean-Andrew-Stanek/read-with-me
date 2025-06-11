@@ -24,7 +24,7 @@ const putUserGrade = async (grade: string, uuid: string): Promise<void> => {
 };
 
 const postNewStory = async (
-    prompt: string,
+    prompt?: string,
     parentId?: string | null,
     childId?: string | null
 ): Promise<Story> => {
