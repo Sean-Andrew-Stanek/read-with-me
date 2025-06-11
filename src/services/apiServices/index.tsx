@@ -42,7 +42,6 @@ const postNewStory = async (
     }
 
     const data = await response.json();
-    console.log('Story response:', data);
 
     return data.story as Story;
 };

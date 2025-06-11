@@ -57,6 +57,7 @@ const SpeechToText: React.FC<Props> = ({
         const existingScore =
             story?.scoresByParagraph?.[String(paragraphIndex)];
         if (existingScore === newScore) {
+            // eslint-disable-next-line no-console
             console.log('Score is the same, skipping update');
         } else if (story) {
             handleSubmitScore(story, paragraphIndex, newScore);
@@ -219,7 +220,7 @@ const SpeechToText: React.FC<Props> = ({
         story: Story,
         paragraphIndex: number,
         newScore: number
-    ) => {
+    ): Promise<void> => {
         const res = await fetch(`/api/story/${story.id}`, {
             method: 'PATCH',
             body: JSON.stringify({ paragraphIndex, newScore }),
@@ -227,7 +228,9 @@ const SpeechToText: React.FC<Props> = ({
         });
 
         if (res.ok) {
+            // eslint-disable-next-line no-console
             console.log(`Score updated for paragraph ${paragraphIndex}!`);
+            // eslint-disable-next-line no-console
             console.log(
                 'Submitting score for paragraph',
                 paragraphIndex,
@@ -235,6 +238,7 @@ const SpeechToText: React.FC<Props> = ({
                 newScore
             );
         } else {
+            // eslint-disable-next-line no-console
             console.error('Failed to update score');
         }
     };

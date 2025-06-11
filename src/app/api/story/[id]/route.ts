@@ -43,7 +43,7 @@ export const GET = async (
 export async function PATCH(
     req: Request,
     { params }: { params: Promise<{ id: string }> }
-) {
+): Promise<NextResponse> {
     try {
         const { newScore, paragraphIndex } = await req.json();
         const storyId = (await params).id;
@@ -56,9 +56,10 @@ export async function PATCH(
         const story = await collection.findOne({ id: storyId });
 
         if (!story) {
-            return new Response(JSON.stringify({ error: 'Story not found' }), {
-                status: 404
-            });
+            return NextResponse.json(
+                { error: 'Story not found' },
+                { status: 404 }
+            );
         }
 
         // Merge new score
@@ -67,10 +68,6 @@ export async function PATCH(
             ...existingScores,
             [String(paragraphIndex)]: newScore
         };
-        console.log(
-            'PATCH request received for paragraphIndex:',
-            paragraphIndex
-        );
 
         // Update story with merged scores
         await collection.updateOne(
@@ -78,12 +75,10 @@ export async function PATCH(
             { $set: { scoresByParagraph: updatedScores } }
         );
 
-        return new Response(null, { status: 204 });
+        return new NextResponse(null, { status: 204 });
     } catch (error) {
-        return new Response(
-            JSON.stringify({
-                error: error instanceof Error ? error.message : 'Unknown error'
-            }),
+        return NextResponse.json(
+            { error: error instanceof Error ? error.message : 'Unknown error' },
             { status: 500 }
         );
     }
