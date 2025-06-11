@@ -55,7 +55,7 @@ const ReadStory = (): JSX.Element => {
         }
     };
 
-    const handleNextParagraphFromSpeech = (fromIndex: number) => {
+    const handleNextParagraphFromSpeech = (fromIndex: number): void => {
         if (
             fromIndex === currentParagraphIndex &&
             currentParagraphIndex < paragraphs.length - 1
