@@ -20,6 +20,7 @@ import { toast } from 'sonner';
 import { AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useStoryStore } from '@/lib/store/storyStore';
+import { Story } from '@/lib/types/story';
 
 type CreateStoryPageProps = object;
 
@@ -48,15 +49,21 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                 : userData?.parentId;
             const childId = userData?.isParent ? null : userData?.uuid;
 
-            const storyContent: string = await postNewStory(
+            // const storyContent: string = await postNewStory(
+            //     prompt,
+            //     parentId,
+            //     childId as string | null
+            // );
+            const createdStory: Story = await postNewStory(
                 prompt,
                 parentId,
-                childId as string | null
+                childId
             );
 
-            setStoryContent(storyContent);
+            setStoryContent(createdStory.content);
             setPrompt('');
-            router.push('/story-result');
+            // router.push('/story-result');
+            router.push(`/read-story/${createdStory.id}`);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(`Error creating story: ${error.message}`, {

@@ -3,7 +3,7 @@ import {
     putUserGradeURI,
     getUserDataUri,
     getStoriesUri,
-    getStoryByIdUri,
+    getStoryByIdUri
 } from '@/config/apiUri';
 import { Story } from '@/lib/types/story';
 import { ChildUser, ParentUser } from '@/lib/types/user';
@@ -27,7 +27,7 @@ const postNewStory = async (
     prompt: string,
     parentId?: string | null,
     childId?: string | null
-): Promise<string> => {
+): Promise<Story> => {
     const response = await fetch(postNewStoryUri(), {
         method: 'POST',
         headers: {
@@ -42,7 +42,9 @@ const postNewStory = async (
     }
 
     const data = await response.json();
-    return data.story;
+    console.log('Story response:', data);
+
+    return data.story as Story;
 };
 
 const getUserData = async (uuid: string): Promise<ParentUser | ChildUser> => {
@@ -89,19 +91,17 @@ const getStories = async (
     return data.stories;
 };
 
-  const getStoryById = async (
-    id?: string,
-  ): Promise<Story> => {
+const getStoryById = async (id?: string): Promise<Story> => {
     const params = new URLSearchParams();
-    
+
     if (!id) {
         return Promise.reject('id missing.');
-    } 
+    }
 
     if (id) params.append('id', id);
 
     const response = await fetch(getStoryByIdUri(id), {
-        method: 'GET',
+        method: 'GET'
     });
 
     if (!response.ok) {
@@ -114,9 +114,9 @@ const getStories = async (
         throw new Error('Invalid response format or no story found.');
     }
     return data;
-  }
+};
 
-  const getRandomStoryId = async (): Promise<string> => {
+const getRandomStoryId = async (): Promise<string> => {
     const stories = await getStories();
 
     if (!stories.length) {
@@ -126,7 +126,14 @@ const getStories = async (
     const randomIndex = Math.floor(Math.random() * stories.length);
     const randomStory = stories[randomIndex];
 
-    return randomStory.id; 
+    return randomStory.id;
 };
 
-export { postNewStory, getUserData, getStories, putUserGrade, getStoryById, getRandomStoryId};
+export {
+    postNewStory,
+    getUserData,
+    getStories,
+    putUserGrade,
+    getStoryById,
+    getRandomStoryId
+};
