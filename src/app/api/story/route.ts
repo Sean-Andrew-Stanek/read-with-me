@@ -82,12 +82,14 @@ export const POST = async (req: Request): Promise<Response> => {
 
         const storiesCollection = db.collection('stories');
 
-        const result = await storiesCollection.insertOne(story);
+        // const result = await storiesCollection.insertOne(story);
 
-        return NextResponse.json(
-            { story: storyContent, storyId: result.insertedId },
-            { status: 200 }
-        );
+        // return NextResponse.json(
+        //     { story: storyContent, storyId: result.insertedId },
+        //     { status: 200 }
+        await storiesCollection.insertOne(story);
+
+        return NextResponse.json({ story }, { status: 200 });
     } catch (error) {
         if (error instanceof Error) {
             return NextResponse.json({ error: error.message }, { status: 500 });

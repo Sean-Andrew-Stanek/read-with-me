@@ -20,6 +20,15 @@ const StoryResultPage = ({ story }: { story: Story }): JSX.Element => {
             setParagraphs(split);
         }
     }, [storyContent]);
+    // useEffect(() => {
+    //     if (story?.content) {
+    //         const split = story.content
+    //             .split(/\n\n+/)
+    //             .map(p => p.trim())
+    //             .filter(p => p.length > 0);
+    //         setParagraphs(split);
+    //     }
+    // }, [story]);
 
     const handleNextParagraph = (): void => {
         if (currentParagraphIndex < paragraphs.length - 1) {
