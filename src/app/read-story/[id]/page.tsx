@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { convertToTitleCase } from '@/lib/utils/formatters';
 import { literata } from '@/app/fonts';
 import Image from 'next/image';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const ReadStory = (): JSX.Element => {
     const { id } = useParams();
@@ -48,24 +49,7 @@ const ReadStory = (): JSX.Element => {
 
     if (loading)
         return (
-            <div
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    minHeight: '100vh'
-                }}
-            >
-                {/* <img src="/loading.gif" alt="Loading story..." /> */}
-                <Image
-                    src="/loading.gif"
-                    alt="Loading story..."
-                    width={100}
-                    height={100}
-                    priority
-                    unoptimized
-                />
-            </div>
+            <LoadingSpinner />
         );
     if (!story) return <p>Story not found.</p>;
 

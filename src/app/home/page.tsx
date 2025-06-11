@@ -9,6 +9,7 @@ import { Info } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getRandomStoryId } from '@/services/apiServices';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const Dashboard: FC = () => {
     useEffect(() => {
@@ -48,20 +49,27 @@ const Dashboard: FC = () => {
     }, []);
 
     const [randomStoryId, setRandomStoryId] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchRandomId = async (): Promise<void> => {
             try {
                 const id = await getRandomStoryId();
                 setRandomStoryId(id);
-            } catch (error) {
-                 // eslint-disable-next-line no-console
-                console.error('Failed to fetch random story ID:', error);
+            } catch {
+                // eslint-disable-next-line no-console
+                toast.error('You have not created any story yet. Try creating one!');
+            } finally {
+                setLoading(false);
             }
         };
         fetchRandomId();
     }, []);
 
+    if (loading)
+            return (
+                <LoadingSpinner />
+            );
 
     return (
         <div className="flex flex-col gap-5 items-center py-10 px-4 mt-10 min-h-screen max-w-screen-xl mx-auto overflow-x-hidden">
@@ -73,13 +81,11 @@ const Dashboard: FC = () => {
                     </span>
 
                     <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-                        {randomStoryId && (
-                            <Link href={`/read-story/${randomStoryId}`}>
-                                <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
-                                    {"I'm ready!"} <span className="pl-3"><MoveRight /></span>
-                                </Button>
-                            </Link>
-                        )}
+                        <Link href={randomStoryId ? `/read-story/${randomStoryId}` : '/create-story'}>
+                            <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
+                                {"I'm ready!"} <span className="pl-3"><MoveRight /></span>
+                            </Button>
+                        </Link>
 
                         <span className="flex items-center rounded-full p-1 bg-transparent">
                             <CircleArrowDown className="size-12 sm:size-16 p-2 bg-transparent rounded-3xl text-white font-extralight" />
