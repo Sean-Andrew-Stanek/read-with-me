@@ -56,7 +56,7 @@ const Dashboard: FC = () => {
                     </span>
 
                     <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-                        <Link href="/my-stories">
+                        <Link href="/story-board">
                             <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
                                 {"I'm ready!"} <span className="pl-3"><MoveRight /></span>
                             </Button>
@@ -85,6 +85,7 @@ const Dashboard: FC = () => {
                         </span>
                     </div>
                 </div>
+                {/* Weekly Test Card */}
                 <div className="mt-6 flex flex-wrap justify-center gap-6 sm:gap-8">
                     <div className="relative flex flex-col flex-1 basis-[300px] max-w-sm bg-white rounded-xl shadow-md p-4 overflow-hidden">
                         <h3 className="text-md sm:text-lg md:text-xl lg:text-2xl font-semibold text-purple-700 text-center">
