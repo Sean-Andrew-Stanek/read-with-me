@@ -15,7 +15,7 @@ const UserDropdown: FC = (): JSX.Element => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="text-xl font-bold text-gray-700 select-none cursor-pointer hover:text-gray-900">
+        <div className="w-5 h-5 flex items-center justify-center rounded-full bg-white text-xl font-bold text-gray-700 select-none cursor-pointer hover:text-gray-900">
           ...
         </div>
       </DropdownMenuTrigger>
