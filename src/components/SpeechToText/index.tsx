@@ -5,15 +5,22 @@ import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Mic, MicOff, Loader2 } from 'lucide-react';
 import stringSimilarity from 'string-similarity';
+import { Story } from '@/lib/types/story';
 
 type Props = {
     expectedText: string;
-    onAccurateRead: () => void;
+    story: Story;
+    paragraphIndex: number;
+    showSavedScore?: boolean;
+    onAccurateRead: (index: number) => void;
 };
 
 const SpeechToText: React.FC<Props> = ({
     expectedText,
-    onAccurateRead
+    onAccurateRead,
+    story,
+    paragraphIndex,
+    showSavedScore
 }: Props) => {
     const [isListening, setIsListening] = useState(false);
     const [, setTranscript] = useState('');
@@ -32,44 +39,6 @@ const SpeechToText: React.FC<Props> = ({
         latestExpectedRef.current = expectedText;
     }, [expectedText]);
 
-    // const evaluateTranscript = useCallback(() => {
-    // To prevent re-creating evaluateTranscript() every time the component re-renders
-    // — especially when used inside setTimeout() or event handlers.
-    //     if (!transcriptRef.current || !expectedText) return;
-
-    //     if (expectedText !== latestExpectedRef.current) {
-    //         console.warn('Skipping scoring: expectedText changed too recently');
-    //         return;
-    //     }
-
-    //     const similarity = stringSimilarity.compareTwoStrings(
-    //         transcriptRef.current.toLowerCase(),
-    //         expectedText.toLowerCase()
-    //     );
-    //     console.log('Similarity:', similarity);
-
-    //     console.log('Evaluating:', {
-    //         expected: expectedText,
-    //         actual: transcriptRef.current
-    //     });
-
-    //     const newScore = Math.round(similarity * 100);
-    //     console.log('score:', newScore);
-
-    //     setScore(newScore);
-    //     setMessage(`Your accuracy score is: ${newScore}%`); // force re-render
-
-    //     if (similarity > 0.9) {
-    //         setMessage(
-    //             'Great! You read it accurately. You will be redirected to next paragraph shortly.'
-    //         );
-    //         setTimeout(() => {
-    //             onAccurateRead(); // Go to next paragraph after short delay
-    //         }, 3000);
-    //     } else {
-    //         setMessage('Not quite there. Try again or click Start to retry.');
-    //     }
-    // }, [expectedText, onAccurateRead]);
     const evaluateTranscript = (): void => {
         const currentExpected = latestExpectedRef.current;
         const currentTranscript = transcriptRef.current;
@@ -84,10 +53,21 @@ const SpeechToText: React.FC<Props> = ({
         const newScore = Math.round(similarity * 100);
 
         setScore(newScore);
+
+        const existingScore =
+            story?.scoresByParagraph?.[String(paragraphIndex)];
+        if (existingScore === newScore) {
+            console.log('Score is the same, skipping update');
+        } else if (story) {
+            handleSubmitScore(story, paragraphIndex, newScore);
+        }
+
         if (similarity > 0.9) {
-            setMessage('Great! You read it accurately.');
+            setMessage(
+                'Great! You read it accurately. You will be redirected to next paragraph.'
+            );
             setTimeout(() => {
-                onAccurateRead();
+                onAccurateRead(paragraphIndex);
             }, 3000);
         } else {
             setMessage('Not quite there. Try again or click Start to retry.');
@@ -234,6 +214,40 @@ const SpeechToText: React.FC<Props> = ({
         setScore(null);
         setMessage('');
     }, [expectedText]);
+
+    const handleSubmitScore = async (
+        story: Story,
+        paragraphIndex: number,
+        newScore: number
+    ) => {
+        const res = await fetch(`/api/story/${story.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ paragraphIndex, newScore }),
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (res.ok) {
+            console.log(`Score updated for paragraph ${paragraphIndex}!`);
+            console.log(
+                'Submitting score for paragraph',
+                paragraphIndex,
+                'with score',
+                newScore
+            );
+        } else {
+            console.error('Failed to update score');
+        }
+    };
+
+    useEffect(() => {
+        if (
+            showSavedScore &&
+            story?.scoresByParagraph?.[String(paragraphIndex)] !== undefined
+        ) {
+            setScore(story.scoresByParagraph[String(paragraphIndex)]);
+            setMessage(`This is your last saved score for this paragraph.`);
+        }
+    }, [story, paragraphIndex, showSavedScore]);
 
     return (
         <Card className="w-full mx-auto">
