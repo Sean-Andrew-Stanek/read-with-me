@@ -1,7 +1,7 @@
 import { useState, JSX } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Heart, Home, LibraryBig, Trophy } from 'lucide-react';
+import { Heart, Home, LibraryBig, Sparkles, Trophy } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import OnboardingDialog from '../OnBoardingDialog';
 import { Check } from 'lucide-react';
@@ -94,7 +94,6 @@ const Sidebar = (): JSX.Element => {
                         </span>
                     </Button>
                 </Link>
-
                 <Link href={'/favorites'}>
                     <Button variant="ghost" className={buttonSet}>
                         <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
@@ -108,10 +107,20 @@ const Sidebar = (): JSX.Element => {
                 <Link href="/create-story">
                     <Button variant="ghost" className={buttonSet}>
                         <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                            <Trophy className={iconSet} />
+                            <Sparkles className={iconSet} />
                         </span>
                         <span className="hidden sm:inline ml-2 truncate">
                             Create a Story
+                        </span>
+                    </Button>
+                </Link>
+                <Link href="#">
+                    <Button variant="ghost" className={buttonSet}>
+                        <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                            <Trophy className={iconSet} />
+                        </span>
+                        <span className="hidden sm:inline ml-2 truncate">
+                            My Progress
                         </span>
                     </Button>
                 </Link>
