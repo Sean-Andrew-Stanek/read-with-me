@@ -8,7 +8,6 @@ import SpeechToText from '../../../components/SpeechToText';
 import { Button } from '@/components/ui/button';
 import { convertToTitleCase } from '@/lib/utils/formatters';
 import { literata } from '@/app/fonts';
-import Image from 'next/image';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 const ReadStory = (): JSX.Element => {

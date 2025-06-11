@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import { JSX } from 'react';
 
-const LoadingSpinner = () => {
+const LoadingSpinner = (): JSX.Element => {
     return (
         <div
             style={{

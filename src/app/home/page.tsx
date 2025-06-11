@@ -57,7 +57,6 @@ const Dashboard: FC = () => {
                 const id = await getRandomStoryId();
                 setRandomStoryId(id);
             } catch {
-                // eslint-disable-next-line no-console
                 toast.error('You have not created any story yet. Try creating one!');
             } finally {
                 setLoading(false);
@@ -67,9 +66,9 @@ const Dashboard: FC = () => {
     }, []);
 
     if (loading)
-            return (
-                <LoadingSpinner />
-            );
+        return (
+            <LoadingSpinner />
+        );
 
     return (
         <div className="flex flex-col gap-5 items-center py-10 px-4 mt-10 min-h-screen max-w-screen-xl mx-auto overflow-x-hidden">
