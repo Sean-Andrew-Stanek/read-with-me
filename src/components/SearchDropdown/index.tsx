@@ -3,7 +3,7 @@ import { getStories } from '@/services/apiServices';
 import { Search, X } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button'; 
 
 const SearchDropdown: React.FC = () => {
@@ -13,6 +13,7 @@ const SearchDropdown: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError]   = useState<string | null>(null);
   const { data: session }   = useSession();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const searchStories = useCallback(async () => {
     setLoading(true);
@@ -50,11 +51,24 @@ const SearchDropdown: React.FC = () => {
       setResults([]);
     }
   };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent): void {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            setOpen(false);
+            setQuery('');
+            setResults([]);
+        }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return (): void => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       {open ? (
-        <div className={`flex items-center bg-white/40 backdrop-blur-md rounded-xl px-4 py-2 shadow-md transition-all duration-300 ${open ? 'w-72' : 'w-25 rounded-2xl justify-center'}`}>
+       <div className="flex items-center w-72 bg-white/40 backdrop-blur-md rounded-xl px-4 py-2 shadow-md transition-all duration-300">
           <Search className="mr-2 size-10 text-white shrink-0 font-bold" />
 
           <input
@@ -80,7 +94,7 @@ const SearchDropdown: React.FC = () => {
           size="icon"
           onClick={toggleSearch}
           className="h-20 w-20 rounded-xl bg-white/30 hover:bg-white/40
-                     backdrop-blur-md border border-white/30 shadow-lg"
+             backdrop-blur-md border border-white/30 shadow-lg flex items-center justify-center"
         >
           <Search className="size-18 text-white" />
         </Button>
