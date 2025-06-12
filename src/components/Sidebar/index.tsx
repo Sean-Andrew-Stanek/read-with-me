@@ -34,18 +34,17 @@ const Sidebar = (): JSX.Element => {
         setShowDialog(false);
     };
 
-    const buttonSet =
-        'w-[40%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-2xl text-white bg-yellow-400 hover:bg-transparent hover:text-gray-700 shadow-lg rounded-3xl';
-    const iconSet = 'size-9 mr-2 bg-amber-200 rounded-3xl p-1 text-gray-500';
+    const buttonSet = 'w-[45%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-2xl text-gray-700 hover:text-white bg-transparent hover:bg-yellow-400 shadow-none rounded-3xl'
+    const iconSet = 'size-12 mr-2 bg-amber-200 rounded-3xl p-1';
 
     return (
-        <div className="w-[30%] h-screen bg-transparent mr-4 p-2 sm:p-4 flex flex-col items-center transition-all duration-300 sm:text-black">
-            <div className="flex flex-col items-center mb-10">
+        <div className="w-[20%] h-screen bg-transparent mr-0 p-0 flex flex-col items-center transition-all duration-300 sm:text-black">
+            <div className="flex flex-col items-center mb-10 mr-0 p-0">
                 <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
                     <Image
                         src="/profile.png"
-                        width={500}
-                        height={500}
+                        width={120}
+                        height={120}
                         alt="Picture of the user"
                         className="rounded-xl p-0"
                     />
@@ -73,7 +72,7 @@ const Sidebar = (): JSX.Element => {
                     </div>
                 ) : null}
             </div>
-            <div className="w-full flex flex-col space-y-12">
+            <div className="w-full flex flex-col space-y-11 mr-0 p-0">
                 <Link href={'/home'}>
                     <Button variant="default" className={buttonSet}>
                         <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
