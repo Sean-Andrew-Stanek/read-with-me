@@ -78,7 +78,7 @@ const ReadStory = (): JSX.Element => {
     const hasPreviousParagraph = currentParagraphIndex > 0;
 
     return (
-        <div className="font-literata mx-auto py-10 px-4 w-[50%] flex flex-col gap-4 items-center jestifyContent-center">
+        <div className="font-literata mx-auto py-10 px-4 w-[90%] sm:w-[80%] md:w-[50%] flex flex-col gap-4 items-center jestifyContent-center">
             <h1 className="text-3xl sm:text-3xl md:text-4xl font-bold mb-1">
                 {convertToTitleCase(`${story.title}`)}
             </h1>

@@ -72,7 +72,7 @@ const Dashboard: FC = () => {
 
     return (
         <div className="flex flex-col gap-5 items-center  mt-10 min-h-screen max-w-screen-2xl mx-auto overflow-x-hidden w-[85%] ml-0">
-            <div className="flex flex-col space-y-4 p-4 sm:p-8 md:p-16 bg-gray-100 rounded-[2rem] shadow-md w-full  my-0">
+            <div className="flex flex-col space-y-4 p-4 sm:p-8 md:p-16 bg-gray-100 rounded-[2rem] shadow-md w-[100%] my-0">
                 <div className="flex flex-col sm:flex-row items-center justify-between w-full bg-indigo-300 text-white rounded-2xl px-3 sm:px-5 md:px-6 lg:px-8 py-4 sm:py-6">
                     <span className="flex items-center space-x-3 font-extralight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
                         <Sparkles className="fill-white sm:size-6 md:size-8 lg:size-9 mr-4" />
@@ -110,8 +110,8 @@ const Dashboard: FC = () => {
                     </div>
                 </div>
                 {/* Weekly Test Card */}
-                <div className="mt-6 flex flex-wrap justify-center gap-6 sm:gap-8">
-                    <div className="relative flex flex-col flex-1 basis-[300px] max-w-sm bg-white rounded-xl shadow-md p-4 overflow-hidden">
+                <div className="mt-6 flex flex-wrap justify-center gap-6 sm:gap-8 p-0">
+                    <div className="relative flex flex-col flex-1 basis-[300px] max-w-lg bg-white rounded-xl shadow-md p-4 overflow-hidden">
                         <h3 className="text-md sm:text-lg md:text-xl lg:text-2xl font-semibold text-purple-700 text-center">
                             Weekly Test
                         </h3>
@@ -136,7 +136,7 @@ const Dashboard: FC = () => {
                         </div>
                     </div>
                     {/* Survey Card */}
-                    <div className="relative flex flex-col flex-1 basis-[300px] max-w-sm bg-white rounded-xl shadow-md p-4 overflow-hidden">
+                    <div className="relative flex flex-col flex-1 basis-[300px] max-w-lg bg-white rounded-xl shadow-md p-4 overflow-hidden">
                         <h3 className="text-md sm:text-lg md:text-xl lg:text-2xl font-semibold text-purple-700 text-center">
                             Take on our survey
                         </h3>
