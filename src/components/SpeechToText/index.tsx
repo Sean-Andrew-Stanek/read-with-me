@@ -286,7 +286,7 @@ const SpeechToText: React.FC<Props> = ({
                             className="gap-2"
                         >
                             <MicOff className="h-4 w-4" />
-                            Stop
+                            Pause
                         </Button>
                     ) : (
                         <Button
