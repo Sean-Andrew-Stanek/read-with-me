@@ -4,11 +4,12 @@ import { Search, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { Button } from "../ui/button";
 
 const SearchDropdown: React.FC = () => {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<Story[]>([]);
-    const [open, setOpen] = useState(false); // controls input visibility
+    const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const { data: session } = useSession();
@@ -74,9 +75,9 @@ const SearchDropdown: React.FC = () => {
                             className="bg-transparent placeholder-gray-500 text-gray-800 outline-none flex-grow"
                             autoFocus
                         />
-                        <button onClick={toggleSearch}>
+                        <Button onClick={toggleSearch}>
                             <X className="text-gray-600 size-5" />
-                        </button>
+                        </Button>
                     </>
                 )}
             </div>
