@@ -57,7 +57,9 @@ const Dashboard: FC = () => {
                 const id = await getRandomStoryId();
                 setRandomStoryId(id);
             } catch {
-                toast.error('You have not created any story yet. Try creating one!');
+                toast.error(
+                    'You have not created any story yet. Try creating one!'
+                );
             } finally {
                 setLoading(false);
             }
@@ -65,10 +67,7 @@ const Dashboard: FC = () => {
         fetchRandomId();
     }, []);
 
-    if (loading)
-        return (
-            <LoadingSpinner />
-        );
+    if (loading) return <LoadingSpinner />;
 
     return (
         <div className="flex flex-col gap-5 items-center  mt-10 min-h-screen max-w-screen-2xl mx-auto overflow-x-hidden w-[85%] ml-0">
@@ -80,9 +79,18 @@ const Dashboard: FC = () => {
                     </span>
 
                     <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-                        <Link href={randomStoryId ? `/read-story/${randomStoryId}` : '/create-story'}>
+                        <Link
+                            href={
+                                randomStoryId
+                                    ? `/read-story/${randomStoryId}`
+                                    : '/create-story'
+                            }
+                        >
                             <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
-                                {"I'm ready!"} <span className="pl-3"><MoveRight /></span>
+                                {"I'm ready!"}{' '}
+                                <span className="pl-3">
+                                    <MoveRight />
+                                </span>
                             </Button>
                         </Link>
 
@@ -100,7 +108,10 @@ const Dashboard: FC = () => {
                     <div className="flex items-center space-x-4 mt-4 sm:mt-0">
                         <Link href="#">
                             <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
-                                {"I'm ready!"} <span className="pl-3"><MoveRight /></span>
+                                {"I'm ready!"}{' '}
+                                <span className="pl-3">
+                                    <MoveRight />
+                                </span>
                             </Button>
                         </Link>
 
@@ -116,18 +127,22 @@ const Dashboard: FC = () => {
                             Weekly Test
                         </h3>
                         <p className="text-gray-600 mt-2 text-sm sm:text-sm md:text-md lg:text-xl text-center">
-                            Validate your improvements with these rewarding crafted sessions designed to help you increase your reading performances further!
+                            Validate your improvements with these rewarding
+                            crafted sessions designed to help you increase your
+                            reading performances further!
                         </p>
                         <div className="mt-auto flex justify-center">
                             <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl h-15 w-[50%] mt-4 mr-4">
-                                {"I'm ready !"} <span className='pl-4'><MoveRight /></span>
+                                {"I'm ready !"}{' '}
+                                <span className="pl-4">
+                                    <MoveRight />
+                                </span>
                             </Button>
                         </div>
                         <div className="absolute bottom-0 right-0 w-[60px] sm:w-[80px] md:w-[100px] lg:w-[120px] h-[60px] sm:h-[80px] md:h-[100px] lg:h-[120px]">
                             <Image
                                 src="/child-reading.png"
                                 alt="Child reading"
-
                                 priority={true}
                                 fill
                                 sizes="(max-width: 640px) 60px, (max-width: 768px) 80px, (max-width: 1024px) 100px, 120px"
@@ -141,11 +156,15 @@ const Dashboard: FC = () => {
                             Take on our survey
                         </h3>
                         <p className="text-gray-600 mt-2 text-sm sm:text-sm md:text-md lg:text-xl text-center">
-                            Give us your feedback and help us make our app better for you!
+                            Give us your feedback and help us make our app
+                            better for you!
                         </p>
                         <div className="mt-auto flex justify-center">
                             <Button className="border border-purple-500 bg-gray-100 text-purple-700 hover:bg-purple-50 px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl  h-15 w-[50%] mt-4 mr-4">
-                                Survey  <span className='pl-6'><MoveRight /></span>
+                                Survey{' '}
+                                <span className="pl-6">
+                                    <MoveRight />
+                                </span>
                             </Button>
                         </div>
                         <div className="absolute bottom-0 right-0 w-[60px] sm:w-[80px] md:w-[100px] lg:w-[120px] h-[60px] sm:h-[80px] md:h-[100px] lg:h-[120px]">
