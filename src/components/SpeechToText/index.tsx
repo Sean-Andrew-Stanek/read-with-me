@@ -237,6 +237,11 @@ const SpeechToText: React.FC<Props> = ({
                 'with score',
                 newScore
             );
+            // Manually update story object, so it shows score even when the page is not refreshed
+            story.scoresByParagraph = {
+                ...story.scoresByParagraph,
+                [paragraphIndex]: newScore
+            };
         } else {
             // eslint-disable-next-line no-console
             console.error('Failed to update score');
