@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { LogOut, User } from "lucide-react";
+import { Ellipsis, LogOut, User } from "lucide-react";
 import { signOut } from 'next-auth/react';
 import {
   DropdownMenu,
@@ -15,8 +15,8 @@ const UserDropdown: FC = (): JSX.Element => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="w-5 h-5 flex items-center justify-center rounded-full bg-white text-xl font-bold text-gray-700 select-none cursor-pointer hover:text-gray-900">
-          ...
+        <div className="w-5 h-5 flex items-center justify-center rounded-full bg-white text-xl font-bold text-gray-700 leading-none select-none cursor-pointer hover:text-gray-900">
+          <Ellipsis />
         </div>
       </DropdownMenuTrigger>
 
