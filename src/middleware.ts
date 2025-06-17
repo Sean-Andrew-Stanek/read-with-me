@@ -19,6 +19,8 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
         request.cookies.get('__Secure-authjs.session-token')?.value;
 
     if (isProtected && !token) {
+        // eslint-disable-next-line no-console
+        console.error('User is not authenticated, redirecting to home page');
         // redirect to / if not authenticated
         return NextResponse.redirect(new URL(navLink.home, request.url));
     }
@@ -28,5 +30,11 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-    matcher: ['/home', '/create-story', '/story-board', '/story-result', '/read-story/${story.id}']
+    matcher: [
+        '/home',
+        '/create-story',
+        '/story-board',
+        '/story-result',
+        '/read-story/${story.id}'
+    ]
 };
