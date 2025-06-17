@@ -35,7 +35,7 @@ const Sidebar = (): JSX.Element => {
     };
 
     const buttonSet = 'w-[45%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-2xl text-gray-700 hover:text-white bg-transparent hover:bg-yellow-400 shadow-none rounded-3xl'
-    const iconSet = 'size-12 mr-2 bg-amber-200 rounded-3xl p-1';
+    const iconSet = 'size-12 mr-2 bg-amber-200 rounded-3xl p-1 h-14 w-14 hover:rounded-6xl';
 
     return (
         <div className="w-[20%] h-screen bg-transparent mr-0 p-0 flex flex-col items-center transition-all duration-300 sm:text-black">
