@@ -157,7 +157,7 @@ const Dashboard: FC = () => {
                         <h3 className="text-md sm:text-lg md:text-xl lg:text-2xl font-semibold text-purple-700 text-center">
                             Take on our survey
                         </h3>
-                        <p className="text-gray-600 mt-4 text-xsm sm:text-sm md:text-md lg:text-xl text-center leading-loose">
+                        <p className="text-gray-600 mt-4 text-sm sm:text-md md:text-lg lg:text-2xl text-center leading-loose">
                             Give us your feedback and help us make our app
                             better for you!
                         </p>
