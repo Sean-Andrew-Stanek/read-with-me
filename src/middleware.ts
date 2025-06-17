@@ -16,8 +16,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     // Get cookie value
     const token =
         request.cookies.get('authjs.session-token')?.value ||
-        request.cookies.get('__Secure-authjs.session-token')?.value ||
-        request.cookies.get('__Host-authjs.csrf-token')?.value;
+        request.cookies.get('__Secure-authjs.session-token')?.value;
     if (isProtected && !token) {
         // eslint-disable-next-line no-console
         console.error('User is not authenticated, redirecting to home page');
