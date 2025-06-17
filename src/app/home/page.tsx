@@ -87,7 +87,7 @@ const Dashboard: FC = () => {
                             }
                         >
                             <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
-                                {"I'm ready!"}{' '}
+                                {"I'm ready!"}
                                 <span className="pl-3">
                                     <MoveRight />
                                 </span>
@@ -108,7 +108,7 @@ const Dashboard: FC = () => {
                     <div className="flex items-center space-x-4 mt-4 sm:mt-0">
                         <Link href="#">
                             <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
-                                {"I'm ready!"}{' '}
+                                {"I'm ready!"}
                                 <span className="pl-3">
                                     <MoveRight />
                                 </span>
@@ -126,19 +126,21 @@ const Dashboard: FC = () => {
                         <h3 className="text-md sm:text-lg md:text-xl lg:text-2xl font-semibold text-purple-700 text-center">
                             Weekly Test
                         </h3>
-                        <p className="text-gray-600 mt-2 text-sm sm:text-sm md:text-md lg:text-xl text-center">
+                        <p className="text-gray-600 mt-2 text-xsm sm:text-sm md:text-md lg:text-xl text-center leading-loose">
                             Validate your improvements with these rewarding
                             crafted sessions designed to help you increase your
                             reading performances further!
                         </p>
-                        <div className="mt-auto flex justify-center">
-                            <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl h-15 w-[50%] mt-4 mr-4">
-                                {"I'm ready !"}{' '}
-                                <span className="pl-4">
+                        <Link href="#" 
+                            className='mt-auto flex justify-center'
+                        >
+                            <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
+                                {"I'm ready!"}
+                                <span className="pl-3">
                                     <MoveRight />
                                 </span>
                             </Button>
-                        </div>
+                        </Link>
                         <div className="absolute bottom-0 right-0 w-[60px] sm:w-[80px] md:w-[100px] lg:w-[120px] h-[60px] sm:h-[80px] md:h-[100px] lg:h-[120px]">
                             <Image
                                 src="/child-reading.png"
@@ -155,18 +157,18 @@ const Dashboard: FC = () => {
                         <h3 className="text-md sm:text-lg md:text-xl lg:text-2xl font-semibold text-purple-700 text-center">
                             Take on our survey
                         </h3>
-                        <p className="text-gray-600 mt-2 text-sm sm:text-sm md:text-md lg:text-xl text-center">
+                        <p className="text-gray-600 mt-4 text-xsm sm:text-sm md:text-md lg:text-xl text-center leading-loose">
                             Give us your feedback and help us make our app
                             better for you!
                         </p>
-                        <div className="mt-auto flex justify-center">
-                            <Button className="border border-purple-500 bg-gray-100 text-purple-700 hover:bg-purple-50 px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl  h-15 w-[50%] mt-4 mr-4">
-                                Survey{' '}
-                                <span className="pl-6">
+                        <Link href="#" className="mt-auto flex justify-center">
+                            <Button className="border border-purple-500 bg-gray-100 text-purple-700 hover:bg-purple-50 px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl  flex items-center h-15">
+                                Survey
+                                <span className="pl-4">
                                     <MoveRight />
                                 </span>
                             </Button>
-                        </div>
+                        </Link>
                         <div className="absolute bottom-0 right-0 w-[60px] sm:w-[80px] md:w-[100px] lg:w-[120px] h-[60px] sm:h-[80px] md:h-[100px] lg:h-[120px]">
                             <Image
                                 src="/child-survey.png"
