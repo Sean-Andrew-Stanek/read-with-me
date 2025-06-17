@@ -16,7 +16,8 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     // Get cookie value
     const token =
         request.cookies.get('authjs.session-token')?.value ||
-        request.cookies.get('__Secure-authjs.session-token')?.value;
+        request.cookies.get('__Secure-authjs.session-token')?.value ||
+        request.cookies.get('_Host-authjs.session-token')?.value;
 
     if (isProtected && !token) {
         // eslint-disable-next-line no-console
