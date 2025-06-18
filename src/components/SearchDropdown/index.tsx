@@ -66,7 +66,7 @@ const SearchDropdown: React.FC = () => {
   }, []);
   
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative mt-8" ref={dropdownRef}>
       {open ? (
        <div className="flex items-center w-72 bg-white/40 backdrop-blur-md rounded-xl px-4 py-2 shadow-md transition-all duration-300">
           <Search className="mr-2 size-10 text-white shrink-0 font-bold" />
@@ -93,8 +93,8 @@ const SearchDropdown: React.FC = () => {
           variant="ghost"
           size="icon"
           onClick={toggleSearch}
-          className="h-20 w-20 rounded-xl bg-white/30 hover:bg-white/40
-             backdrop-blur-md border border-white/30 shadow-lg flex items-center justify-center"
+          className="h-20 w-20 rounded-xl bg-white/30 hover:bg-white/40 backdrop-blur-md 
+                     border border-white/30 shadow-lg flex items-center justify-center"
         >
           <Search className="size-18 text-white" />
         </Button>
