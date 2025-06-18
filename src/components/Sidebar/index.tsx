@@ -34,8 +34,8 @@ const Sidebar = (): JSX.Element => {
         setShowDialog(false);
     };
 
-    const buttonSet = 'w-[45%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-2xl text-gray-700 hover:text-white bg-transparent hover:bg-yellow-400 shadow-none rounded-3xl'
-    const iconSet = 'size-12 mr-2 bg-amber-200 rounded-3xl p-1 h-14 w-14 hover:rounded-6xl';
+    const buttonSet = 'w-[45%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-2xl text-gray-700 hover:text-white bg-transparent hover:bg-yellow-400 shadow-none rounded-4xl'
+    const iconSet = 'size-14 mr-2 bg-amber-200 rounded-3xl p-1 h-14 w-14';
 
     return (
         <div className="w-[20%] h-screen bg-transparent mr-0 pl-10 flex flex-col items-center transition-all duration-300 sm:text-black">
@@ -72,10 +72,10 @@ const Sidebar = (): JSX.Element => {
                     </div>
                 ) : null}
             </div>
-            <div className="w-full flex flex-col space-y-11 mr-0 p-0">
+            <div className="w-full flex flex-col space-y-8 mr-0 p-0">
                 <Link href={'/home'}>
                     <Button variant="default" className={buttonSet}>
-                        <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                        <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                             <Home className={iconSet} />
                         </span>
                         <span className="hidden sm:inline ml-2 truncate">
@@ -85,7 +85,7 @@ const Sidebar = (): JSX.Element => {
                 </Link>
                 <Link href="/story-board">
                     <Button variant="ghost" className={buttonSet}>
-                        <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                        <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                             <LibraryBig className={iconSet} />
                         </span>
                         <span className="hidden sm:inline ml-2 truncate">
@@ -95,7 +95,7 @@ const Sidebar = (): JSX.Element => {
                 </Link>
                 <Link href={'/favorites'}>
                     <Button variant="ghost" className={buttonSet}>
-                        <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                        <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                             <Heart className={iconSet} />
                         </span>
                         <span className="hidden sm:inline ml-2 truncate">
@@ -105,7 +105,7 @@ const Sidebar = (): JSX.Element => {
                 </Link>
                 <Link href="/create-story">
                     <Button variant="ghost" className={buttonSet}>
-                        <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                        <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                             <Sparkles className={iconSet} />
                         </span>
                         <span className="hidden sm:inline ml-2 truncate">
@@ -115,7 +115,7 @@ const Sidebar = (): JSX.Element => {
                 </Link>
                 <Link href="#">
                     <Button variant="ghost" className={buttonSet}>
-                        <span className="inline-flex items-center p-1 rounded-3xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                        <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                             <Trophy className={iconSet} />
                         </span>
                         <span className="hidden sm:inline ml-2 truncate">
