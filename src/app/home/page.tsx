@@ -95,7 +95,7 @@ const Dashboard: FC = () => {
                         </Link>
 
                         <span className="flex items-center rounded-full p-1 bg-transparent">
-                            <CircleArrowDown className="size-12 sm:size-16 p-2 bg-transparent rounded-3xl text-white font-extralight" />
+                            <CircleArrowDown className="size-12 sm:size-18 p-2 bg-transparent rounded-3xl text-white font-extralight hover:size-20" />
                         </span>
                     </div>
                 </div>
@@ -116,7 +116,7 @@ const Dashboard: FC = () => {
                         </Link>
 
                         <span className="flex items-center rounded-full p-1 bg-transparent">
-                            <CircleArrowDown className="size-12 sm:size-16 p-2 bg-transparent rounded-3xl text-white font-extralight" />
+                            <CircleArrowDown className="size-12 sm:size-18 p-2 bg-transparent rounded-3xl text-white font-extralight hover:size-20" />
                         </span>
                     </div>
                 </div>
