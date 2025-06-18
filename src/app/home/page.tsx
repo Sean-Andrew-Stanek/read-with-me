@@ -70,7 +70,7 @@ const Dashboard: FC = () => {
     if (loading) return <LoadingSpinner />;
 
     return (
-        <div className="flex flex-col gap-5 items-center  mt-10 min-h-screen max-w-screen-2xl mx-auto overflow-x-hidden w-[85%] ml-0">
+        <div className="flex flex-col gap-5 items-center  mt-10 min-h-screen max-w-screen-2xl mx-auto overflow-x-hidden w-[85%]">
             <div className="flex flex-col space-y-4 p-4 sm:p-8 md:p-16 bg-gray-100 rounded-[2rem] shadow-md w-[100%] my-0">
                 <div className="flex flex-col sm:flex-row items-center justify-between w-full bg-indigo-300 text-white rounded-2xl px-3 sm:px-5 md:px-6 lg:px-8 py-4 sm:py-6">
                     <span className="flex items-center space-x-3 font-extralight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">

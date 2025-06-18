@@ -38,7 +38,7 @@ const Sidebar = (): JSX.Element => {
     const iconSet = 'size-12 mr-2 bg-amber-200 rounded-3xl p-1 h-14 w-14 hover:rounded-6xl';
 
     return (
-        <div className="w-[20%] h-screen bg-transparent mr-0 p-0 flex flex-col items-center transition-all duration-300 sm:text-black">
+        <div className="w-[20%] h-screen bg-transparent mr-0 pl-10 flex flex-col items-center transition-all duration-300 sm:text-black">
             <div className="flex flex-col items-center mb-10 mr-0 p-0">
                 <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
                     <Image
