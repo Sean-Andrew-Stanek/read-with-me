@@ -71,58 +71,67 @@ const Dashboard: FC = () => {
     if (loading) return <LoadingSpinner />
 
     return (
-        <div className="relative flex flex-col gap-5 items-center mt-10 min-h-screen max-w-screen-2xl mx-auto overflow-x-hidden w-[85%]">
+        <div className="relative flex flex-col gap-5 items-center mt-10 min-h-screen max-w-screen-2xl mx-auto overflow-x-hidden w-[85%] ">
 
             {readOpen && (
-                // Fullscreen Panel Overlay
-                <div className="absolute inset-0 z-50 bg-indigo-300 text-white rounded-[2rem] p-6 sm:p-10 shadow-xl h-[60%]">
-                    <div className="flex justify-between items-start mb-6">
-                        <h2 className="text-3xl sm:text-4xl font-light flex items-center gap-3">
-                            <Sparkles className="w-8 h-8 fill-white" />
-                            Read a Story
-                        </h2>
-                        <Button
-                            variant="ghost"
-                            onClick={() => setReadOpen(false)}
-                            className="p-0 bg-transparent hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
-                        >
-                            <CircleArrowUp className="size-12 hover:size-14 stroke-white bg-transparent" />
-                        </Button>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-8">
-                        <div className="bg-white text-gray-800 rounded-xl p-6 text-center shadow-md flex-1 max-w-xl">
-                            <p className="text-base sm:text-lg leading-relaxed mb-4">
-                                Challenge and monitor your reading skills with our innovative reading interface.
-                                Match your interests with your favorite literary genres - we&#39;ll do the rest!
-                            </p>
-                            <Button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg text-lg flex items-center">
-                                I&#39;m ready! <MoveRight className="ml-2" />
+                <div className="absolute inset-0 z-50 bg-gray-100 flex items-center justify-center rounded-[2rem] shadow-md w-full h-[70%]">
+                    <div className="w-[95%] h-[90%] max-w-screen-2xl p-6 sm:p-10 bg-indigo-300 text-white rounded-[2rem] shadow-xl">
+                        <div className="flex justify-between items-start mb-6">
+                            <h2 className="font-extralight text-2xl sm:text-3xl md:text-4xl lg:text-5xl flex items-center gap-3">
+                                <Sparkles className="w-8 h-8 fill-white" />
+                                Read a Story
+                            </h2>
+                            <Button
+                                variant="ghost"
+                                onClick={() => setReadOpen(false)}
+                                className="p-0 bg-transparent hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                            >
+                                <CircleArrowUp className="size-12 sm:size-18 p-2 rounded-3xl font-extraligh text-white bg-transparent hover:size-20" />
                             </Button>
                         </div>
-                        <div className="w-[300px] sm:w-[400px] h-[500px] relative flex-shrink-0">
-                            <Image
-                                src="/girl-with-book.png"
-                                alt="Girl reading a book"
-                                layout="responsive"
-                                priority={true}
-                                width={400}
-                                height={500}
-                                className="object-contain transform -scale-x-100"
-                            />
+
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-8">
+                            <div className="bg-white text-gray-800 rounded-xl p-6 text-center shadow-md flex-1 max-w-2xl ml-auto">
+                                <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed mb-4">
+                                    Challenge and monitor your reading skills with our innovative reading interface.
+                                    Match your interests with your favorite literary genres — we&#39;ll do the rest!
+                                </p>
+                                <div className="flex w-full justify-center">
+                                    <Link
+                                        href={
+                                            randomStoryId
+                                                ? `/read-story/${randomStoryId}`
+                                                : '/create-story'
+                                        }
+                                        className="cursor-auto"
+                                    >
+                                        <Button className="bg-purple-600 hover:bg-purple-700 cursor-pointer text-white px-6 py-3 rounded-lg text-lg flex items-center mx-auto">
+                                            I&#39;m ready! <MoveRight className="ml-2" />
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className="w-[300px] sm:w-[400px] h-[500px] relative flex-shrink-0">
+                                <Image
+                                    src="/girl-with-book.png"
+                                    alt="Girl reading a book"
+                                    layout="responsive"
+                                    priority
+                                    width={400}
+                                    height={500}
+                                    className="object-contain transform -scale-x-100"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
-
-            {/* ✅ Normal Page Content (only visible when readOpen is false) */}
             {!readOpen && (
                 <div className="flex flex-col space-y-4 p-4 sm:p-8 md:p-16 bg-gray-100 rounded-[2rem] shadow-md w-full my-0">
-                    {/* Read a Story Header with Button */}
-                    <div className="flex flex-col bg-indigo-300 text-white rounded-2xl p-6 transition-all duration-300">
+                    <div className="flex flex-col bg-indigo-300 text-white rounded-2xl px-3 sm:px-5 md:px-6 lg:px-8 py-4 sm:py-6 min-h-[125px] transition-all duration-300">
                         <div className="flex items-center justify-between">
                             <span className="flex items-center space-x-3 font-extralight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
-                                <Flame className="fill-white sm:size-6 md:size-8 lg:size-9 mr-4" />
+                                <Sparkles className="fill-white sm:size-6 md:size-8 lg:size-9 mr-4" />
                                 <span>Read a Story</span>
                             </span>
                             <div className="flex items-center space-x-4">
@@ -149,14 +158,12 @@ const Dashboard: FC = () => {
                             </div>
                         </div>
                     </div>
-
                     {/* Challenges Section */}
                     <div className="flex flex-col sm:flex-row items-center justify-between w-full bg-indigo-300 text-white rounded-2xl px-3 sm:px-5 md:px-6 lg:px-8 py-4 sm:py-6">
                         <span className="flex items-center space-x-3 font-extralight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
                             <Flame className="fill-white sm:size-6 md:size-8 lg:size-9 mr-4" />
                             <span>Challenges</span>
                         </span>
-
                         <div className="flex items-center space-x-4 mt-4 sm:mt-0">
                             <Link href="#">
                                 <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
@@ -166,13 +173,11 @@ const Dashboard: FC = () => {
                                     </span>
                                 </Button>
                             </Link>
-
                             <span className="flex items-center rounded-full p-1 bg-transparent">
                                 <CircleArrowDown className="size-12 sm:size-18 p-2 bg-transparent rounded-3xl text-white font-extralight hover:size-20" />
                             </span>
                         </div>
                     </div>
-
                     {/* Weekly Test & Survey Cards */}
                     <div className="mt-6 flex flex-wrap justify-center gap-6 sm:gap-8 p-0">
                         {/* Weekly Test Card */}
@@ -202,7 +207,6 @@ const Dashboard: FC = () => {
                                 />
                             </div>
                         </div>
-
                         {/* Survey Card */}
                         <div className="relative flex flex-col flex-1 basis-[300px] max-w-lg bg-white rounded-xl shadow-md p-4 overflow-hidden">
                             <h3 className="text-md sm:text-lg md:text-xl lg:text-2xl font-semibold text-purple-700 text-center">
@@ -235,7 +239,6 @@ const Dashboard: FC = () => {
             )}
         </div>
     );
-
 };
 
 export default Dashboard;
