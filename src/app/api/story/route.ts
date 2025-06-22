@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { GoogleGenAI } from '@google/genai';
+// import OpenAI from 'openai';
 import { StorySchema, Story } from '@/lib/types/story';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { auth } from '@/auth';
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY!
+// const openai = new OpenAI({
+//     apiKey: process.env.OPENAI_API_KEY!
+// });
+const ai = new GoogleGenAI({
+    apiKey: process.env.GEMINI_API_KEY!
 });
 
 //Create a story
@@ -64,20 +68,37 @@ export const POST = async (req: Request): Promise<Response> => {
                 : `Write a unique, fun, and age-appropriate ${genre} story for a ${gradeLevel}.
 The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring.`;
 
-        const response = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
-            messages: [
+        // const response = await openai.chat.completions.create({
+        //     model: 'gpt-3.5-turbo',
+        //     messages: [
+        //         {
+        //             role: 'system',
+        //             content: `You are a children's storyteller. Create a short, engaging story for a ${gradeLevel}`
+        //         },
+        //         { role: 'user', content: generatedPrompt }
+        //     ],
+        //     max_tokens: 500,
+        //     temperature: 0.85
+        // });
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-1.5-flash',
+            contents: [
                 {
-                    role: 'system',
-                    content: `You are a children's storyteller. Create a short, engaging story for a ${gradeLevel}`
-                },
-                { role: 'user', content: generatedPrompt }
-            ],
-            max_tokens: 500,
-            temperature: 0.85
+                    role: 'user',
+                    parts: [
+                        {
+                            text: generatedPrompt
+                        }
+                    ]
+                }
+            ]
         });
 
-        const storyContent: string = response.choices[0].message?.content || '';
+        const storyContent =
+            response.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? '';
+
+        // const storyContent: string = response.choices[0].message?.content || '';
 
         /* eslint-disable no-console */
         console.log('Backend received grade:', grade);
