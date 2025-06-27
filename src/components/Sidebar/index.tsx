@@ -34,7 +34,8 @@ const Sidebar = (): JSX.Element => {
         setShowDialog(false);
     };
 
-    const buttonSet = 'w-[45%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-2xl text-gray-700 hover:text-white bg-transparent hover:bg-yellow-400 shadow-none rounded-4xl'
+    const buttonSet =
+        'w-[45%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-2xl text-gray-700 hover:text-white bg-transparent hover:bg-yellow-400 shadow-none rounded-4xl';
     const iconSet = 'size-14 mr-2 bg-amber-200 rounded-3xl p-1 h-14 w-14';
 
     return (
@@ -113,7 +114,7 @@ const Sidebar = (): JSX.Element => {
                         </span>
                     </Button>
                 </Link>
-                <Link href="#">
+                <Link href="/progress">
                     <Button variant="ghost" className={buttonSet}>
                         <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                             <Trophy className={iconSet} />
