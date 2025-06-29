@@ -74,12 +74,12 @@ const Dashboard: FC = () => {
         <div className="relative flex flex-col gap-5 items-center mt-10 min-h-screen max-w-screen-2xl mx-auto overflow-x-hidden w-[85%] ">
 
             {readOpen && (
-                <div className="absolute inset-0 z-50 bg-gray-100 flex items-center justify-center rounded-[2rem] shadow-md w-full h-[70%]">
-                    <div className="w-[95%] h-[90%] max-w-screen-2xl p-6 sm:p-10 bg-indigo-300 text-white rounded-[2rem] shadow-xl">
-                        <div className="flex justify-between items-start mb-6">
-                            <h2 className="font-extralight text-2xl sm:text-3xl md:text-4xl lg:text-5xl flex items-center gap-3">
-                                <Sparkles className="w-8 h-8 fill-white" />
-                                Read a Story
+                <div className="absolute inset-0 z-50 bg-gray-100 flex items-center justify-center rounded-[2rem] shadow-md w-full h-[61%]">
+                    <div className="w-[95%] h-[80%] max-w-screen-2xl p-6 sm:p-10 bg-indigo-300 text-white rounded-2xl shadow-xl m-[4.5%] mt-[7%] mb-[8%]">
+                        <div className="flex justify-between items-start h-15">
+                            <h2 className="flex items-center space-x-3 font-extralight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+                                <Sparkles className="fill-white sm:size-6 md:size-8 lg:size-9 mr-4" />
+                                <span className='ml-2'>Read a Story</span>
                             </h2>
                             <Button
                                 variant="ghost"
@@ -90,35 +90,32 @@ const Dashboard: FC = () => {
                             </Button>
                         </div>
 
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-8">
-                            <div className="bg-white text-gray-800 rounded-xl p-6 text-center shadow-md flex-1 max-w-2xl ml-auto">
+                        <div className="flex flex-row items-center justify-between gap-5 ml-10 w-full">
+                            <div className="bg-white text-gray-800 rounded-xl p-6 text-center shadow-md flex-1 max-w-2xl 
+                                                translate-x-4 -translate-y-3 sm:translate-x-6 sm:-translate-y-5">
                                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed mb-4">
                                     Challenge and monitor your reading skills with our innovative reading interface.
                                     Match your interests with your favorite literary genres — we&#39;ll do the rest!
                                 </p>
                                 <div className="flex w-full justify-center">
                                     <Link
-                                        href={
-                                            randomStoryId
-                                                ? `/read-story/${randomStoryId}`
-                                                : '/create-story'
-                                        }
+                                        href={randomStoryId ? `/read-story/${randomStoryId}` : '/create-story'}
                                         className="cursor-auto"
                                     >
-                                        <Button className="bg-purple-600 hover:bg-purple-700 cursor-pointer text-white px-6 py-3 rounded-lg text-lg flex items-center mx-auto">
+                                        <Button className="bg-purple-600 hover:bg-purple-700 cursor-pointer text-base sm:text-md md:text-lg lg:text-xl  text-white  rounded-lg flex items-center mx-auto">
                                             I&#39;m ready! <MoveRight className="ml-2" />
                                         </Button>
                                     </Link>
                                 </div>
                             </div>
-                            <div className="w-[300px] sm:w-[400px] h-[500px] relative flex-shrink-0">
+                            <div className="w-[300px] sm:w-[450px] h-[562px] relative flex-shrink-0">
                                 <Image
                                     src="/girl-with-book.png"
                                     alt="Girl reading a book"
                                     layout="responsive"
                                     priority
-                                    width={400}
-                                    height={500}
+                                    width={450}
+                                    height={562}
                                     className="object-contain transform -scale-x-100"
                                 />
                             </div>
@@ -128,10 +125,11 @@ const Dashboard: FC = () => {
             )}
             {!readOpen && (
                 <div className="flex flex-col space-y-4 p-4 sm:p-8 md:p-16 bg-gray-100 rounded-[2rem] shadow-md w-full my-0">
+                    {/* Read Story Section */}
                     <div className="flex flex-col bg-indigo-300 text-white rounded-2xl px-3 sm:px-5 md:px-6 lg:px-8 py-4 sm:py-6 min-h-[125px] transition-all duration-300">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between mt-2">
                             <span className="flex items-center space-x-3 font-extralight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
-                                <Sparkles className="fill-white sm:size-6 md:size-8 lg:size-9 mr-4" />
+                                <Sparkles className="fill-white sm:size-6 md:size-8 lg:size-9 mr-6 ml-2" />
                                 <span>Read a Story</span>
                             </span>
                             <div className="flex items-center space-x-4">
