@@ -90,7 +90,7 @@ const Dashboard: FC = () => {
             )}
 
             {challengesOpen && (
-                <ChallengesExpandedPanel 
+                <ChallengesExpandedPanel
                     randomStoryId={randomStoryId}
                     setReadOpen={setReadOpen}
                     setChallengesOpen={setChallengesOpen}
