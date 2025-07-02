@@ -112,14 +112,14 @@ const StoryBoard: React.FC = () => {
                         </div>
                         <div className="flex justify-end items-center mt-auto">
                             <Button
-                                className="mr-4 bg-violet-400 hover:bg-gray-200 hover:text-violet-500 hover:border hover:border-violet-500"
+                                className="mr-4 bg-violet-400 hover:bg-gray-200 hover:text-violet-500 hover:border hover:border-violet-500 cursor-pointer"
                                 onClick={() =>
                                     router.push(`/read-story/${story.id}`)
                                 }
                             >
                                 Read
                             </Button>
-                            <Button className="bg-violet-400 hover:bg-gray-200 hover:text-violet-500 hover:border hover:border-violet-500">
+                            <Button className="bg-violet-400 hover:bg-gray-200 hover:text-violet-500 hover:border hover:border-violet-500 cursor-pointer">
                                 Delete
                             </Button>
                         </div>
