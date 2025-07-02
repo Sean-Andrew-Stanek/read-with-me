@@ -9,6 +9,9 @@ import {
     convertToTitleCase,
     formatSentencesWithSpacing
 } from '@/lib/utils/formatters';
+import Link from 'next/link';
+import { PlusIcon } from 'lucide-react';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const StoryBoard: React.FC = () => {
     const { data: session, status } = useSession();
@@ -84,11 +87,10 @@ const StoryBoard: React.FC = () => {
             <h1 className="text-2xl font-bold mb-8 text-center">
                 Generated Stories
             </h1>
-
-            {loading && <p className="text-center">Loading stories...</p>}
+            {loading && <LoadingSpinner />}
             {error && <p className="text-red-500 text-center">{error}</p>}
             {stories.length === 0 && !loading && !error && (
-                <p className="text-center">No stories found.</p>
+                <p className="text-center mb-8">No stories found. Create a story.</p>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -125,6 +127,18 @@ const StoryBoard: React.FC = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+            <div className='flex items-center justify-center'>
+                <Link href="/create-story">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-20 w-20 rounded-xl bg-white/30 hover:bg-white/40 backdrop-blur-md 
+                     border border-white/30 shadow-lg flex items-center justify-center cursor-pointer"
+                    >  
+                        <PlusIcon className="size-18 text-white" />
+                    </Button>
+                </Link>
             </div>
         </div>
     );
