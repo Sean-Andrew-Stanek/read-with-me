@@ -90,9 +90,24 @@ const StoryBoard: React.FC = () => {
             {loading && <LoadingSpinner />}
             {error && <p className="text-red-500 text-center">{error}</p>}
             {stories.length === 0 && !loading && !error && (
+                <>
                 <p className="text-center mb-8">No stories found. Create a story.</p>
+                <div className="mb-5 p-6 bg-transparent border rounded-lg shadow-none flex items-center justify-center transition">
+                    <Link href="/create-story">
+                        <Button
+                            variant="ghost"
+                            title="Create a Story"
+                            size="icon"
+                            className="h-20 w-20 rounded-xl bg-white/30 hover:bg-white/40 backdrop-blur-md 
+                     border border-white/30 shadow-lg flex items-center justify-center cursor-pointer"
+                        >
+                            <PlusIcon className="size-18 text-white" />
+                        </Button>
+                    </Link>
+                </div>
+                </>
             )}
-
+             {stories.length >= 1 && !loading && !error && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {stories.map(story => (
                     <div
@@ -127,20 +142,23 @@ const StoryBoard: React.FC = () => {
                         </div>
                     </div>
                 ))}
-            </div>
-            <div className='flex items-center justify-center'>
-                <Link href="/create-story">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-20 w-20 rounded-xl bg-white/30 hover:bg-white/40 backdrop-blur-md 
+                <div className="mb-5 p-6 bg-transparent border rounded-lg shadow-none flex items-center justify-center transition">
+                    <Link href="/create-story">
+                        <Button
+                            variant="ghost"
+                            title="Create a Story"
+                            size="icon"
+                            className="h-20 w-20 rounded-xl bg-white/30 hover:bg-white/40 backdrop-blur-md 
                      border border-white/30 shadow-lg flex items-center justify-center cursor-pointer"
-                    >  
-                        <PlusIcon className="size-18 text-white" />
-                    </Button>
-                </Link>
+                        >
+                            <PlusIcon className="size-18 text-white" />
+                        </Button>
+                    </Link>
+                </div>
             </div>
+             )}
         </div>
+            
     );
 };
 
