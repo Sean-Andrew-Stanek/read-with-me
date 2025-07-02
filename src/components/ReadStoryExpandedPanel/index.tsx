@@ -16,7 +16,7 @@ const ReadStoryExpandedPanel = ({
 
     return (
         <>
-            <div className="absolute inset-0 z-50 bg-gray-100 flex items-center justify-center rounded-[2rem] shadow-md w-full h-[61%]">
+            <div className="absolute inset-0 z-50 bg-gray-100 flex items-center justify-center rounded-[2rem] shadow-md w-full h-[76%]">
                 <div className="w-[95%] h-[80%] max-w-screen-2xl p-6 sm:p-10 bg-indigo-300 text-white rounded-2xl shadow-xl m-[4.5%] mt-[7%] mb-[8%]">
                     <div className="flex justify-between items-start h-15">
                         <h2 className="flex items-center space-x-3 font-extralight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
@@ -46,7 +46,7 @@ const ReadStoryExpandedPanel = ({
                                 </Link>
                             </div>
                         </div>
-                        <div className="w-[300px] sm:w-[450px] h-[562px] relative flex-shrink-0">
+                        <div className="w-[300px] sm:w-[300px] h-[374px] relative flex-shrink-0">
                             <Image
                                 src="/girl-with-book.png"
                                 alt="Girl reading a book"
