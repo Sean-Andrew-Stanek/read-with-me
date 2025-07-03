@@ -3,7 +3,8 @@ import {
     putUserGradeURI,
     getUserDataUri,
     getStoriesUri,
-    getStoryByIdUri
+    getStoryByIdUri,
+    deleteStoryUri
 } from '@/config/apiUri';
 import { Story } from '@/lib/types/story';
 import { ChildUser, ParentUser } from '@/lib/types/user';
@@ -128,11 +129,31 @@ const getRandomStoryId = async (): Promise<string> => {
     return randomStory.id;
 };
 
+const deleteStory = async (id: string): Promise<void> => {
+    if (!id) {
+        return Promise.reject('Story ID is required to delete.');
+    }
+
+    try {
+        const response = await fetch(deleteStoryUri(id), {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to delete story.'); 
+        }
+    } catch (error) {
+        throw new Error(`Error deleting story: ${error}`);
+    }
+};
+
 export {
     postNewStory,
     getUserData,
     getStories,
     putUserGrade,
     getStoryById,
-    getRandomStoryId
+    getRandomStoryId,
+    deleteStory,
 };

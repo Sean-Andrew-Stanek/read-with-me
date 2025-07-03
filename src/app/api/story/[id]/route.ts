@@ -83,3 +83,31 @@ export async function PATCH(
         );
     }
 }
+
+export async function DELETE(
+    _request: Request,
+    { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
+    try {
+        const id = (await params).id;
+        const session = await auth();
+
+        if (!session || !session.user?.uuid) {
+            return NextResponse.json({error: 'Unauthorized' }, {status: 401 });
+        }
+
+        const client = await clientPromise;
+        const db = client.db('read-with-me');
+        const result = await db.collection('stories').deleteOne({ id });
+
+        if (result.deletedCount === 0) {
+            return NextResponse.json({error: "Story not found."}, { status: 404 });
+        }
+
+        return new NextResponse(null, { status: 204 });
+    } catch (error) {
+        return NextResponse.json(
+            { error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500}
+        );
+    }
+}
