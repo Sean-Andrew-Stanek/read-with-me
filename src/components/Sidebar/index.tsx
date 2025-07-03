@@ -46,6 +46,7 @@ const Sidebar = (): JSX.Element => {
                         src="/profile.png"
                         width={120}
                         height={120}
+                        priority
                         alt="Picture of the user"
                         className="rounded-xl p-0"
                     />
