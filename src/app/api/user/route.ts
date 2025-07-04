@@ -17,7 +17,7 @@ export const GET = async (req: Request): Promise<Response> => {
             );
         }
         const session = await auth();
-        if (!session || session.user.uuid !== uuid) {
+        if (!session) {
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
@@ -36,6 +36,18 @@ export const GET = async (req: Request): Promise<Response> => {
             return NextResponse.json(
                 { error: 'User not found' },
                 { status: 404 }
+            );
+        }
+        // user requesting their own data
+        const isSelf = session.user.uuid === uuid;
+        const isParentOfChild =
+            !user.isParent && user.parentId === session.user.uuid;
+
+        // if it's not their own data and not parent, deny access
+        if (!isSelf && !isParentOfChild) {
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
             );
         }
 
