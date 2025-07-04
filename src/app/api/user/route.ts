@@ -68,7 +68,9 @@ export const GET = async (req: Request): Promise<Response> => {
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
     const { userName, password } = await req.json();
 
-    if (!userName || !password) {
+    const sanitizedUserName = userName?.trim().toLowerCase();
+
+    if (!sanitizedUserName || !password) {
         return NextResponse.json(
             { error: 'Missing username or password' },
             { status: 400 }
@@ -90,7 +92,7 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
 
         const existingChild = await db
             .collection('childUsers')
-            .findOne({ userName });
+            .findOne({ userName: sanitizedUserName });
 
         if (existingChild) {
             return NextResponse.json(
@@ -103,14 +105,17 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         await db.collection('childUsers').insertOne({
-            userName,
+            userName: sanitizedUserName,
             password: hashedPassword,
             uuid: uuidv4(),
             isParent: false,
             createdAt: new Date()
         });
 
-        return NextResponse.json({ userName }, { status: 201 });
+        return NextResponse.json(
+            { userName: sanitizedUserName },
+            { status: 201 }
+        );
     } catch {
         return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
@@ -148,6 +153,20 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
                 { status: 404 }
             );
         }
+        // check if child already exists
+        if (child.parentId === parentUuid) {
+            return NextResponse.json(
+                {
+                    message: 'Child already linked to this parent.',
+                    child: {
+                        uuid: child.uuid,
+                        userName: child.userName,
+                        grade: child.grade ?? null
+                    }
+                },
+                { status: 200 }
+            );
+        }
 
         // Prevent linking to a different parent
         if (child.parentId && child.parentId !== parentUuid) {
@@ -159,7 +178,7 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
 
         // Link child to parent and update grade
         await db.collection('childUsers').updateOne(
-            { userName },
+            { userName: sanitizedUserName },
             {
                 $set: {
                     grade: Number(grade),
@@ -176,7 +195,15 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
                 { $addToSet: { children: child.uuid } }
             );
 
-        return NextResponse.json({ success: true });
+        // return updated child info
+        return NextResponse.json({
+            success: true,
+            child: {
+                uuid: child.uuid,
+                userName: child.userName,
+                grade: Number(grade)
+            }
+        });
     } catch {
         return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
