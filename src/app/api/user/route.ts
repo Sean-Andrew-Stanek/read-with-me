@@ -117,37 +117,101 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
 };
 
 // This can be expanded later to include other user details
-export const PUT = async (req: NextRequest): Promise<NextResponse> => {
-    const { uuid, grade } = await req.json();
+// export const PUT = async (req: NextRequest): Promise<NextResponse> => {
+//     const { uuid, grade } = await req.json();
 
-    if (!uuid || grade === undefined) {
+//     if (!uuid || grade === undefined) {
+//         return NextResponse.json(
+//             { error: 'Missing uuid or grade' },
+//             { status: 400 }
+//         );
+//     }
+
+//     try {
+//         const session = await auth();
+//         if (!session || session.user.uuid !== uuid) {
+//             return NextResponse.json(
+//                 { error: 'Unauthorized' },
+//                 { status: 401 }
+//             );
+//         }
+//         const client = await clientPromise;
+//         const db = client.db();
+
+//         const result = await db
+//             .collection('childUsers')
+//             .updateOne({ uuid }, { $set: { grade: Number(grade) } });
+
+//         if (result.modifiedCount === 0) {
+//             return NextResponse.json(
+//                 { error: 'User not found or grade not updated' },
+//                 { status: 404 }
+//             );
+//         }
+
+//         return NextResponse.json({ success: true });
+//     } catch {
+//         return NextResponse.json({ error: 'Server error' }, { status: 500 });
+//     }
+// };
+export const PUT = async (req: NextRequest): Promise<NextResponse> => {
+    const { userName, grade } = await req.json();
+
+    const sanitizedUserName = userName?.trim().toLowerCase();
+    if (!sanitizedUserName || grade === undefined) {
         return NextResponse.json(
-            { error: 'Missing uuid or grade' },
+            { error: 'Missing child username or grade' },
             { status: 400 }
         );
     }
 
+    const session = await auth();
+    if (!session || !session.user.isParent) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const parentUuid = session.user.uuid;
+
     try {
-        const session = await auth();
-        if (!session || session.user.uuid !== uuid) {
-            return NextResponse.json(
-                { error: 'Unauthorized' },
-                { status: 401 }
-            );
-        }
         const client = await clientPromise;
         const db = client.db();
 
-        const result = await db
+        const child = await db
             .collection('childUsers')
-            .updateOne({ uuid }, { $set: { grade: Number(grade) } });
-
-        if (result.modifiedCount === 0) {
+            .findOne({ userName: sanitizedUserName });
+        if (!child) {
             return NextResponse.json(
-                { error: 'User not found or grade not updated' },
+                { error: 'Child not found' },
                 { status: 404 }
             );
         }
+
+        // Prevent linking to a different parent
+        if (child.parentId && child.parentId !== parentUuid) {
+            return NextResponse.json(
+                { error: 'Child is already linked to another parent' },
+                { status: 403 }
+            );
+        }
+
+        // Link child to parent and update grade
+        await db.collection('childUsers').updateOne(
+            { userName },
+            {
+                $set: {
+                    grade: Number(grade),
+                    parentId: parentUuid
+                }
+            }
+        );
+
+        // Add child UUID to parent's children array
+        await db
+            .collection('users')
+            .updateOne(
+                { uuid: parentUuid },
+                { $addToSet: { children: child.uuid } }
+            );
 
         return NextResponse.json({ success: true });
     } catch {
