@@ -37,6 +37,13 @@ const Profile: React.FC = () => {
                         const res = await fetch(`/api/user?uuid=${childUuid}`);
                         if (!res.ok) return null;
                         const child = await res.json();
+
+                        if (
+                            child.parentLinkExpiresAt &&
+                            new Date(child.parentLinkExpiresAt) < new Date()
+                        ) {
+                            return null;
+                        }
                         return child;
                     })
                 );

@@ -66,7 +66,12 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
             .collection('childUsers')
             .updateOne(
                 { uuid: session.user.uuid },
-                { $set: { parentId: linkToken.parentId } }
+                {
+                    $set: {
+                        parentId: linkToken.parentId,
+                        parentLinkExpiresAt: linkToken.expiresAt
+                    }
+                }
             );
 
         // update parent's children array
