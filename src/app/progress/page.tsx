@@ -49,7 +49,10 @@ const ProgressPage: React.FC = async () => {
                         Total Stories Read
                     </h2>
                 </div>
-                <Progress value={globalProgress} className="h-4 rounded-full" />
+                <Progress
+                    value={globalProgress}
+                    className="h-4 rounded-full [&>*]:bg-teal-400"
+                />
                 <p className="text-sm text-muted-foreground mt-2">
                     {globalProgress}% of stories completed
                 </p>
@@ -69,7 +72,7 @@ const ProgressPage: React.FC = async () => {
                         return (
                             <div
                                 key={story.id}
-                                className="p-5 border rounded-2xl shadow-sm hover:shadow-md transition"
+                                className="p-5 border rounded-2xl bg-muted shadow-sm hover:shadow-md transition"
                             >
                                 <h3 className="text-lg font-bold mb-2">
                                     {story.title}
@@ -77,7 +80,7 @@ const ProgressPage: React.FC = async () => {
 
                                 <Progress
                                     value={progress}
-                                    className="h-3 rounded-full"
+                                    className="h-3 rounded-full  [&>*]:bg-sky-400"
                                 />
                                 <p className="text-sm text-muted-foreground mt-1 mb-2">
                                     {progress}% read
