@@ -20,6 +20,7 @@ const Profile: React.FC = () => {
     const { data: session } = useSession();
     const [showDialog, setShowDialog] = useState(false);
     const [children, setChildren] = useState<ChildUserWithName[]>([]);
+    const [linkToken, setLinkToken] = useState<string | null>(null);
 
     const grade = session?.user?.grade;
     const isParent = session?.user?.isParent;
@@ -61,6 +62,22 @@ const Profile: React.FC = () => {
         }
         localStorage.removeItem('toast');
         setShowDialog(false);
+    };
+
+    const handleGenerateToken = async (): Promise<void> => {
+        try {
+            const res = await fetch('api/token', { method: 'POST' });
+            const data = await res.json();
+
+            if (res.ok && data.token) {
+                setLinkToken(data.token);
+                toast.success('Token generated!');
+            } else {
+                toast.error(data.error || 'Failed to generate token!');
+            }
+        } catch {
+            toast.error('Something went wrong.');
+        }
     };
 
     return (
@@ -135,6 +152,20 @@ const Profile: React.FC = () => {
                         </button>
                     </div>
                 )}
+                <div className="mt-4">
+                    <button
+                        className="text-indigo-600 text-sm underline hover:text-indigo-800 cursor-pointer"
+                        onClick={handleGenerateToken}
+                    >
+                        Generate Link Token
+                    </button>
+
+                    {linkToken && (
+                        <div className="mt-2 p-3 bg-gray-100 border rounded text-center font-mono">
+                            Share this token: <strong>{linkToken}</strong>
+                        </div>
+                    )}
+                </div>
 
                 <div className="mt-8">
                     <Link href="/home">
