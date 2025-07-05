@@ -94,7 +94,7 @@ const SearchDropdown: React.FC = () => {
           size="icon"
           onClick={toggleSearch}
           className="h-20 w-20 rounded-xl bg-white/30 hover:bg-white/40 backdrop-blur-md 
-                     border border-white/30 shadow-lg flex items-center justify-center"
+                     border border-white/30 shadow-lg flex items-center justify-center cursor-pointer"
         >
           <Search className="size-18 text-white" />
         </Button>
