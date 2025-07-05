@@ -62,7 +62,8 @@ export const GET = async (req: Request): Promise<Response> => {
                 userName: user.userName,
                 grade: user.grade ?? null,
                 googleId: user.googleId ?? null,
-                email: user.email ?? null
+                email: user.email ?? null,
+                parentLinkExpiresAt: user.parentLinkExpiresAt ?? null
             },
             { status: 200 }
         );

@@ -17,7 +17,7 @@ export const POST = async (_req: NextRequest): Promise<NextResponse> => {
         parentId: session.user.uuid,
         isUsed: false,
         createdAt: new Date(),
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24) // 24 hours
+        expiresAt: new Date(Date.now() + 1000 * 60 * 5) // 24 hours
     };
 
     try {
@@ -62,17 +62,15 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
         }
 
         // find the child's uuid and set their parent to the one with token
-        await db
-            .collection('childUsers')
-            .updateOne(
-                { uuid: session.user.uuid },
-                {
-                    $set: {
-                        parentId: linkToken.parentId,
-                        parentLinkExpiresAt: linkToken.expiresAt
-                    }
+        await db.collection('childUsers').updateOne(
+            { uuid: session.user.uuid },
+            {
+                $set: {
+                    parentId: linkToken.parentId,
+                    parentLinkExpiresAt: linkToken.expiresAt
                 }
-            );
+            }
+        );
 
         // update parent's children array
         await db
