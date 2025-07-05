@@ -53,14 +53,14 @@ const LinkChildDialog = ({ open, onClose, onLinked }: LinkChildDialogProps) => {
                         placeholder="Child's Username"
                         value={userName}
                         onChange={e => setUserName(e.target.value)}
-                        className="border p-2 rounded"
+                        className="border p-2 rounded cursor-pointer"
                         required
                     />
 
                     <select
                         value={grade}
                         onChange={e => setGrade(Number(e.target.value))}
-                        className="border p-2 rounded"
+                        className="border p-2 rounded cursor-pointer"
                         required
                     >
                         <option value="">Select Grade</option>
@@ -73,7 +73,7 @@ const LinkChildDialog = ({ open, onClose, onLinked }: LinkChildDialogProps) => {
 
                     <button
                         type="submit"
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
                     >
                         Link Child
                     </button>
