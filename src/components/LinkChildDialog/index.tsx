@@ -9,13 +9,13 @@ import {
 } from '@/components/ui/dialog';
 import { grades } from '@/lib/constants/grades';
 
-const LinkChildDialog = ({
-    open,
-    onClose
-}: {
+type LinkChildDialogProps = {
     open: boolean;
     onClose: () => void;
-}) => {
+    onLinked: () => void;
+};
+
+const LinkChildDialog = ({ open, onClose, onLinked }: LinkChildDialogProps) => {
     const [userName, setUserName] = useState('');
     const [grade, setGrade] = useState<number | ''>('');
 
@@ -34,6 +34,7 @@ const LinkChildDialog = ({
             toast.success('Child linked successfully!');
             setUserName('');
             setGrade('');
+            onLinked();
             onClose();
         } else {
             toast.error(data.error || 'Something went wrong');
