@@ -55,6 +55,9 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
         // validating raw token
         const linkToken = LinkTokenSchema.parse(rawToken);
         if (linkToken.isUsed || linkToken.expiresAt < new Date()) {
+            // delete the expired token from DB
+            await db.collection('link_tokens').deleteOne({ token });
+
             return NextResponse.json(
                 { error: 'Token is invalid or expired' },
                 { status: 400 }
