@@ -172,12 +172,12 @@ const Profile: React.FC = () => {
                                 ))}
                             </ul>
                         )}
-                        <button
+                        {/* <button
                             className="mt-2 text-blue-600 text-sm underline hover:text-blue-800 cursor-pointer"
                             onClick={() => setShowDialog(true)}
                         >
                             Link a child account
-                        </button>
+                        </button> */}
                         <div className="mt-4">
                             <button
                                 className="text-indigo-600 text-sm underline hover:text-indigo-800 cursor-pointer"

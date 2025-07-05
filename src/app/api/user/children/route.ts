@@ -23,7 +23,10 @@ export const DELETE = async (req: NextRequest): Promise<NextResponse> => {
     // remove parent id from child
     await db
         .collection('childUsers')
-        .updateOne({ uuid: childUuid }, { $unset: { parentId: '' } });
+        .updateOne(
+            { uuid: childUuid },
+            { $unset: { parentId: '', parentLinkExpiresAt: '' } }
+        );
 
     return NextResponse.json({ success: true });
 };
