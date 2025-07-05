@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -12,17 +12,19 @@ import { Button } from '@/components/ui/button';
 import UserDropdown from '@/components/Sidebar/UserDropdown';
 import OnboardingDialog from '@/components/OnBoardingDialog';
 import LinkChildDialog from '@/components/LinkChildDialog';
+import { ChildUser } from '@/lib/types/user';
+
+type ChildUserWithName = ChildUser & { userName: string };
 
 const Profile: React.FC = () => {
     const { data: session } = useSession();
     const [showDialog, setShowDialog] = useState(false);
-    const [children, setChildren] = useState<any[]>([]);
+    const [children, setChildren] = useState<ChildUserWithName[]>([]);
 
     const grade = session?.user?.grade;
     const isParent = session?.user?.isParent;
 
-    // Extracted so we can reuse it after linking
-    const fetchChildren = async () => {
+    const fetchChildren = useCallback(async (): Promise<void> => {
         if (isParent && session?.user?.uuid) {
             const res = await fetch(`/api/user?uuid=${session.user.uuid}`);
             const data = await res.json();
@@ -32,7 +34,6 @@ const Profile: React.FC = () => {
                         const res = await fetch(`/api/user?uuid=${childUuid}`);
                         if (!res.ok) return null;
                         const child = await res.json();
-                        console.log('Fetched child:', child);
                         return child;
                     })
                 );
@@ -41,11 +42,11 @@ const Profile: React.FC = () => {
                 setChildren([]);
             }
         }
-    };
+    }, [isParent, session?.user?.uuid]);
 
     useEffect(() => {
         fetchChildren();
-    }, [isParent, session?.user?.uuid]);
+    }, [fetchChildren]);
 
     const handleOnboarded = (): void => {
         const toastType = localStorage.getItem('toast');
@@ -118,7 +119,9 @@ const Profile: React.FC = () => {
                                         <span>{child.userName}</span>
                                         <span className="text-gray-500 text-xs">
                                             Grade:{' '}
-                                            {grades[child.grade] ?? 'Not set'}
+                                            {grades[
+                                                child.grade as keyof typeof grades
+                                            ] ?? 'Not set'}
                                         </span>
                                     </li>
                                 ))}

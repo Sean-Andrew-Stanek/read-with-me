@@ -1,6 +1,7 @@
 import { auth } from '@/auth';
 import clientPromise from '@/lib/mongodb';
 import { Story, StorySchema } from '@/lib/types/story';
+import { JSX } from 'react';
 import {
     getStoryProgress,
     getAverageScore,
@@ -9,7 +10,7 @@ import {
 import { Progress } from '@/components/ui/progress';
 import { redirect } from 'next/navigation';
 
-const ProgressPage = async () => {
+const ProgressPage: React.FC = async () => {
     const session = await auth();
     if (!session || !session.user?.uuid) {
         redirect('/login');
@@ -50,7 +51,7 @@ const ProgressPage = async () => {
             </section>
 
             <section className="space-y-6">
-                {stories.map(story => {
+                {stories.map((story: Story): JSX.Element => {
                     const progress = getStoryProgress(story);
                     const avg = getAverageScore(story);
 

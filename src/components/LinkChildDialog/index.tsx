@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, JSX } from 'react';
 import { toast } from 'sonner';
 import {
     Dialog,
@@ -15,11 +15,15 @@ type LinkChildDialogProps = {
     onLinked: () => void;
 };
 
-const LinkChildDialog = ({ open, onClose, onLinked }: LinkChildDialogProps) => {
+const LinkChildDialog = ({
+    open,
+    onClose,
+    onLinked
+}: LinkChildDialogProps): JSX.Element => {
     const [userName, setUserName] = useState('');
     const [grade, setGrade] = useState<number | ''>('');
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
 
         const res = await fetch('/api/user', {
