@@ -1,9 +1,10 @@
 const baseApiUri =
     process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
 
-const putUserGradeURI = (): string => `${baseApiUri}/user`;
+const putUserGradeURI = (): string => `${baseApiUri}/grade`;
 const postNewStoryUri = (): string => `${baseApiUri}/story`;
-const getUserDataUri = (uuid: string): string => `${baseApiUri}/user?uuid=${uuid}`;
+const getUserDataUri = (uuid: string): string =>
+    `${baseApiUri}/user?uuid=${uuid}`;
 const getStoriesUri = (parentId?: string, childId?: string): string => {
     const params = new URLSearchParams();
     if (parentId) params.append('parentId', parentId);
@@ -13,4 +14,11 @@ const getStoriesUri = (parentId?: string, childId?: string): string => {
 const getStoryByIdUri = (id: string): string => `${baseApiUri}/story/${id}`;
 const deleteStoryUri = (id: string): string => `${baseApiUri}/story/${id}`;
 
-export { putUserGradeURI, postNewStoryUri, getUserDataUri, getStoriesUri, getStoryByIdUri, deleteStoryUri };
+export {
+    putUserGradeURI,
+    postNewStoryUri,
+    getUserDataUri,
+    getStoriesUri,
+    getStoryByIdUri,
+    deleteStoryUri
+};

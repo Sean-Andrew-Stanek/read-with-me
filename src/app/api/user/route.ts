@@ -167,8 +167,27 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
                 { status: 404 }
             );
         }
+
+        // Link child to parent and update grade
+        await db.collection('childUsers').updateOne(
+            { userName: sanitizedUserName },
+            {
+                $set: {
+                    grade: Number(grade),
+                    parentId: parentUuid
+                }
+            }
+        );
+
         // check if child already exists
         if (child.parentId === parentUuid) {
+            // update the grade
+            await db
+                .collection('childUsers')
+                .updateOne(
+                    { uuid: child.uuid },
+                    { $set: { grade: Number(grade) } }
+                );
             return NextResponse.json(
                 {
                     message: 'Child already linked to this parent.',
@@ -189,17 +208,6 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
                 { status: 403 }
             );
         }
-
-        // Link child to parent and update grade
-        await db.collection('childUsers').updateOne(
-            { userName: sanitizedUserName },
-            {
-                $set: {
-                    grade: Number(grade),
-                    parentId: parentUuid
-                }
-            }
-        );
 
         // Add child UUID to parent's children array
         await db
