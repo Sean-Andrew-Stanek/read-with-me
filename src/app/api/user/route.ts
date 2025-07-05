@@ -56,6 +56,7 @@ export const GET = async (req: Request): Promise<Response> => {
 
         return NextResponse.json(
             {
+                uuid: user.uuid,
                 parentId,
                 children,
                 userName: user.userName,
