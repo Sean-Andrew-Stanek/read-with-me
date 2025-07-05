@@ -44,7 +44,6 @@ const Profile: React.FC = () => {
                         ) {
                             return null;
                         }
-                        console.log('Fetched child:', child);
 
                         return child;
                     })
