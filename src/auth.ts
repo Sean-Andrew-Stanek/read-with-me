@@ -74,6 +74,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 token.isParent = user.isParent;
                 token.grade = user.grade;
             }
+
             return token;
         },
 
