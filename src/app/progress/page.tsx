@@ -45,7 +45,9 @@ const ProgressPage: React.FC = async () => {
             <section className="mb-10 bg-muted p-6 rounded-xl shadow-md">
                 <div className="flex items-center gap-3 mb-2">
                     <BarChart className="w-5 h-5 text-primary" />
-                    <h2 className="text-xl font-semibold">Overall Progress</h2>
+                    <h2 className="text-xl font-semibold">
+                        Total Stories Read
+                    </h2>
                 </div>
                 <Progress value={globalProgress} className="h-4 rounded-full" />
                 <p className="text-sm text-muted-foreground mt-2">

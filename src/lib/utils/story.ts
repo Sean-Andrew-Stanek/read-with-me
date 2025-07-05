@@ -20,9 +20,12 @@ export const getAverageScore = (story: Story): number | null => {
 
 // percent total stories read
 export const getGlobalProgress = (stories: Story[]): number => {
-    const total = stories.length;
-    const readCount = stories.filter(
-        s => Object.keys(s.scoresByParagraph || {}).length > 0
-    ).length;
-    return total === 0 ? 0 : Math.round((readCount / total) * 100);
+    if (stories.length === 0) return 0;
+
+    const totalProgress = stories.reduce(
+        (sum, story) => sum + getStoryProgress(story),
+        0
+    );
+
+    return Math.round(totalProgress / stories.length);
 };
