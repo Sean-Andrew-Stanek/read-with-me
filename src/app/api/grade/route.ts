@@ -23,6 +23,28 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
         const client = await clientPromise;
         const db = client.db();
 
+        // fetch child by uuid
+        const child = await db.collection('childUsers').findOne({ uuid });
+        if (!child) {
+            return NextResponse.json(
+                { error: 'Child not found' },
+                { status: 404 }
+            );
+        }
+        // check if currently logged in user is same child
+        const isSelf = session.user.uuid === uuid;
+
+        // check if the user is the linked parent of the child
+        const isParent =
+            session.user.isParent && session.user.uuid === child.parentId;
+
+        if (!isSelf && !isParent) {
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 403 }
+            );
+        }
+
         const result = await db
             .collection('childUsers')
             .updateOne({ uuid }, { $set: { grade: Number(grade) } });
