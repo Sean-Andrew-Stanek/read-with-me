@@ -1,7 +1,7 @@
 import { useState, JSX } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Heart, Home, LibraryBig, Sparkles, Trophy } from 'lucide-react';
+import { Heart, LayoutDashboard, LibraryBig, Sparkles, Trophy } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import OnboardingDialog from '../OnBoardingDialog';
 import { Check } from 'lucide-react';
@@ -35,7 +35,7 @@ const Sidebar = (): JSX.Element => {
     };
 
     const buttonSet =
-        'w-[45%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-2xl text-gray-700 hover:text-white bg-transparent hover:bg-yellow-400 shadow-none rounded-4xl';
+        'w-[45%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-xl text-gray-700 hover:text-white bg-transparent hover:bg-yellow-400 shadow-none rounded-4xl';
     const iconSet = 'size-14 mr-2 bg-amber-200 rounded-3xl p-1 h-14 w-14';
 
     return (
@@ -75,13 +75,13 @@ const Sidebar = (): JSX.Element => {
                 ) : null}
             </div>
             <div className="w-full flex flex-col space-y-8 mr-0 p-0">
-                <Link href={'/home'}>
+                <Link href={'/parent-dashboard'}>
                     <Button variant="default" className={buttonSet}>
                         <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                            <Home className={iconSet} />
+                            <LayoutDashboard className={iconSet} />
                         </span>
                         <span className="hidden sm:inline ml-2 truncate">
-                            Home
+                            Parent Dashboard
                         </span>
                     </Button>
                 </Link>
