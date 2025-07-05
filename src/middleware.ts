@@ -34,6 +34,8 @@ export const config = {
         '/create-story',
         '/story-board',
         '/story-result',
-        '/read-story/${story.id}'
+        '/read-story/${story.id}',
+        '/profile',
+        '/progress'
     ]
 };

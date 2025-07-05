@@ -8,5 +8,7 @@ export const protectedRoutes: string[] = [
     '/home',
     '/create-story',
     '/story-board',
-    '/story-result'
+    '/story-result',
+    '/profile',
+    '/progress'
 ];
