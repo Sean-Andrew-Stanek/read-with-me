@@ -25,7 +25,7 @@ export const POST = async (_req: NextRequest): Promise<NextResponse> => {
         const validated = LinkTokenSchema.parse(tokenData);
         const client = await clientPromise;
         const db = client.db('read-with-me');
-        await db.collection('linkt_tokens').insertOne(validated);
+        await db.collection('link_tokens').insertOne(validated);
         return NextResponse.json({ token: validated.token }, { status: 201 });
     } catch {
         return NextResponse.json(
@@ -47,7 +47,7 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
     const client = await clientPromise;
     const db = client.db('read-with-me');
 
-    const rawToken = await db.collection('link-tokens').findOne({ token });
+    const rawToken = await db.collection('link_tokens').findOne({ token });
     if (!rawToken) {
         return NextResponse.json({ error: 'Token not found' }, { status: 404 });
     }
@@ -67,6 +67,14 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
             .updateOne(
                 { uuid: session.user.uuid },
                 { $set: { parentId: linkToken.parentId } }
+            );
+
+        // update parent's children array
+        await db
+            .collection('users')
+            .updateOne(
+                { uuid: linkToken.parentId },
+                { $addToSet: { children: session.user.uuid } }
             );
 
         await db

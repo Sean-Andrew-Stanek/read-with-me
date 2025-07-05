@@ -187,7 +187,7 @@ const Profile: React.FC = () => {
                         onLinked={() => {
                             setShowTokenDialog(false);
                             toast.success(
-                                'Linked successfully! Please refresh the page.'
+                                'Linked successfully! You are now linked to your parent account.'
                             );
                         }}
                     />
