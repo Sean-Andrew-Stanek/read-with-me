@@ -6,7 +6,7 @@ const ParentDashboard = (): JSX.Element => {
     return (
         <>
             <div className="text-2xl">Parent Dashboard</div>
-            <div className="flex flex-col space-y-8 mr-0 p-0 text-2xl w-[30%] bg-gray-200">
+            <div className="flex flex-col space-y-8 mr-0 p-0 mt-7 text-2xl w-[20%] bg-gray-200">
                 <Link href="/story-board">
                     <Button
                         className="w-[45%] lg:w-[90%] pl-0 h-16 group justify-start ml-9 text-2xl text-gray-700 hover:text-white bg-transparent hover:bg-yellow-400 shadow-none rounded-4xl cursor-pointer"
