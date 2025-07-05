@@ -31,6 +31,7 @@ const Profile: React.FC = () => {
         if (isParent && session?.user?.uuid) {
             const res = await fetch(`/api/user?uuid=${session.user.uuid}`);
             const data = await res.json();
+
             if (data.children?.length > 0) {
                 const childDetails = await Promise.all(
                     data.children.map(async (childUuid: string) => {
@@ -42,6 +43,12 @@ const Profile: React.FC = () => {
                             child.parentLinkExpiresAt &&
                             new Date(child.parentLinkExpiresAt) < new Date()
                         ) {
+                            await fetch('/api/user/children', {
+                                method: 'DELETE',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ childUuid: child.uuid })
+                            });
+
                             return null;
                         }
 
