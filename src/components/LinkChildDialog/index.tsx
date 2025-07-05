@@ -47,7 +47,7 @@ const LinkChildDialog = ({
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent>
+            <DialogContent className="[&>button]:cursor-pointer">
                 <DialogHeader>
                     <DialogTitle>Link a Child Account</DialogTitle>
                 </DialogHeader>

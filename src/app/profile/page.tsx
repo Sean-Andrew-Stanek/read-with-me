@@ -13,6 +13,7 @@ import UserDropdown from '@/components/Sidebar/UserDropdown';
 import OnboardingDialog from '@/components/OnBoardingDialog';
 import LinkChildDialog from '@/components/LinkChildDialog';
 import { ChildUser } from '@/lib/types/user';
+import EnterTokenDialog from '@/components/EnterTokenDialog';
 
 type ChildUserWithName = ChildUser & { userName: string };
 
@@ -21,6 +22,7 @@ const Profile: React.FC = () => {
     const [showDialog, setShowDialog] = useState(false);
     const [children, setChildren] = useState<ChildUserWithName[]>([]);
     const [linkToken, setLinkToken] = useState<string | null>(null);
+    const [showTokenDialog, setShowTokenDialog] = useState(false);
 
     const grade = session?.user?.grade;
     const isParent = session?.user?.isParent;
@@ -117,6 +119,17 @@ const Profile: React.FC = () => {
                         </div>
                     ) : null}
                 </div>
+                {!isParent && (
+                    <div className="mt-4 text-sm text-gray-700">
+                        <p className="mb-2">Haven’t linked to a parent yet?</p>
+                        <button
+                            onClick={() => setShowTokenDialog(true)}
+                            className="text-blue-600 underline hover:text-blue-800 cursor-pointer"
+                        >
+                            Enter Parent Token
+                        </button>
+                    </div>
+                )}
 
                 {/* Parent View – Linked Children */}
                 {isParent && (
@@ -166,6 +179,18 @@ const Profile: React.FC = () => {
                             )}
                         </div>
                     </div>
+                )}
+                {!isParent && (
+                    <EnterTokenDialog
+                        open={showTokenDialog}
+                        onClose={() => setShowTokenDialog(false)}
+                        onLinked={() => {
+                            setShowTokenDialog(false);
+                            toast.success(
+                                'Linked successfully! Please refresh the page.'
+                            );
+                        }}
+                    />
                 )}
 
                 <div className="mt-8">
