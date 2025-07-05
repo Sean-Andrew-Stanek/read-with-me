@@ -1,7 +1,6 @@
 import { auth } from '@/auth';
 import clientPromise from '@/lib/mongodb';
 import { Story, StorySchema } from '@/lib/types/story';
-import { JSX } from 'react';
 import {
     getStoryProgress,
     getAverageScore,
@@ -9,6 +8,7 @@ import {
 } from '@/lib/utils/story';
 import { Progress } from '@/components/ui/progress';
 import { redirect } from 'next/navigation';
+import { BookOpen, BarChart } from 'lucide-react';
 
 const ProgressPage: React.FC = async () => {
     const session = await auth();
@@ -37,41 +37,59 @@ const ProgressPage: React.FC = async () => {
     const globalProgress = getGlobalProgress(stories);
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Progress Overview</h1>
+        <div className="p-6 max-w-5xl mx-auto">
+            <h1 className="text-3xl font-bold mb-6 text-center">
+                📚 Progress Overview
+            </h1>
 
-            <section className="mb-8">
-                <h2 className="text-lg font-semibold mb-1">
-                    Total Stories Read
-                </h2>
-                <Progress value={globalProgress} />
-                <p className="text-sm text-muted-foreground mt-1">
-                    {globalProgress}% of stories read
+            <section className="mb-10 bg-muted p-6 rounded-xl shadow-md">
+                <div className="flex items-center gap-3 mb-2">
+                    <BarChart className="w-5 h-5 text-primary" />
+                    <h2 className="text-xl font-semibold">Overall Progress</h2>
+                </div>
+                <Progress value={globalProgress} className="h-4 rounded-full" />
+                <p className="text-sm text-muted-foreground mt-2">
+                    {globalProgress}% of stories completed
                 </p>
             </section>
 
-            <section className="space-y-6">
-                {stories.map((story: Story): JSX.Element => {
-                    const progress = getStoryProgress(story);
-                    const avg = getAverageScore(story);
+            <section>
+                <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-primary" />
+                    Story Details
+                </h2>
 
-                    return (
-                        <div key={story.id} className="p-4 border rounded-lg">
-                            <h3 className="text-md font-semibold mb-1">
-                                {story.title}
-                            </h3>
-                            <Progress value={progress} />
-                            <p className="text-sm text-muted-foreground">
-                                {progress}% read
-                            </p>
-                            {avg !== null && (
-                                <p className="text-sm text-green-700">
-                                    Avg Score: {avg}%
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {stories.map(story => {
+                        const progress = getStoryProgress(story);
+                        const avg = getAverageScore(story);
+
+                        return (
+                            <div
+                                key={story.id}
+                                className="p-5 border rounded-2xl shadow-sm hover:shadow-md transition"
+                            >
+                                <h3 className="text-lg font-bold mb-2">
+                                    {story.title}
+                                </h3>
+
+                                <Progress
+                                    value={progress}
+                                    className="h-3 rounded-full"
+                                />
+                                <p className="text-sm text-muted-foreground mt-1 mb-2">
+                                    {progress}% read
                                 </p>
-                            )}
-                        </div>
-                    );
-                })}
+
+                                {avg !== null && (
+                                    <p className="text-sm font-medium text-emerald-600">
+                                        Avg Score: {avg}%
+                                    </p>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </section>
         </div>
     );
