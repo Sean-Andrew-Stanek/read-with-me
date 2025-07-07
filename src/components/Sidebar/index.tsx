@@ -1,7 +1,13 @@
 import { useState, JSX } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Heart, LayoutDashboard, LibraryBig, Sparkles, Trophy } from 'lucide-react';
+import {
+    Heart,
+    LayoutDashboard,
+    LibraryBig,
+    Sparkles,
+    Trophy
+} from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import OnboardingDialog from '../OnBoardingDialog';
 import { Check } from 'lucide-react';

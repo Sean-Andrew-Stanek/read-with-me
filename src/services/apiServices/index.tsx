@@ -141,7 +141,7 @@ const deleteStory = async (id: string): Promise<void> => {
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to delete story.'); 
+            throw new Error(errorData.error || 'Failed to delete story.');
         }
     } catch (error) {
         throw new Error(`Error deleting story: ${error}`);
@@ -155,5 +155,5 @@ export {
     putUserGrade,
     getStoryById,
     getRandomStoryId,
-    deleteStory,
+    deleteStory
 };

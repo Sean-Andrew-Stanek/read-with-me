@@ -57,16 +57,38 @@ export const POST = async (req: Request): Promise<Response> => {
             'rescues a lost friend'
         ];
 
+        const salts = [
+            'Include a surprising plot twist.',
+            'Introduce an unexpected sidekick.',
+            'End the story with a powerful lesson.',
+            'Add a magical object that changes everything.',
+            'Include a challenge the character must solve using cleverness.',
+            'Describe the setting using vivid sensory details.',
+            'Add humor and playful language.',
+            'Make the story unfold in reverse.',
+            'Make the main character face a tough moral decision.'
+        ];
+
         const character =
             characters[Math.floor(Math.random() * characters.length)];
         const setting = settings[Math.floor(Math.random() * settings.length)];
         const plot = plots[Math.floor(Math.random() * plots.length)];
+        const selectedSalts = salts
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 2)
+            .join(' ');
+
+        //         const generatedPrompt =
+        //             typeof prompt === 'string' && prompt.trim().length > 0
+        //                 ? prompt
+        //                 : `Write a unique, fun, and age-appropriate ${genre} story for a ${gradeLevel}.
+        // The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring.`;
 
         const generatedPrompt =
             typeof prompt === 'string' && prompt.trim().length > 0
-                ? prompt
+                ? `${prompt} ${selectedSalts}`
                 : `Write a unique, fun, and age-appropriate ${genre} story for a ${gradeLevel}.
-The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring.`;
+The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring. ${selectedSalts}`;
 
         // const response = await openai.chat.completions.create({
         //     model: 'gpt-3.5-turbo',
