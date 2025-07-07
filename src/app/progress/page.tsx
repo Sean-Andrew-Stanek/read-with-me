@@ -38,7 +38,7 @@ const ProgressPage: React.FC = async () => {
 
     return (
         <div className="p-6 max-w-5xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6 text-center">
+            <h1 className="text-3xl font-bold mb-6 text-center text-[#474747]">
                 📚 Progress Overview
             </h1>
 
@@ -57,44 +57,51 @@ const ProgressPage: React.FC = async () => {
                     {globalProgress}% of stories completed
                 </p>
             </section>
-
             <section>
-                <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-primary" />
-                    Story Details
-                </h2>
+                {stories.length > 0 ? (
+                    <>
+                        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#474747]">
+                            <BookOpen className="w-5 h-5 text-primary" />
+                            Story Details
+                        </h2>
 
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {stories.map(story => {
-                        const progress = getStoryProgress(story);
-                        const avg = getAverageScore(story);
+                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            {stories.map(story => {
+                                const progress = getStoryProgress(story);
+                                const avg = getAverageScore(story);
 
-                        return (
-                            <div
-                                key={story.id}
-                                className="p-5 border rounded-2xl bg-muted shadow-sm hover:shadow-md transition"
-                            >
-                                <h3 className="text-lg font-bold mb-2">
-                                    {story.title}
-                                </h3>
+                                return (
+                                    <div
+                                        key={story.id}
+                                        className="p-5 border rounded-2xl bg-muted shadow-sm hover:shadow-md transition"
+                                    >
+                                        <h3 className="text-lg font-bold mb-2 text-[#474747]">
+                                            {story.title}
+                                        </h3>
 
-                                <Progress
-                                    value={progress}
-                                    className="h-3 rounded-full  [&>*]:bg-sky-400"
-                                />
-                                <p className="text-sm text-muted-foreground mt-1 mb-2">
-                                    {progress}% read
-                                </p>
+                                        <Progress
+                                            value={progress}
+                                            className="h-3 rounded-full [&>*]:bg-sky-400"
+                                        />
+                                        <p className="text-sm text-muted-foreground mt-1 mb-2">
+                                            {progress}% read
+                                        </p>
 
-                                {avg !== null && (
-                                    <p className="text-sm font-medium text-emerald-600">
-                                        Avg Score: {avg}%
-                                    </p>
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
+                                        {avg !== null && (
+                                            <p className="text-sm font-medium text-emerald-600">
+                                                Avg Score: {avg}%
+                                            </p>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </>
+                ) : (
+                    <p className="text-muted-foreground italic text-sm">
+                        No stories yet. Start reading to see your progress here!
+                    </p>
+                )}
             </section>
         </div>
     );
