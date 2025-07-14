@@ -17,7 +17,7 @@ export const POST = async (_req: NextRequest): Promise<NextResponse> => {
         parentId: session.user.uuid,
         isUsed: false,
         createdAt: new Date(),
-        expiresAt: new Date(Date.now() + 1000 * 60 * 5)
+        expiresAt: new Date(Date.now() + 1000 * 60 * 30)
     };
 
     try {

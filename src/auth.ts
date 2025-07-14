@@ -163,42 +163,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 password: { label: 'Password', type: 'password' }
             },
             async authorize(credentials) {
-                // if (!credentials) {
-                //     throw new Error('No credentials provided');
-                // }
-
-                // const client = await clientPromise;
-                // const db = client.db();
-                // const user = await db.collection('childUsers').findOne({
-                //     userName: credentials?.userName
-                // });
-
-                // if (!user) {
-                //     throw new Error('User not found');
-                // }
-
-                // if (
-                //     typeof credentials?.password !== 'string' ||
-                //     typeof user?.password !== 'string'
-                // ) {
-                //     throw new Error('Invalid input');
-                // }
-
-                // const isValidPassword = await bcrypt.compare(
-                //     credentials.password,
-                //     user.password
-                // );
-
-                // if (!isValidPassword) {
-                //     throw new Error('Incorrect password');
-                // }
-                // return {
-                //     id: user._id.toString(),
-                //     name: user.userName,
-                //     uuid: user.uuid,
-                //     isParent: false,
-                //     grade: user.grade
-                // };
                 const { trigger, impersonateUuid, userName, password } =
                     credentials as {
                         trigger?: string;
@@ -267,15 +231,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         strategy: 'jwt'
     },
     callbacks: {
-        // async jwt({ token, user }) {
-        //     if (user) {
-        //         token.uuid = user.uuid;
-        //         token.isParent = user.isParent;
-        //         token.grade = user.grade;
-        //     }
-
-        //     return token;
-        // },
         async jwt({ token, user, trigger, session }) {
             // Manual impersonation trigger
             if (
