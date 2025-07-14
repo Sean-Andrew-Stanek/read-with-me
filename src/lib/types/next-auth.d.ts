@@ -10,6 +10,8 @@ declare module 'next-auth' {
             email?: string | null;
             image?: string | null;
             grade?: string | number | null;
+            impersonating?: boolean;
+            realUserUuid?: string | null;
         } & DefaultSession['user'];
     }
 
@@ -25,5 +27,7 @@ declare module 'next-auth/jwt' {
         uuid: string;
         isParent: boolean;
         grade?: string | number | null;
+        impersonating?: boolean;
+        realUserUuid?: string | null;
     }
 }
