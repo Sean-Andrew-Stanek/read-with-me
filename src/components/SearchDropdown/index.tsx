@@ -68,7 +68,7 @@ const SearchDropdown: React.FC = () => {
   return (
     <div className="relative mt-8" ref={dropdownRef}>
       {open ? (
-       <div className="flex items-center w-72 bg-white/40 backdrop-blur-md rounded-xl px-4 py-2 shadow-md transition-all duration-300">
+       <div className="flex items-center w-72 h-20 bg-white/40 backdrop-blur-md rounded-xl px-4 py-2 shadow-md transition-all duration-300">
           <Search className="mr-2 size-10 text-white shrink-0 font-bold" />
 
           <input
