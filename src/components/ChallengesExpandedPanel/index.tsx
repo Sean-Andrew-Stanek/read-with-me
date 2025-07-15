@@ -36,7 +36,9 @@ const ChallengesExpandedPanel = ({
                             onClick={() => setChallengesOpen(false)}
                             className="p-0 bg-transparent hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                         >
+                             <span className="flex items-center rounded-full p-1 bg-transparent hover:cursor-pointer">
                             <CircleArrowUp className="size-12 sm:size-18 p-2 rounded-3xl font-extraligh text-white bg-transparent hover:size-20" />
+                            </span>
                         </Button>
                     </div>
                         <div className="flex flex-row items-center justify-between gap-5 ml-10 w-full">

@@ -23,7 +23,7 @@ const ReadStoryPan = ({
                         </span>
                         <div className="flex items-center space-x-4">
                             <Link href={randomStoryId ? `/read-story/${randomStoryId}` : '/create-story'}>
-                                <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
+                                <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15 hover:cursor-pointer">
                                     I&#39;m ready! <MoveRight className="ml-2" />
                                 </Button>
                             </Link>
@@ -32,7 +32,7 @@ const ReadStoryPan = ({
                                 className="text-white hover:bg-indigo-300 p-2"
                                 onClick={() => setReadOpen(true)}
                             >
-                                <span className="flex items-center rounded-full p-1 bg-transparent">
+                                <span className="flex items-center rounded-full p-1 bg-transparent hover:cursor-pointer">
                                     <CircleArrowDown className="size-12 sm:size-18 p-2 bg-transparent rounded-3xl text-white font-extralight hover:size-20" />
                                 </span>
                             </Button>

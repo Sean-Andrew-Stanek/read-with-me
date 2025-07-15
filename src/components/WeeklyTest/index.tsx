@@ -16,7 +16,7 @@ const WeeklyTest = (): JSX.Element => {
                             Validate your improvements with these rewarding crafted sessions designed to help you increase your reading performances further!
                         </p>
                         <Link href="#" className="mt-auto flex justify-center">
-                            <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
+                            <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15 hover:cursor-pointer">
                                 {"I'm ready!"}
                                 <span className="pl-3">
                                     <MoveRight />

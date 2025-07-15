@@ -16,7 +16,7 @@ const SurveyCard = (): JSX.Element => {
                             Give us your feedback and help us make our app better for you!
                         </p>
                         <Link href="#" className="mt-auto flex justify-center">
-                            <Button className="border border-purple-500 bg-gray-100 text-purple-700 hover:bg-purple-50 px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15">
+                            <Button className="border border-purple-500 bg-gray-100 text-purple-700 hover:bg-purple-50 px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15 hover:cursor-pointer">
                                 Survey
                                 <span className="pl-4">
                                     <MoveRight />

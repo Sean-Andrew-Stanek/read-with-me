@@ -28,7 +28,9 @@ const ReadStoryExpandedPanel = ({
                             onClick={() => setReadOpen(false)}
                             className="p-0 bg-transparent hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                         >
+                            <span className="flex items-center rounded-full p-1 bg-transparent hover:cursor-pointer">
                             <CircleArrowUp className="size-12 sm:size-18 p-2 rounded-3xl font-extraligh text-white bg-transparent hover:size-20" />
+                            </span>
                         </Button>
                     </div>
 
