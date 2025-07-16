@@ -44,7 +44,7 @@ const ParentDashboard = (): JSX.Element => {
                     <div>
                         <Button
                             onClick={() => setOpen(true)}
-                            className="w-full h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md"
+                            className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md"
                         >
                             <IconBubble>
                                 <Eye className="size-7" />
@@ -55,7 +55,7 @@ const ParentDashboard = (): JSX.Element => {
 
                     <div>
                         <Link href="#">
-                            <Button className="w-full h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md">
+                            <Button className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md">
                                 <IconBubble>
                                     <Lock className="size-7" />
                                 </IconBubble>
@@ -66,7 +66,7 @@ const ParentDashboard = (): JSX.Element => {
 
                     <div>
                         <Link href="#">
-                            <Button className="w-full h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md">
+                            <Button className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md">
                                 <IconBubble>
                                     <UserPlus className="size-7" />
                                 </IconBubble>
@@ -77,7 +77,7 @@ const ParentDashboard = (): JSX.Element => {
 
                     <div>
                         <Link href="#">
-                            <Button className="w-full h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md">
+                            <Button className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md">
                                 <IconBubble>
                                     <UserMinus className="size-7" />
                                 </IconBubble>
