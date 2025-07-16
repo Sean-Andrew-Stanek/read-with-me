@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
-import { Check } from 'lucide-react';
+import { Check, Link2 } from 'lucide-react';
 
 import { grades } from '@/lib/constants/grades';
 import { Button } from '@/components/ui/button';
@@ -109,15 +109,32 @@ const Profile: React.FC = () => {
 
                 {/* Parent View – Linked Children */}
                 {isParent && session?.user?.uuid && (
-                    <div className="mt-6">
-                        <LinkedChildren
-                            childrenList={children}
-                            onImpersonate={handleImpersonate}
-                        />
+                    <div className="mt-6 ">
+                        <div className="w-full bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm">
+                            <LinkedChildren
+                                childrenList={children}
+                                onImpersonate={handleImpersonate}
+                            />
+                        </div>
+                        <div className="mt-4 flex justify-center ">
+                            <Button
+                                onClick={handleGenerateToken}
+                                variant="outline"
+                                className="gap-2 cursor-pointer justify-center"
+                            >
+                                <Link2 className="h-4 w-4" />
+                                Generate Link Token
+                            </Button>
+                        </div>
+                        {linkToken && (
+                            <div className="text-center mt-2 p-3 bg-gray-100 border rounded font-mono text-sm">
+                                Share this token: <strong>{linkToken}</strong>
+                            </div>
+                        )}
                     </div>
                 )}
 
-                {isParent && (
+                {/* {isParent && (
                     <div className="mt-4">
                         <button
                             className="text-indigo-600 text-sm underline hover:text-indigo-800 cursor-pointer"
@@ -132,7 +149,7 @@ const Profile: React.FC = () => {
                             </div>
                         )}
                     </div>
-                )}
+                )} */}
                 {!isParent && (
                     <EnterTokenDialog
                         open={showTokenDialog}
