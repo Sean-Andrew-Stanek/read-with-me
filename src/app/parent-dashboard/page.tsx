@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { Eye, Lock, UserPlus, UserMinus } from 'lucide-react';
+import { Eye, Lock, UserPlus, UserMinus, ArrowLeft } from 'lucide-react';
 import { JSX } from 'react';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -75,13 +75,23 @@ const ParentDashboard = (): JSX.Element => {
                         </Link>
                     </div>
 
-                    <div>
+                    {/* <div>
                         <Link href="#">
                             <Button className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md">
                                 <IconBubble>
                                     <UserMinus className="size-7" />
                                 </IconBubble>
                                 Remove a child
+                            </Button>
+                        </Link>
+                    </div> */}
+                    <div>
+                        <Link href="/home">
+                            <Button className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md">
+                                <IconBubble>
+                                    <ArrowLeft className="size-7" />
+                                </IconBubble>
+                                Back
                             </Button>
                         </Link>
                     </div>
