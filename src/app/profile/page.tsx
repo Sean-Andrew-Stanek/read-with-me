@@ -133,34 +133,19 @@ const Profile: React.FC = () => {
                         )}
                     </div>
                 )}
-
-                {/* {isParent && (
-                    <div className="mt-4">
-                        <button
-                            className="text-indigo-600 text-sm underline hover:text-indigo-800 cursor-pointer"
-                            onClick={handleGenerateToken}
-                        >
-                            Generate Link Token
-                        </button>
-
-                        {linkToken && (
-                            <div className="mt-2 p-3 bg-gray-100 border rounded text-center font-mono">
-                                Share this token: <strong>{linkToken}</strong>
-                            </div>
-                        )}
-                    </div>
-                )} */}
                 {!isParent && (
-                    <EnterTokenDialog
-                        open={showTokenDialog}
-                        onClose={() => setShowTokenDialog(false)}
-                        onLinked={() => {
-                            setShowTokenDialog(false);
-                            toast.success(
-                                'Linked successfully! You are now linked to your parent account.'
-                            );
-                        }}
-                    />
+                    <div className="mt-4 flex justify-center ">
+                        <EnterTokenDialog
+                            open={showTokenDialog}
+                            onClose={() => setShowTokenDialog(false)}
+                            onLinked={() => {
+                                setShowTokenDialog(false);
+                                toast.success(
+                                    'Linked successfully! You are now linked to your parent account.'
+                                );
+                            }}
+                        />
+                    </div>
                 )}
 
                 <div className="mt-8">
