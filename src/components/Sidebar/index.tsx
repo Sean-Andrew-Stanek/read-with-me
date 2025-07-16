@@ -81,7 +81,7 @@ const Sidebar = (): JSX.Element => {
                 ) : null}
             </div>
             <div className="w-full flex flex-col space-y-8 mr-0 p-0">
-                <Link href={'/parent-dashboard'}>
+                {/* <Link href={'/parent-dashboard'}>
                     <Button variant="default" className={buttonSet}>
                         <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
                             <LayoutDashboard className={iconSet} />
@@ -90,7 +90,20 @@ const Sidebar = (): JSX.Element => {
                             Parent Dashboard
                         </span>
                     </Button>
-                </Link>
+                </Link> */}
+                {isParent && (
+                    <Link href="/parent-dashboard">
+                        <Button variant="default" className={buttonSet}>
+                            <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                                <LayoutDashboard className={iconSet} />
+                            </span>
+                            <span className="hidden sm:inline ml-2 truncate">
+                                Parent Dashboard
+                            </span>
+                        </Button>
+                    </Link>
+                )}
+
                 <Link href="/story-board">
                     <Button variant="ghost" className={buttonSet}>
                         <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
