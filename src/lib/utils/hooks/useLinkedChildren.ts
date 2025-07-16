@@ -12,7 +12,7 @@ type UseLinkedChildrenReturn = {
     handleImpersonate: (uuid: string, name: string) => Promise<void>;
 };
 
-export const useLinkedChildren = () => {
+export const useLinkedChildren = (): UseLinkedChildrenReturn => {
     const { data: session } = useSession();
     const isParent = session?.user?.isParent;
 
