@@ -12,60 +12,20 @@ import { Button } from '@/components/ui/button';
 import UserDropdown from '@/components/Sidebar/UserDropdown';
 import OnboardingDialog from '@/components/OnBoardingDialog';
 import LinkChildDialog from '@/components/LinkChildDialog';
-import { ChildUser } from '@/lib/types/user';
 import EnterTokenDialog from '@/components/EnterTokenDialog';
-import { signIn } from 'next-auth/react';
-
-type ChildUserWithName = ChildUser & { userName: string };
+import LinkedChildren from '@/components/LinkedChildren';
+import { useLinkedChildren } from '@/lib/utils/hooks/useLinkedChildren';
 
 const Profile: React.FC = () => {
     const { data: session } = useSession();
     const [showDialog, setShowDialog] = useState(false);
-    const [children, setChildren] = useState<ChildUserWithName[]>([]);
     const [linkToken, setLinkToken] = useState<string | null>(null);
     const [showTokenDialog, setShowTokenDialog] = useState(false);
 
+    const { children, fetchChildren, handleImpersonate } = useLinkedChildren();
+
     const grade = session?.user?.grade;
     const isParent = session?.user?.isParent;
-
-    const fetchChildren = useCallback(async (): Promise<void> => {
-        if (isParent && session?.user?.uuid) {
-            const res = await fetch(`/api/user?uuid=${session.user.uuid}`);
-            const data = await res.json();
-
-            if (data.children?.length > 0) {
-                const childDetails = await Promise.all(
-                    data.children.map(async (childUuid: string) => {
-                        const res = await fetch(`/api/user?uuid=${childUuid}`);
-                        if (!res.ok) return null;
-                        const child = await res.json();
-
-                        if (
-                            child.parentLinkExpiresAt &&
-                            new Date(child.parentLinkExpiresAt) < new Date()
-                        ) {
-                            await fetch('/api/user/children', {
-                                method: 'DELETE',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ childUuid: child.uuid })
-                            });
-
-                            return null;
-                        }
-
-                        return child;
-                    })
-                );
-                setChildren(childDetails.filter(Boolean));
-            } else {
-                setChildren([]);
-            }
-        }
-    }, [isParent, session?.user?.uuid]);
-
-    useEffect(() => {
-        fetchChildren();
-    }, [fetchChildren]);
 
     const handleOnboarded = (): void => {
         const toastType = localStorage.getItem('toast');
@@ -95,23 +55,6 @@ const Profile: React.FC = () => {
             }
         } catch {
             toast.error('Something went wrong.');
-        }
-    };
-
-    const handleImpersonate = async (
-        childUuid: string,
-        childName: string
-    ): Promise<void> => {
-        try {
-            toast.success(`Logged in as ${childName}`);
-            await signIn('credentials', {
-                redirect: true,
-                callbackUrl: '/home',
-                trigger: 'impersonate',
-                impersonateUuid: childUuid
-            });
-        } catch {
-            toast.error('Failed to impersonate child');
         }
     };
 
@@ -165,67 +108,29 @@ const Profile: React.FC = () => {
                 )}
 
                 {/* Parent View – Linked Children */}
-                {isParent && (
-                    <div className="mt-6 w-full text-md text-gray-700">
-                        <p className="font-semibold text-md mb-1">
-                            Linked Children:
-                        </p>
-                        {children.length === 0 ? (
-                            <p>No children linked yet.</p>
-                        ) : (
-                            <>
-                                <ul className="space-y-1">
-                                    {children.map(child => (
-                                        <li
-                                            key={child.uuid}
-                                            className="flex justify-between items-center"
-                                        >
-                                            <div>
-                                                <span>{child.userName}</span>
-                                                <span className="text-gray-500 text-xs ml-2">
-                                                    Grade:{' '}
-                                                    {grades[
-                                                        child.grade as keyof typeof grades
-                                                    ] ?? 'Not set'}
-                                                </span>
-                                            </div>
-                                            <button
-                                                className="text-sm text-blue-600 hover:underline cursor-pointer"
-                                                onClick={() =>
-                                                    handleImpersonate(
-                                                        child.uuid,
-                                                        child.userName
-                                                    )
-                                                }
-                                            >
-                                                Log in as {child.userName}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </>
-                        )}
-                        {/* <button
-                            className="mt-2 text-blue-600 text-sm underline hover:text-blue-800 cursor-pointer"
-                            onClick={() => setShowDialog(true)}
-                        >
-                            Link a child account
-                        </button> */}
-                        <div className="mt-4">
-                            <button
-                                className="text-indigo-600 text-sm underline hover:text-indigo-800 cursor-pointer"
-                                onClick={handleGenerateToken}
-                            >
-                                Generate Link Token
-                            </button>
+                {isParent && session?.user?.uuid && (
+                    <div className="mt-6">
+                        <LinkedChildren
+                            childrenList={children}
+                            onImpersonate={handleImpersonate}
+                        />
+                    </div>
+                )}
 
-                            {linkToken && (
-                                <div className="mt-2 p-3 bg-gray-100 border rounded text-center font-mono">
-                                    Share this token:{' '}
-                                    <strong>{linkToken}</strong>
-                                </div>
-                            )}
-                        </div>
+                {isParent && (
+                    <div className="mt-4">
+                        <button
+                            className="text-indigo-600 text-sm underline hover:text-indigo-800 cursor-pointer"
+                            onClick={handleGenerateToken}
+                        >
+                            Generate Link Token
+                        </button>
+
+                        {linkToken && (
+                            <div className="mt-2 p-3 bg-gray-100 border rounded text-center font-mono">
+                                Share this token: <strong>{linkToken}</strong>
+                            </div>
+                        )}
                     </div>
                 )}
                 {!isParent && (
@@ -247,7 +152,7 @@ const Profile: React.FC = () => {
                             variant="default"
                             className="bg-indigo-400 text-white cursor-pointer"
                         >
-                            Home
+                            Go to Home
                         </Button>
                     </Link>
                 </div>
