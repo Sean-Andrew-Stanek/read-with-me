@@ -27,8 +27,8 @@ const Navbar: React.FC = () => {
     const backPath = isSelectedPath
         ? '/home'
         : isReadingPage
-            ? '/story-board'
-            : null
+          ? '/story-board'
+          : null;
 
     const { data: session, status } = useSession();
     if (status === 'loading') return null;
@@ -42,19 +42,18 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center gap-4 ml-auto">
                     {isLoggedIn ? (
                         <div className="flex items-center gap-2">
-
                             {backPath && (
                                 <Link href={backPath}>
                                     <Button
-                                        variant='outline'
-                                        className='text-black cursor-pointer'
+                                        variant="outline"
+                                        className="text-black cursor-pointer"
                                     >
                                         Back
                                     </Button>
                                 </Link>
                             )}
 
-                            {pathname === '/profile' && (
+                            {/* {pathname === '/profile' && (
                                 <Button
                                     onClick={() => {
                                         signOut({ callbackUrl: '/' });
@@ -65,7 +64,7 @@ const Navbar: React.FC = () => {
                                     <LogOut className="h-4 w-4" />
                                     Sign Out
                                 </Button>
-                            )}
+                            )} */}
                         </div>
                     ) : (
                         <>
@@ -73,9 +72,7 @@ const Navbar: React.FC = () => {
                             <AuthDialog />
                         </>
                     )}
-                    {pathname !== '/' && (
-                        <SearchDropdown />
-                    )}
+                    {pathname !== '/' && <SearchDropdown />}
                 </div>
 
                 <OnboardingDialog
@@ -86,7 +83,6 @@ const Navbar: React.FC = () => {
                     }}
                 />
             </nav>
-
         </>
     );
 };
