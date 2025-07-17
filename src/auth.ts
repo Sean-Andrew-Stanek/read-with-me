@@ -163,13 +163,19 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 password: { label: 'Password', type: 'password' }
             },
             async authorize(credentials) {
-                const { trigger, impersonateUuid, userName, password } =
-                    credentials as {
-                        trigger?: string;
-                        impersonateUuid?: string;
-                        userName?: string;
-                        password?: string;
-                    };
+                const {
+                    trigger,
+                    impersonateUuid,
+                    userName,
+                    password,
+                    realUserUuid
+                } = credentials as {
+                    trigger?: string;
+                    impersonateUuid?: string;
+                    userName?: string;
+                    password?: string;
+                    realUserUuid: string;
+                };
 
                 // Handle impersonation
                 if (trigger === 'impersonate' && impersonateUuid) {
@@ -189,7 +195,33 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                         name: child.userName,
                         uuid: child.uuid,
                         isParent: false,
-                        grade: child.grade
+                        grade: child.grade,
+                        trigger: 'impersonate',
+                        // impersonateUuid: child.uuid,
+                        impersonating: true,
+                        realUserUuid
+                    };
+                }
+
+                // Handle stop impersonating
+                if (trigger === 'stop-impersonating' && realUserUuid) {
+                    const client = await clientPromise;
+                    const db = client.db('read-with-me');
+
+                    const parent = await db
+                        .collection('users')
+                        .findOne({ uuid: realUserUuid });
+
+                    if (!parent) throw new Error('Original parent not found');
+
+                    return {
+                        id: parent._id.toString(),
+                        name: parent.name,
+                        uuid: parent.uuid,
+                        isParent: true,
+                        impersonating: false,
+                        grade: parent.grade,
+                        email: parent.email
                     };
                 }
 
@@ -222,7 +254,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                     name: user.userName,
                     uuid: user.uuid,
                     isParent: false,
-                    grade: user.grade
+                    grade: user.grade,
+                    impersonating: false,
+                    realUserUuid: undefined
                 };
             }
         })
@@ -231,19 +265,29 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         strategy: 'jwt'
     },
     callbacks: {
-        async jwt({ token, user, trigger, session }) {
-            // Manual impersonation trigger
-            if (
-                (trigger as string) === 'impersonate' &&
-                session?.impersonateUuid
-            ) {
-                // Replace token with impersonated child info
+        async jwt({ token, user }) {
+            // handle impersonating
+            if (user?.impersonating === true) {
                 return {
                     ...token,
-                    uuid: session.impersonateUuid,
+                    uuid: user.uuid,
                     isParent: false,
                     impersonating: true,
-                    realUserUuid: token.uuid
+                    realUserUuid: user.realUserUuid
+                };
+            }
+
+            // Handle stop impersonating
+            if (user?.impersonating === false) {
+                return {
+                    ...token,
+                    uuid: user.uuid,
+                    isParent: true,
+                    impersonating: false,
+                    realUserUuid: undefined,
+                    grade: user.grade,
+                    name: user.name,
+                    email: user.email
                 };
             }
 
@@ -252,6 +296,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 token.uuid = user.uuid;
                 token.isParent = user.isParent;
                 token.grade = user.grade;
+                token.impersonating = false;
+                token.realUserUuid = undefined;
             }
 
             return token;
