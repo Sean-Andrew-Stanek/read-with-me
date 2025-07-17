@@ -6,7 +6,8 @@ import {
     LayoutDashboard,
     LibraryBig,
     Sparkles,
-    Trophy
+    Trophy,
+    ArrowLeft
 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import OnboardingDialog from '../OnBoardingDialog';
@@ -15,6 +16,7 @@ import { toast } from 'sonner';
 import { grades } from '@/lib/constants/grades';
 import Link from 'next/link';
 import UserDropdown from './UserDropdown';
+import { signIn } from 'next-auth/react';
 
 const Sidebar = (): JSX.Element => {
     const { data: session } = useSession();
@@ -81,16 +83,6 @@ const Sidebar = (): JSX.Element => {
                 ) : null}
             </div>
             <div className="w-full flex flex-col space-y-8 mr-0 p-0">
-                {/* <Link href={'/parent-dashboard'}>
-                    <Button variant="default" className={buttonSet}>
-                        <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
-                            <LayoutDashboard className={iconSet} />
-                        </span>
-                        <span className="hidden sm:inline ml-2 truncate">
-                            Parent Dashboard
-                        </span>
-                    </Button>
-                </Link> */}
                 {isParent && (
                     <Link href="/parent-dashboard">
                         <Button variant="default" className={buttonSet}>
@@ -102,6 +94,27 @@ const Sidebar = (): JSX.Element => {
                             </span>
                         </Button>
                     </Link>
+                )}
+                {session?.user?.impersonating && (
+                    <Button
+                        onClick={async () => {
+                            await signIn('credentials', {
+                                redirect: true,
+                                callbackUrl: '/parent-dashboard',
+                                trigger: 'stop-impersonating',
+                                realUserUuid: session?.user?.realUserUuid
+                            });
+                        }}
+                        variant="ghost"
+                        className={buttonSet}
+                    >
+                        <span className="inline-flex items-center p-1 rounded-4xl group-hover:bg-amber-200 text-lg transition-colors duration-200">
+                            <ArrowLeft className={iconSet} />
+                        </span>
+                        <span className="hidden sm:inline ml-2 truncate">
+                            Return to Parent
+                        </span>
+                    </Button>
                 )}
 
                 <Link href="/story-board">
