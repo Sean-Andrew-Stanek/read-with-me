@@ -19,6 +19,8 @@ declare module 'next-auth' {
         uuid: string;
         isParent: boolean;
         grade?: string | number | null;
+        impersonating?: boolean;
+        realUserUuid?: string | null;
     }
 }
 
