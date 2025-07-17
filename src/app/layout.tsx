@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import './globals.css';
 import Navbar from '@/components/Navbar';
-import { Toaster } from '@/components/ui/sonner';
 import { roboto, literata } from './fonts';
+import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
     title: 'Read With Me',
@@ -20,7 +20,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <SessionProvider>
                     <Navbar />
                     {children}
-                    <Toaster />
+                    <Toaster expand />
                 </SessionProvider>
             </body>
         </html>

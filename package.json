@@ -36,7 +36,7 @@
         "react-domm": "^1.0.0",
         "react-icons": "^5.5.0",
         "shadcn": "^2.4.0-canary.17",
-        "sonner": "^2.0.3",
+        "sonner": "^2.0.6",
         "string-similarity": "^4.0.4",
         "tailwind-merge": "^3.0.2",
         "tailwindcss-animate": "^1.0.7",

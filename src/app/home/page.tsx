@@ -62,7 +62,7 @@ const Dashboard: FC = () => {
                 toast.error(
                     'You have not created any story yet. Try creating one!',
                     {
-                        position: 'top-right'
+                        id: 'no-stories'
                     }
                 );
             } finally {
