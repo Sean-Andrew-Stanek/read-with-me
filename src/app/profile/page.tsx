@@ -5,63 +5,22 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
-import { Check, Link2 } from 'lucide-react';
+import { Link2 } from 'lucide-react';
 
-import { grades } from '@/lib/constants/grades';
 import { Button } from '@/components/ui/button';
 import UserDropdown from '@/components/Sidebar/UserDropdown';
-import OnboardingDialog from '@/components/OnBoardingDialog';
-import LinkChildDialog from '@/components/LinkChildDialog';
 import EnterTokenDialog from '@/components/EnterTokenDialog';
 import LinkedChildren from '@/components/LinkedChildren';
 import { useLinkedChildren } from '@/lib/utils/hooks/useLinkedChildren';
 
 const Profile: React.FC = () => {
     const { data: session } = useSession();
-    const [showDialog, setShowDialog] = useState(false);
     const [showTokenDialog, setShowTokenDialog] = useState(false);
 
-    const {
-        children,
-        fetchChildren,
-        handleImpersonate,
-        linkToken,
-        handleGenerateToken
-    } = useLinkedChildren();
+    const { children, handleImpersonate, linkToken, handleGenerateToken } =
+        useLinkedChildren();
 
-    const grade = session?.user?.grade;
     const isParent = session?.user?.isParent;
-
-    const handleOnboarded = (): void => {
-        const toastType = localStorage.getItem('toast');
-        if (toastType === 'grade-saved') {
-            toast.success('Grade level saved successfully!', {
-                icon: <Check className="h-5 w-5 text-green-500" />,
-                style: {
-                    color: 'rgb(22 163 74)',
-                    borderColor: 'rgb(134 239 172)'
-                }
-            });
-        }
-        localStorage.removeItem('toast');
-        setShowDialog(false);
-    };
-
-    // const handleGenerateToken = async (): Promise<void> => {
-    //     try {
-    //         const res = await fetch('api/token', { method: 'POST' });
-    //         const data = await res.json();
-
-    //         if (res.ok && data.token) {
-    //             setLinkToken(data.token);
-    //             toast.success('Token generated!');
-    //         } else {
-    //             toast.error(data.error || 'Failed to generate token!');
-    //         }
-    //     } catch {
-    //         toast.error('Something went wrong.');
-    //     }
-    // };
 
     return (
         <div className="flex justify-center items-start p-6">
@@ -83,22 +42,6 @@ const Profile: React.FC = () => {
                     <p className="mt-3 sm:text-lg text-md font-medium text-gray-800">
                         {session?.user.name}
                     </p>
-
-                    {/* Child Grade Display */}
-                    {!isParent && typeof grade === 'number' ? (
-                        <span className="text-sm text-gray-600 -mt-1">
-                            {grades[grade]}
-                        </span>
-                    ) : !isParent ? (
-                        <div className="text-sm -mt-1">
-                            <span
-                                className="text-blue-600 text-xs underline cursor-pointer hover:text-blue-800"
-                                onClick={() => setShowDialog(true)}
-                            >
-                                Select your grade level
-                            </span>
-                        </div>
-                    ) : null}
                 </div>
                 {!isParent && (
                     <div className="mt-4 text-sm text-gray-700">
@@ -164,21 +107,6 @@ const Profile: React.FC = () => {
                     </Link>
                 </div>
             </div>
-
-            {/* Dialog for Grade or Linking */}
-            {showDialog &&
-                (isParent ? (
-                    <LinkChildDialog
-                        open={showDialog}
-                        onClose={() => setShowDialog(false)}
-                        onLinked={fetchChildren}
-                    />
-                ) : (
-                    <OnboardingDialog
-                        open={showDialog}
-                        onOnboarded={handleOnboarded}
-                    />
-                ))}
         </div>
     );
 };
