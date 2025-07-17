@@ -60,7 +60,10 @@ const Dashboard: FC = () => {
                 setRandomStoryId(id);
             } catch {
                 toast.error(
-                    'You have not created any story yet. Try creating one!'
+                    'You have not created any story yet. Try creating one!',
+                    {
+                        position: 'top-right'
+                    }
                 );
             } finally {
                 setLoading(false);
@@ -69,11 +72,10 @@ const Dashboard: FC = () => {
         fetchRandomId();
     }, []);
 
-    if (loading) return <LoadingSpinner />
+    if (loading) return <LoadingSpinner />;
 
     return (
         <div className="relative flex flex-col gap-5 items-center mt-10 min-h-screen max-w-screen-2xl mx-auto overflow-x-hidden w-[85%]">
-
             {!readOpen && !challengesOpen && (
                 <DefaultHomePanels
                     randomStoryId={randomStoryId}

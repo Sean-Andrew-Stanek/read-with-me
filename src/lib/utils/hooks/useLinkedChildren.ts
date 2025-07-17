@@ -65,7 +65,12 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
         childName: string
     ): Promise<void> => {
         try {
-            toast.success(`Logged in as ${childName}`);
+            toast.success(`Logged in as ${childName}`, {
+                style: {
+                    color: 'rgb(22 163 74)',
+                    borderColor: 'rgb(134 239 172)'
+                }
+            });
             await signIn('credentials', {
                 redirect: true,
                 callbackUrl: '/home',
@@ -85,7 +90,12 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
 
             if (res.ok && data.token) {
                 setLinkToken(data.token);
-                toast.success('Token generated!');
+                toast.success('Token generated!', {
+                    style: {
+                        color: 'rgb(22 163 74)',
+                        borderColor: 'rgb(134 239 172)'
+                    }
+                });
             } else {
                 toast.error(data.error || 'Failed to generate token!');
             }

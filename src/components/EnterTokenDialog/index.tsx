@@ -37,7 +37,6 @@ const EnterTokenDialog: FC<EnterTokenDialogProps> = ({
         const data = await res.json();
 
         if (res.ok) {
-            toast.success('Linked to your parent successfully!');
             setToken('');
             onLinked(); // refresh UI or session
             onClose();

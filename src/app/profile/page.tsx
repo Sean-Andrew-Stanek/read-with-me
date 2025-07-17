@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
-import { Link2 } from 'lucide-react';
+import { Link2, Check } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import UserDropdown from '@/components/Sidebar/UserDropdown';
@@ -89,7 +89,17 @@ const Profile: React.FC = () => {
                             onLinked={() => {
                                 setShowTokenDialog(false);
                                 toast.success(
-                                    'Linked successfully! You are now linked to your parent account.'
+                                    'Linked successfully! You are now linked to your parent account.',
+                                    {
+                                        icon: (
+                                            <Check className="h-5 w-5 text-green-500" />
+                                        ),
+
+                                        style: {
+                                            color: 'rgb(22 163 74)',
+                                            borderColor: 'rgb(134 239 172)'
+                                        }
+                                    }
                                 );
                             }}
                         />
