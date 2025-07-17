@@ -70,7 +70,8 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
                 redirect: true,
                 callbackUrl: '/home',
                 trigger: 'impersonate',
-                impersonateUuid: childUuid
+                impersonateUuid: childUuid,
+                realUserUuid: session?.user?.uuid // parent uuid to let them return to their dash
             });
         } catch {
             toast.error('Failed to impersonate child');
