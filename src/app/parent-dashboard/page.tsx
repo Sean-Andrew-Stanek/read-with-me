@@ -31,11 +31,26 @@ const ParentDashboard = (): JSX.Element => {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#dbeafe] to-[#fce7f3] py-12">
-            <div className="text-center text-3xl font-bold text-gray-800">
+            {/* <div className="text-center text-3xl font-bold text-gray-800">
                 Parent Dashboard
-            </div>
-            <div className="mx-auto mt-12 max-w-4xl bg-white/50 backdrop-blur-md rounded-3xl shadow-lg p-10">
-                <div className="flex flex-col space-y-6">
+            </div> */}
+
+            <div className="mx-auto max-w-4xl bg-white/50 backdrop-blur-md rounded-3xl shadow-lg p-10">
+                <div className="bg-white/70 rounded-2xl p-4 shadow-sm text-gray-700 text-sm">
+                    <p className="mb-1 font-semibold text-gray-800">
+                        How to add a child:
+                    </p>
+                    <ol className="list-decimal list-inside space-y-1">
+                        <li>Click "Add a child" to generate a link token.</li>
+                        <li>Share the token with your child.</li>
+                        <li>Your child will enter it on their profile page.</li>
+                        <li>
+                            Once linked, click on view child below to view their
+                            account.
+                        </li>
+                    </ol>
+                </div>
+                <div className="flex flex-col space-y-6 mt-6">
                     <div>
                         <Button
                             onClick={() => setViewChildOpen(true)}
