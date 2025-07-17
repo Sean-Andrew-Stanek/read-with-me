@@ -30,7 +30,7 @@ const ParentDashboard = (): JSX.Element => {
         useLinkedChildren();
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-[#dbeafe] to-[#fce7f3] py-12">
+        <div className="min-h-screen bg-gradient-to-b from-[#dbeafe] to-[#fce7f3] py-12 px-6">
             {/* <div className="text-center text-3xl font-bold text-gray-800">
                 Parent Dashboard
             </div> */}
