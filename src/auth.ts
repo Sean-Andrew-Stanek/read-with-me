@@ -263,14 +263,29 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
             //  If the user is already in the token (from credentials), use it
             if (token?.uuid) {
-                //  fetch the latest user from the DB using uuid
-                const user = await db
+                // First check if this is a child
+                const child = await db
                     .collection('childUsers')
                     .findOne({ uuid: token.uuid });
-                if (user) {
-                    session.user.uuid = token.uuid as string;
-                    session.user.isParent = token.isParent as boolean;
-                    session.user.grade = user.grade as string | number | null;
+                if (child) {
+                    session.user.uuid = child.uuid;
+                    session.user.isParent = false;
+                    session.user.grade = child.grade;
+                    session.user.impersonating = token.impersonating || false;
+                    session.user.realUserUuid = token.realUserUuid || undefined;
+                    return session;
+                }
+
+                // Then check if this is a parent
+                const parent = await db
+                    .collection('users')
+                    .findOne({ uuid: token.uuid });
+                if (parent) {
+                    session.user.uuid = parent.uuid;
+                    session.user.isParent = true;
+                    session.user.grade = parent.grade;
+                    session.user.name = parent.name;
+                    session.user.email = parent.email;
                     session.user.impersonating = token.impersonating || false;
                     session.user.realUserUuid = token.realUserUuid || undefined;
                     return session;
