@@ -10,6 +10,8 @@ type UseLinkedChildrenReturn = {
     children: ChildUserWithName[];
     fetchChildren: () => Promise<void>;
     handleImpersonate: (uuid: string, name: string) => Promise<void>;
+    handleGenerateToken: () => Promise<void>;
+    linkToken: string | null;
 };
 
 export const useLinkedChildren = (): UseLinkedChildrenReturn => {
@@ -17,6 +19,7 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
     const isParent = session?.user?.isParent;
 
     const [children, setChildren] = useState<ChildUserWithName[]>([]);
+    const [linkToken, setLinkToken] = useState<string | null>(null);
 
     const fetchChildren = useCallback(async (): Promise<void> => {
         if (isParent && session?.user?.uuid) {
@@ -74,5 +77,27 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
         }
     };
 
-    return { children, fetchChildren, handleImpersonate };
+    const handleGenerateToken = async (): Promise<void> => {
+        try {
+            const res = await fetch('api/token', { method: 'POST' });
+            const data = await res.json();
+
+            if (res.ok && data.token) {
+                setLinkToken(data.token);
+                toast.success('Token generated!');
+            } else {
+                toast.error(data.error || 'Failed to generate token!');
+            }
+        } catch {
+            toast.error('Something went wrong.');
+        }
+    };
+
+    return {
+        children,
+        fetchChildren,
+        handleImpersonate,
+        handleGenerateToken,
+        linkToken
+    };
 };

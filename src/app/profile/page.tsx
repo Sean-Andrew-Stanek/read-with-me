@@ -19,10 +19,15 @@ import { useLinkedChildren } from '@/lib/utils/hooks/useLinkedChildren';
 const Profile: React.FC = () => {
     const { data: session } = useSession();
     const [showDialog, setShowDialog] = useState(false);
-    const [linkToken, setLinkToken] = useState<string | null>(null);
     const [showTokenDialog, setShowTokenDialog] = useState(false);
 
-    const { children, fetchChildren, handleImpersonate } = useLinkedChildren();
+    const {
+        children,
+        fetchChildren,
+        handleImpersonate,
+        linkToken,
+        handleGenerateToken
+    } = useLinkedChildren();
 
     const grade = session?.user?.grade;
     const isParent = session?.user?.isParent;
@@ -42,21 +47,21 @@ const Profile: React.FC = () => {
         setShowDialog(false);
     };
 
-    const handleGenerateToken = async (): Promise<void> => {
-        try {
-            const res = await fetch('api/token', { method: 'POST' });
-            const data = await res.json();
+    // const handleGenerateToken = async (): Promise<void> => {
+    //     try {
+    //         const res = await fetch('api/token', { method: 'POST' });
+    //         const data = await res.json();
 
-            if (res.ok && data.token) {
-                setLinkToken(data.token);
-                toast.success('Token generated!');
-            } else {
-                toast.error(data.error || 'Failed to generate token!');
-            }
-        } catch {
-            toast.error('Something went wrong.');
-        }
-    };
+    //         if (res.ok && data.token) {
+    //             setLinkToken(data.token);
+    //             toast.success('Token generated!');
+    //         } else {
+    //             toast.error(data.error || 'Failed to generate token!');
+    //         }
+    //     } catch {
+    //         toast.error('Something went wrong.');
+    //     }
+    // };
 
     return (
         <div className="flex justify-center items-start p-6">
