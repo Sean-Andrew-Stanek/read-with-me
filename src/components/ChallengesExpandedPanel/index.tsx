@@ -24,14 +24,13 @@ const ChallengesExpandedPanel = ({
 
     return (
         <div className="absolute inset-0 z-50 bg-gray-100 flex flex-col items-center justify-center rounded-[2rem] shadow-md w-full h-[76%] pl-8 pr-8 pt-1">
-            <div className='w-[95%] mb-1'>
+            <div className='w-[94%] mb-1'>
                 <ReadStoryPan
                     setReadOpen={handleOpenReadPanel}
                     randomStoryId={randomStoryId}
                 />
             </div>
-
-            <div className="w-[95%] h-[60%] max-w-screen-2xl p-6 sm:p-10 bg-indigo-300 text-white rounded-2xl shadow-xl m-[4.5%] pb-10 mb-[1%] mt-[1%]">
+            <div className="w-[94%] h-[61%] max-w-screen-2xl p-6 sm:p-10 bg-indigo-300 text-white rounded-2xl shadow-xl m-[4.5%] pb-10 mb-[1%] mt-[1%]">
                 <div className="flex justify-between items-start h-15">
                     <h2 className="flex items-center space-x-3 font-extralight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
                         <Flame className="fill-white sm:size-6 md:size-8 lg:size-9 mr-4" />

@@ -22,7 +22,7 @@ const DefaultHomePanels = ({
     };
 
     return (
-        <div className="flex flex-col space-y-4 p-4 sm:p-8 md:p-16 bg-gray-100 rounded-[2rem] shadow-md w-full my-0">
+        <div className="flex flex-col space-y-4 p-4 sm:p-8 md:p-16 bg-gray-100 rounded-[2rem] shadow-md w-full my-0 h-[76%]">
             <ReadStoryPan
                 randomStoryId={randomStoryId}
                 setReadOpen={handleOpenReadPanel}

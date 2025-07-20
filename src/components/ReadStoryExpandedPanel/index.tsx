@@ -17,7 +17,7 @@ const ReadStoryExpandedPanel = ({
     return (
         <>
             <div className="absolute inset-0 z-50 bg-gray-100 flex items-center justify-center rounded-[2rem] shadow-md w-full h-[76%]">
-                <div className="w-[95%] h-[80%] max-w-screen-2xl p-6 sm:p-10 bg-indigo-300 text-white rounded-2xl shadow-xl m-[4.5%] mt-[7%] mb-[8%]">
+                <div className="w-[95%] h-[80%] max-w-screen-2xl p-6 sm:p-10 bg-indigo-300 text-white rounded-2xl shadow-xl m-[5.7%] mt-[7%] mb-[8%]">
                     <div className="flex justify-between items-start h-15">
                         <h2 className="flex items-center space-x-3 font-extralight text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
                             <Sparkles className="fill-white sm:size-6 md:size-8 lg:size-9 mr-4" />
