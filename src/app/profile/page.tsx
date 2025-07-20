@@ -112,7 +112,7 @@ const Profile: React.FC = () => {
                             variant="default"
                             className="bg-indigo-400 text-white cursor-pointer"
                         >
-                            Go to Home
+                            Return Home
                         </Button>
                     </Link>
                 </div>
