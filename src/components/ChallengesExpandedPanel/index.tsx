@@ -47,11 +47,11 @@ const ChallengesExpandedPanel = ({
                                 Validate your improvements with these rewarding sessions and help us improve by sharing feedback.
                             </p>
                             <div className="flex w-full justify-center">
-                                <Link href={randomStoryId ? `/read-story/${randomStoryId}` : '/create-story'} className="cursor-auto">
-                                    <Button className="bg-purple-600 hover:bg-purple-700 cursor-pointer text-base sm:text-md md:text-lg lg:text-xl text-white rounded-lg flex items-center mx-auto">
-                                        I&#39;m ready! <MoveRight className="ml-2" />
-                                    </Button>
-                                </Link>
+                                <Link href={randomStoryId ? `/read-story/${randomStoryId}` : '/create-story'}>
+                                <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15 hover:cursor-pointer">
+                                    I&#39;m ready! <MoveRight className="ml-2" />
+                                </Button>
+                            </Link>
                             </div>
                         </div>
                         <div className="w-[300px] sm:w-[200px] h-[249px] relative flex-shrink-0">
