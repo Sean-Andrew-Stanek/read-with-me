@@ -38,14 +38,14 @@ const ProgressPage: React.FC = async () => {
 
     return (
         <div className="p-6 max-w-5xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6 text-center text-[#474747]">
+            <h1 className="text-3xl font-bold mb-6 text-center text-neutral-700">
                 📚 Progress Overview
             </h1>
 
             <section className="mb-10 bg-muted p-6 rounded-xl shadow-md">
                 <div className="flex items-center gap-3 mb-2">
                     <BarChart className="w-5 h-5 text-primary" />
-                    <h2 className="text-xl font-semibold">
+                    <h2 className="text-xl  font-semibold">
                         Total Stories Read
                     </h2>
                 </div>
@@ -60,7 +60,7 @@ const ProgressPage: React.FC = async () => {
             <section>
                 {stories.length > 0 ? (
                     <>
-                        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-[#474747]">
+                        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-neutral-700">
                             <BookOpen className="w-5 h-5 text-primary" />
                             Story Details
                         </h2>
@@ -75,7 +75,7 @@ const ProgressPage: React.FC = async () => {
                                         key={story.id}
                                         className="p-5 border rounded-2xl bg-muted shadow-sm hover:shadow-md transition"
                                     >
-                                        <h3 className="text-lg font-bold mb-2 text-[#474747]">
+                                        <h3 className="text-lg font-bold mb-2 text-neutral-700">
                                             {story.title}
                                         </h3>
 
