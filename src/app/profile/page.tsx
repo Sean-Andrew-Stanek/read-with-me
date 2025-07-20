@@ -24,7 +24,7 @@ const Profile: React.FC = () => {
 
     return (
         <div className="flex justify-center items-start p-6">
-            <div className="w-full max-w-4xl bg-white rounded-[2rem] shadow-md p-8">
+            <div className="w-full max-w-4xl bg-white rounded-[2rem] shadow-md p-8 flex flex-col items-center">
                 <div className="flex flex-col items-center">
                     <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
                         <Image
@@ -39,16 +39,16 @@ const Profile: React.FC = () => {
                             <UserDropdown />
                         </div>
                     </div>
-                    <p className="mt-3 sm:text-lg text-md font-medium text-gray-800">
+                    <p className="mt-3 sm:text-lg text-md font-medium text-gray-800 mb-7">
                         {session?.user.name}
                     </p>
                 </div>
                 {!isParent && (
-                    <div className="mt-4 text-sm text-gray-700">
-                        <p className="mb-2">Haven’t linked to a parent yet?</p>
+                    <div className="mt-4 w-full text-center text-lg text-gray-700">
+                        <p className="mb-4">Haven’t linked to a parent yet?</p>
                         <button
                             onClick={() => setShowTokenDialog(true)}
-                            className="text-blue-600 underline hover:text-blue-800 cursor-pointer"
+                            className="text-xl text-blue-600 underline hover:text-blue-800 cursor-pointer"
                         >
                             Enter Parent Token
                         </button>
@@ -110,7 +110,7 @@ const Profile: React.FC = () => {
                     <Link href="/home">
                         <Button
                             variant="default"
-                            className="bg-indigo-400 hover:bg-indigo-600 text-white cursor-pointer"
+                            className="bg-indigo-400 hover:bg-indigo-600 text-white cursor-pointer mb-4"
                         >
                             Return Home
                         </Button>
