@@ -42,7 +42,8 @@ const ChallengesExpandedPanel = ({
                         </Button>
                     </div>
                         <div className="flex flex-row items-center justify-between gap-5 ml-10 w-full">
-                        <div className="bg-white text-gray-800 rounded-xl p-6 text-center shadow-md flex-1 max-w-2xl translate-x-4 -translate-y-3 sm:translate-x-6 sm:-translate-y-5">
+                        <div className="bg-white text-gray-800 rounded-xl p-6 text-center shadow-md flex-1 max-w-2xl translate-x-4 -translate-y-1 sm:translate-x-6 sm:translate-y-1 mt-4">
+
                             <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed mb-4">
                                 Validate your improvements with these rewarding sessions and help us improve by sharing feedback.
                             </p>
