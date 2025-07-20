@@ -29,20 +29,20 @@ const ReadStoryExpandedPanel = ({
                             className="p-0 bg-transparent hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                         >
                             <span className="flex items-center rounded-full p-1 bg-transparent hover:cursor-pointer">
-                            <CircleArrowUp className="size-12 sm:size-18 p-2 rounded-3xl font-extraligh text-white bg-transparent hover:size-20" />
+                                <CircleArrowUp className="size-12 sm:size-18 p-2 rounded-3xl font-extraligh text-white bg-transparent hover:size-20" />
                             </span>
                         </Button>
                     </div>
 
                     <div className="flex flex-row items-center justify-between gap-5 ml-10 w-full">
-                        <div className="bg-white text-gray-800 rounded-xl p-6 text-center shadow-md flex-1 max-w-2xl translate-x-4 -translate-y-3 sm:translate-x-6 sm:-translate-y-5">
+                        <div className="bg-white text-gray-800 rounded-xl p-6 text-center shadow-md flex-1 max-w-2xl translate-x-4 -translate-y-1 sm:translate-x-6 sm:translate-y-1 mt-4">
                             <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed mb-4">
                                 Challenge and monitor your reading skills with our innovative reading interface.
                                 Match your interests with your favorite literary genres — we&#39;ll do the rest!
                             </p>
                             <div className="flex w-full justify-center">
-                                <Link href={randomStoryId ? `/read-story/${randomStoryId}` : '/create-story'} className="cursor-auto">
-                                    <Button className="bg-purple-600 hover:bg-purple-700 cursor-pointer text-base sm:text-md md:text-lg lg:text-xl text-white rounded-lg flex items-center mx-auto">
+                                <Link href={randomStoryId ? `/read-story/${randomStoryId}` : '/create-story'}>
+                                    <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15 hover:cursor-pointer">
                                         I&#39;m ready! <MoveRight className="ml-2" />
                                     </Button>
                                 </Link>
