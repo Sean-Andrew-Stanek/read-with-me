@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { Eye, UserPlus, ArrowLeft, Link2, Baby } from 'lucide-react';
+import { Eye, ArrowLeft, Link2, Baby } from 'lucide-react';
 import { JSX } from 'react';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
