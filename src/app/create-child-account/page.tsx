@@ -10,6 +10,7 @@ const CreateChildAccountForm = (): JSX.Element => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
+    const [childPassword, setChildPassword] = useState<string | null>(null);
 
     useEffect(() => {
         if (message) {
@@ -28,6 +29,7 @@ const CreateChildAccountForm = (): JSX.Element => {
         e.preventDefault();
         setLoading(true);
         setMessage(null);
+        setChildPassword(null);
 
         try {
             const response = await fetch('/api/children/create', {
@@ -40,6 +42,7 @@ const CreateChildAccountForm = (): JSX.Element => {
 
             if (response.ok) {
                 setMessage(`Child account created and added to your children list.`)
+                setChildPassword(password);
                 setUsername('');
                 setPassword('');
             } else {
@@ -47,7 +50,7 @@ const CreateChildAccountForm = (): JSX.Element => {
             }
         } catch (error) {
             setMessage(`${error}`);
-            toast.message(message)
+            toast.message(String(error));
         } finally {
             setLoading(false);
         }
@@ -104,6 +107,23 @@ const CreateChildAccountForm = (): JSX.Element => {
                     </button>
                 </div>
                 {message && <p className={`mt-2 text-sm ${message.startsWith('Error') ? 'text-red-600' : 'text-gray-700'}`}>{message}</p>}
+                {childPassword && (
+                    <div className="mt-2 p-2 bg-yellow-100 rounded text-sm text-gray-800">
+                        <div>
+                            Child password: <span className="font-mono font-bold">{childPassword}</span>
+                        </div>
+                        <button
+                            onClick={() => {
+                                navigator.clipboard.writeText(childPassword);
+                                toast.success('Password copied to clipboard.');
+                            }}
+                            className="ml-4 bg-purple-600 hover:bg-purple-700 text-white text-xs px-3 py-1 rounded"
+                        >
+                            Copy to Clipboard
+                        </button>
+                    </div>
+                    
+                )}
             </form>
         </div>
     );
