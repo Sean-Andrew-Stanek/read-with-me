@@ -105,7 +105,10 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
         }
     };
 
-    const handleDeleteChild = async (uuid: string, name: string) => {
+    const handleDeleteChild = async (
+        uuid: string,
+        name: string
+    ): Promise<void> => {
         const confirmed = confirm(`Are you sure you want to delete ${name}?`);
         if (!confirmed) return;
 
