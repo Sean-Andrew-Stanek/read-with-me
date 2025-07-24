@@ -21,6 +21,7 @@ const Profile: React.FC = () => {
         useLinkedChildren();
 
     const isParent = session?.user?.isParent;
+    const isLinkedChild = !isParent && !!session?.user?.parentId;
 
     return (
         <div className="flex justify-center items-start p-6">
@@ -43,17 +44,26 @@ const Profile: React.FC = () => {
                         {session?.user.name}
                     </p>
                 </div>
-                {!isParent && (
-                    <div className="mt-4 w-full text-center text-lg text-gray-700">
-                        <p className="mb-4">Haven’t linked to a parent yet?</p>
-                        <button
-                            onClick={() => setShowTokenDialog(true)}
-                            className="text-xl text-blue-600 underline hover:text-blue-800 cursor-pointer"
-                        >
-                            Enter Parent Token
-                        </button>
-                    </div>
-                )}
+
+                {!isParent ? (
+                    !isLinkedChild ? (
+                        <div className="mt-4 w-full text-center text-lg text-gray-700">
+                            <p className="mb-4">
+                                Haven’t linked to a parent yet?
+                            </p>
+                            <Button
+                                onClick={() => setShowTokenDialog(true)}
+                                className="text-xl text-blue-600 underline hover:text-blue-800 cursor-pointer"
+                            >
+                                Enter Parent Token
+                            </Button>
+                        </div>
+                    ) : (
+                        <p className="mt-4 text-center text-green-700 font-medium">
+                            You are already linked to your parent account!
+                        </p>
+                    )
+                ) : null}
 
                 {/* Parent View – Linked Children */}
                 {isParent && session?.user?.uuid && (
