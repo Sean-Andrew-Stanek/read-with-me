@@ -25,7 +25,8 @@ const Profile: React.FC = () => {
 
     return (
         <div className="flex justify-center items-start p-6">
-            <div className="w-full max-w-4xl bg-white rounded-[2rem] shadow-md p-8 flex flex-col items-center">
+            {/* <div className="w-full max-w-4xl bg-white rounded-[2rem] shadow-md p-8 flex flex-col items-center"> */}
+            <div className="w-full max-w-4xl bg-white rounded-[2rem] shadow-md p-8">
                 <div className="flex flex-col items-center">
                     <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
                         <Image
@@ -116,7 +117,7 @@ const Profile: React.FC = () => {
                     </div>
                 )}
 
-                <div className="mt-8">
+                <div className=" flex justify-center mt-8">
                     <Link href="/home">
                         <Button
                             variant="default"

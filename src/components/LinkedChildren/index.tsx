@@ -24,29 +24,19 @@ const LinkedChildren = ({
             {childrenList.length === 0 ? (
                 <p>No children linked yet.</p>
             ) : (
-                <ul className="space-y-1">
+                <ul className=" w-full space-y-1">
                     {childrenList.map(child => (
                         <li
                             key={child.uuid}
                             className="flex justify-between items-center"
                         >
-                            <div>
-                                <span>{child.userName}</span>
-                                <span className="text-gray-500 text-xs ml-2">
-                                    Grade:{' '}
-                                    {grades[
-                                        child.grade as keyof typeof grades
-                                    ] ?? 'Not set'}
-                                </span>
-                            </div>
-                            {/* <button
-                                className="text-sm text-blue-600 hover:underline cursor-pointer"
-                                onClick={() =>
-                                    onImpersonate(child.uuid, child.userName)
-                                }
-                            >
-                                Log in as {child.userName}
-                            </button> */}
+                            <span>{child.userName}</span>
+                            <span className="text-gray-500 text-xs ml-2">
+                                Grade:{' '}
+                                {grades[child.grade as keyof typeof grades] ??
+                                    'Not set'}
+                            </span>
+
                             {mode === 'delete' ? (
                                 <button
                                     className="text-sm text-red-500 hover:underline cursor-pointer"
