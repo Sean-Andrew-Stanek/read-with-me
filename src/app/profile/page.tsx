@@ -51,12 +51,12 @@ const Profile: React.FC = () => {
                             <p className="mb-4">
                                 Haven’t linked to a parent yet?
                             </p>
-                            <Button
+                            <button
                                 onClick={() => setShowTokenDialog(true)}
                                 className="text-xl text-blue-600 underline hover:text-blue-800 cursor-pointer"
                             >
                                 Enter Parent Token
-                            </Button>
+                            </button>
                         </div>
                     ) : (
                         <p className="mt-4 text-center text-green-700 font-medium">

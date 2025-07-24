@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { Eye, ArrowLeft, Link2, Baby } from 'lucide-react';
+import { Eye, ArrowLeft, Link2, Baby, MinusIcon } from 'lucide-react';
 import { JSX } from 'react';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -88,6 +88,17 @@ const ParentDashboard = (): JSX.Element => {
                                     <Link2 className="size-7" />
                                 </IconBubble>
                                 Link to a Child
+                            </Button>
+                        </div>
+                        <div>
+                            <Button
+                                onClick={() => setTokenModalOpen(true)}
+                                className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md"
+                            >
+                                <IconBubble>
+                                    <MinusIcon className="size-7" />
+                                </IconBubble>
+                                Delete a Child
                             </Button>
                         </div>
 
