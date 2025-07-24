@@ -1,16 +1,16 @@
-import { JSX } from "react";
-import { CircleArrowDown, Flame, MoveRight } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { JSX } from 'react';
+import { CircleArrowDown, Flame, MoveRight } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 type ChallengesPanProps = {
     randomStoryId: string | null;
     setChallengesOpen: (value: boolean) => void;
-}
+};
 
 const ChallengesPan = ({
     randomStoryId,
-    setChallengesOpen,
+    setChallengesOpen
 }: ChallengesPanProps): JSX.Element => {
     return (
         <>
@@ -21,7 +21,13 @@ const ChallengesPan = ({
                         <span>Challenges</span>
                     </span>
                     <div className="flex items-center space-x-4">
-                        <Link href={randomStoryId ? `/read-story/${randomStoryId}` : '/create-story'}>
+                        <Link
+                            href={
+                                randomStoryId
+                                    ? `/read-story/${randomStoryId}`
+                                    : '/create-story'
+                            }
+                        >
                             <Button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm sm:text-md md:text-lg lg:text-xl flex items-center h-15 hover:cursor-pointer">
                                 I&#39;m ready! <MoveRight className="ml-2" />
                             </Button>
@@ -39,7 +45,7 @@ const ChallengesPan = ({
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
 export default ChallengesPan;

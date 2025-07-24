@@ -33,18 +33,18 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
                         if (!res.ok) return null;
                         const child = await res.json();
 
-                        if (
-                            child.parentLinkExpiresAt &&
-                            new Date(child.parentLinkExpiresAt) < new Date()
-                        ) {
-                            await fetch('/api/user/children', {
-                                method: 'DELETE',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ childUuid: child.uuid })
-                            });
+                        // if (
+                        //     child.parentLinkExpiresAt &&
+                        //     new Date(child.parentLinkExpiresAt) < new Date()
+                        // ) {
+                        //     await fetch('/api/user/children', {
+                        //         method: 'DELETE',
+                        //         headers: { 'Content-Type': 'application/json' },
+                        //         body: JSON.stringify({ childUuid: child.uuid })
+                        //     });
 
-                            return null;
-                        }
+                        //     return null;
+                        // }
 
                         return child;
                     })
