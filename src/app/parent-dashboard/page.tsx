@@ -38,11 +38,11 @@ const ParentDashboard = (): JSX.Element => {
                 {/* Sidebar with Instructions */}
                 <aside className="lg:w-1/3 w-full bg-white/70 rounded-3xl p-6 shadow-lg text-gray-700 text-sm flex flex-col justify-center">
                     <p className="mb-2 font-semibold text-gray-800 text-base">
-                        How to add a child:
+                        How to link to a child:
                     </p>
                     <ol className="list-decimal list-inside space-y-2">
                         <li>
-                            Click &quot;Add a child&quot; to generate a link
+                            Click &quot;Link to a Child&quot; to generate a link
                             token.
                         </li>
                         <li>Share the token with your child.</li>
