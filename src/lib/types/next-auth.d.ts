@@ -12,6 +12,7 @@ declare module 'next-auth' {
             grade?: string | number | null;
             impersonating?: boolean;
             realUserUuid?: string | null;
+            parentId?: string | null;
         } & DefaultSession['user'];
     }
 
@@ -21,6 +22,7 @@ declare module 'next-auth' {
         grade?: string | number | null;
         impersonating?: boolean;
         realUserUuid?: string | null;
+        parentId?: string | null;
     }
 }
 

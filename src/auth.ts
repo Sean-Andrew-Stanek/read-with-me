@@ -319,6 +319,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                     session.user.grade = child.grade;
                     session.user.impersonating = token.impersonating || false;
                     session.user.realUserUuid = token.realUserUuid || undefined;
+                    session.user.parentId = child.parentId ?? null;
                     return session;
                 }
 
