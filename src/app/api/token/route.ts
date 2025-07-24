@@ -65,28 +65,51 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
         }
 
         // find the child's uuid and set their parent to the one with token
-        await db.collection('childUsers').updateOne(
-            { uuid: session.user.uuid },
-            {
-                $set: {
-                    parentId: linkToken.parentId,
-                    parentLinkExpiresAt: linkToken.expiresAt
-                }
-            }
-        );
+        // await db.collection('childUsers').updateOne(
+        //     { uuid: session.user.uuid },
+        //     {
+        //         $set: {
+        //             parentId: linkToken.parentId,
+        //             parentLinkExpiresAt: linkToken.expiresAt
+        //         }
+        //     }
+        // );
 
         // update parent's children array
-        await db
-            .collection('users')
-            .updateOne(
-                { uuid: linkToken.parentId },
-                { $addToSet: { children: session.user.uuid } }
-            );
+        // await db
+        //     .collection('users')
+        //     .updateOne(
+        //         { uuid: linkToken.parentId },
+        //         { $addToSet: { children: session.user.uuid } }
+        //     );
+
+        // Check if a pending request already exists
+        const existingRequest = await db.collection('link_requests').findOne({
+            childId: session.user.uuid,
+            parentId: linkToken.parentId,
+            status: 'pending'
+        });
+
+        if (existingRequest) {
+            return NextResponse.json({
+                message: 'Link request already pending'
+            });
+        }
+
+        // Create pending link request
+        await db.collection('link_requests').insertOne({
+            childId: session.user.uuid,
+            parentId: linkToken.parentId,
+            status: 'pending',
+            createdAt: new Date()
+        });
 
         await db
             .collection('link_tokens')
             .updateOne({ token }, { $set: { isUsed: true } });
-        return NextResponse.json({ message: 'Linked successfully' });
+        return NextResponse.json({
+            message: 'Link request submitted for approval'
+        });
     } catch {
         return NextResponse.json(
             { error: 'Invalid token data' },
