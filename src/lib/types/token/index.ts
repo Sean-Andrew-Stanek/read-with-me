@@ -5,11 +5,9 @@ export const LinkTokenSchema = z.object({
     parentId: z.string().uuid(),
     isUsed: z.boolean(),
     createdAt: z.date(),
-    expiresAt: z
-        .date()
-        .refine(date => date > new Date(), {
-            message: 'Expiration must be in the future'
-        })
+    expiresAt: z.date().refine(date => date > new Date(), {
+        message: 'Expiration must be in the future'
+    })
 });
 
 export type LinkToken = z.infer<typeof LinkTokenSchema>;
