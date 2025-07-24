@@ -11,6 +11,7 @@ type UseLinkedChildrenReturn = {
     fetchChildren: () => Promise<void>;
     handleImpersonate: (uuid: string, name: string) => Promise<void>;
     handleGenerateToken: () => Promise<void>;
+    handleDeleteChild: (uuid: string, name: string) => Promise<void>;
     linkToken: string | null;
 };
 
@@ -104,11 +105,31 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
         }
     };
 
+    const handleDeleteChild = async (uuid: string, name: string) => {
+        const confirmed = confirm(`Are you sure you want to delete ${name}?`);
+        if (!confirmed) return;
+
+        const res = await fetch('/api/user/children', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ childUuid: uuid })
+        });
+
+        if (res.ok) {
+            toast.success(`${name} has been deleted`);
+            await fetchChildren(); // refresh list
+        } else {
+            const data = await res.json();
+            toast.error(data.error || 'Failed to delete child');
+        }
+    };
+
     return {
         children,
         fetchChildren,
         handleImpersonate,
         handleGenerateToken,
+        handleDeleteChild,
         linkToken
     };
 };

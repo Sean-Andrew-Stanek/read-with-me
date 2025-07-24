@@ -8,11 +8,15 @@ type ChildUserWithName = ChildUser & { userName: string };
 
 type LinkedChildrenProps = {
     childrenList: ChildUserWithName[];
-    onImpersonate: (uuid: string, name: string) => void;
+    onImpersonate?: (uuid: string, name: string) => void;
+    onDelete?: (uuid: string, name: string) => void;
+    mode?: 'view' | 'delete';
 };
 const LinkedChildren = ({
     childrenList,
-    onImpersonate
+    onImpersonate,
+    onDelete,
+    mode
 }: LinkedChildrenProps): JSX.Element => {
     return (
         <div className="w-full text-md text-gray-700">
@@ -35,14 +39,36 @@ const LinkedChildren = ({
                                     ] ?? 'Not set'}
                                 </span>
                             </div>
-                            <button
+                            {/* <button
                                 className="text-sm text-blue-600 hover:underline cursor-pointer"
                                 onClick={() =>
                                     onImpersonate(child.uuid, child.userName)
                                 }
                             >
                                 Log in as {child.userName}
-                            </button>
+                            </button> */}
+                            {mode === 'delete' ? (
+                                <button
+                                    className="text-sm text-red-500 hover:underline cursor-pointer"
+                                    onClick={() =>
+                                        onDelete?.(child.uuid, child.userName)
+                                    }
+                                >
+                                    Delete
+                                </button>
+                            ) : (
+                                <button
+                                    className="text-sm text-blue-600 hover:underline cursor-pointer"
+                                    onClick={() =>
+                                        onImpersonate?.(
+                                            child.uuid,
+                                            child.userName
+                                        )
+                                    }
+                                >
+                                    Log in as {child.userName}
+                                </button>
+                            )}
                         </li>
                     ))}
                 </ul>

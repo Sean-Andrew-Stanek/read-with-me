@@ -22,12 +22,18 @@ const IconBubble = ({
 const ParentDashboard = (): JSX.Element => {
     const [viewChildOpen, setViewChildOpen] = useState<boolean>(false);
     const [tokenModalOpen, setTokenModalOpen] = useState(false);
+    const [deleteMode, setDeleteMode] = useState(false);
 
     const { data: session } = useSession();
     const isParent = session?.user?.isParent;
 
-    const { children, handleImpersonate, linkToken, handleGenerateToken } =
-        useLinkedChildren();
+    const {
+        children,
+        handleImpersonate,
+        linkToken,
+        handleGenerateToken,
+        handleDeleteChild
+    } = useLinkedChildren();
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#dbeafe] to-[#fce7f3] py-12 px-6">
@@ -92,7 +98,10 @@ const ParentDashboard = (): JSX.Element => {
                         </div>
                         <div>
                             <Button
-                                onClick={() => setTokenModalOpen(true)}
+                                onClick={() => {
+                                    setDeleteMode(true);
+                                    setViewChildOpen(true);
+                                }}
                                 className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md"
                             >
                                 <IconBubble>
@@ -124,7 +133,9 @@ const ParentDashboard = (): JSX.Element => {
                         {isParent && (
                             <LinkedChildren
                                 onImpersonate={handleImpersonate}
+                                onDelete={handleDeleteChild}
                                 childrenList={children ?? []}
+                                mode={deleteMode ? 'delete' : 'view'}
                             />
                         )}
                     </DialogContent>
