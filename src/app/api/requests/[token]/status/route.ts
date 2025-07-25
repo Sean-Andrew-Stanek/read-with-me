@@ -4,14 +4,14 @@ import { auth } from '@/auth';
 
 export const PATCH = async (
     req: Request,
-    { params }: { params: { token: string } }
+    { params }: { params: Promise<{ token: string }> }
 ): Promise<NextResponse> => {
     const session = await auth();
     if (!session?.user?.uuid || !session?.user?.isParent) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { token } = params;
+    const token = (await params).token;
     const body = await req.json();
     const { status } = body;
 
