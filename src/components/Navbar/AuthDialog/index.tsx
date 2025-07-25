@@ -140,53 +140,71 @@ const AuthDialog: React.FC = () => {
                         </svg>
                         Continue with Google
                     </Button>
-                    <div className="text-center text-sm text-muted-foreground">
-                        or sign in as a child
-                    </div>
-
-                    {/* Username and password login */}
-                    <label className="block mb-1 font-medium text-sm">
-                        Username:
-                    </label>
-                    <input
-                        type="text"
-                        placeholder="Username"
-                        value={userName}
-                        onChange={e => setUserName(e.target.value)}
-                        className="border border-gray-300 rounded p-2"
-                    />
-                    <label className="block mb-1 font-medium text-sm">
-                        Password:
-                    </label>
-                    <div className="relative w-full">
-                        <input
-                            type={showPassword ? 'text' : 'password'}
-                            placeholder="Password"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            className="border border-gray-300 rounded p-2 w-full"
-                        />
-                        {error && (
-                            <p className="text-red-500 text-sm">{error}</p>
-                        )}
-                        <Button
-                            onClick={toggleVisibility}
-                            className="absolute inset-y-0 right-1 flex items-center h-full rounded cursor-pointer bg-grey text-black hover:bg-grey focus:outline-none shadow-none"
-                        >
-                            {showPassword ? (
-                                <EyeOff className="h-4 w-4" />
-                            ) : (
-                                <Eye className="h-4 w-4" />
-                            )}
-                        </Button>
-                    </div>
-
-                    <Button
-                        onClick={handleCredentialsLogin}
-                        className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold py-2 rounded-2xl cursor-pointer"
+                    <form
+                        onSubmit={e => {
+                            e.preventDefault();
+                            handleCredentialsLogin();
+                        }}
+                        className="flex flex-col gap-4"
                     >
-                        Log In as Child
-                    </Button>
+                        <div className="text-center text-sm text-muted-foreground">
+                            or sign in as a child
+                        </div>
+
+                        {/* Username and password login */}
+
+                        <div className="space-y-1">
+                            <label className="text-sm font-medium">
+                                Username
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="Username"
+                                autoComplete="username"
+                                value={userName}
+                                onChange={e => setUserName(e.target.value)}
+                                className="w-full text-sm px-3 py-2 border border-gray-300 rounded"
+                            />
+                        </div>
+
+                        <div className="space-y-1 relative">
+                            <label className="text-sm font-medium">
+                                Password
+                            </label>
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder="Password"
+                                    autoComplete="current-password"
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
+                                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded pr-10"
+                                />
+                                <Button
+                                    type="button"
+                                    onClick={toggleVisibility}
+                                    className="absolute inset-y-0 right-1 flex items-center h-full rounded cursor-pointer bg-grey text-black hover:bg-grey focus:outline-none shadow-none"
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className="h-4 w-4 text-gray-600" />
+                                    ) : (
+                                        <Eye className="h-4 w-4 text-gray-600" />
+                                    )}
+                                </Button>
+                            </div>
+                            {error && (
+                                <p className="text-red-500 text-xs mt-1">
+                                    {error}
+                                </p>
+                            )}
+                        </div>
+                        <Button
+                            type="submit"
+                            className="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold py-2 rounded-2xl cursor-pointer"
+                        >
+                            Log In as Child
+                        </Button>
+                    </form>
                 </div>
             </DialogContent>
         </Dialog>

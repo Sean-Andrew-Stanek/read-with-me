@@ -99,6 +99,7 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
 
         // Create pending link request
         await db.collection('link_requests').insertOne({
+            token,
             childId: session.user.uuid,
             parentId: linkToken.parentId,
             status: 'pending',
