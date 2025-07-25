@@ -1,7 +1,7 @@
 'use client';
 import { useCallback, useState } from 'react';
 
-import { LinkRequest } from '@/lib/linkRequest';
+import { LinkRequest } from '@/lib/types/linkRequest';
 import { toast } from 'sonner';
 export type usePendingrequestsTypes = {
     pendingRequests: LinkRequest[];

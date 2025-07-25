@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { auth } from '@/auth';
-import { LinkRequestArraySchema } from '@/lib/linkRequest';
+import { LinkRequestArraySchema } from '@/lib/types/linkRequest';
 
 export const GET = async (): Promise<NextResponse> => {
     const session = await auth();
