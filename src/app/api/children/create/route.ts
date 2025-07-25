@@ -41,6 +41,7 @@ export const POST = async (request: Request): Promise<NextResponse> => {
         userName: username,
         password: hashedPassword,
         uuid: childUuid,
+        parentId: parentUser.uuid,
         isParent: false,
         createdAt: new Date(),
     };
