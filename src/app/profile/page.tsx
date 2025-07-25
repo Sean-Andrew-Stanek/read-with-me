@@ -25,9 +25,14 @@ const Profile: React.FC = () => {
     const isParent = session?.user?.isParent;
     const isLinkedChild = !isParent && !!session?.user?.parentId;
     useEffect(() => {
-        fetchPendingRequests();
-    }, [fetchPendingRequests]);
+        if (isParent === true) {
+            fetchPendingRequests();
+        }
+    }, [isParent, fetchPendingRequests]);
 
+    if (typeof isParent !== 'boolean') {
+        return <div>Loading...</div>;
+    }
     return (
         <div className="flex justify-center items-start p-6">
             {/* <div className="w-full max-w-4xl bg-white rounded-[2rem] shadow-md p-8 flex flex-col items-center"> */}
