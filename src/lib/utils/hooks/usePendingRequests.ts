@@ -1,10 +1,15 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { LinkRequest } from '@/lib/linkRequest';
 import { toast } from 'sonner';
+export type usePendingrequestsTypes = {
+    pendingRequests: LinkRequest[];
+    fetchPendingRequests: () => Promise<void>;
+    setPendingRequests: React.Dispatch<React.SetStateAction<LinkRequest[]>>;
+};
 
-export const usePendingRequests = () => {
+export const usePendingRequests = (): usePendingrequestsTypes => {
     const [pendingRequests, setPendingRequests] = useState<LinkRequest[]>([]);
 
     const fetchPendingRequests = useCallback(async (): Promise<void> => {

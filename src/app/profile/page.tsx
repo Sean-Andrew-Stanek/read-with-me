@@ -20,8 +20,7 @@ const Profile: React.FC = () => {
 
     const { children, handleImpersonate, linkToken, handleGenerateToken } =
         useLinkedChildren();
-    const { fetchPendingRequests, pendingRequests, setPendingRequests } =
-        usePendingRequests();
+    const { fetchPendingRequests, pendingRequests } = usePendingRequests();
 
     const isParent = session?.user?.isParent;
     const isLinkedChild = !isParent && !!session?.user?.parentId;
