@@ -99,59 +99,67 @@ const Signup = (): JSX.Element => {
                         Sign up to get started with Read With Me.
                     </DialogDescription>
                 </DialogHeader>
-
-                <div className="flex flex-col space-y-4 py-4">
-                    <label
-                        className="block mb-1 font-medium text-sm"
-                        htmlFor="password"
-                    >
-                        Username:
-                    </label>
-                    <input
-                        type="text"
-                        placeholder="Username"
-                        value={userName}
-                        onChange={e => setUserName(e.target.value)}
-                        className="border border-gray-300 rounded p-2"
-                    />
-                    <label
-                        className="block mb-1 font-medium text-sm"
-                        htmlFor="password"
-                    >
-                        Password:
-                    </label>
-                    <div className="relative w-full">
-                        <input
-                            type={showPassword ? 'text' : 'password'}
-                            placeholder="Password"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            className="border border-gray-300 rounded p-2 w-full"
-                        />
-
-                        {error && (
-                            <p className="text-red-500 text-sm">{error}</p>
-                        )}
-                        <Button
-                            onClick={toggleVisibility}
-                            className="absolute inset-y-0 right-1 flex items-center px-2 h-full rounded cursor-pointer bg-grey text-black hover:bg-grey focus:outline-none shadow-none"
+                <form
+                    onSubmit={e => {
+                        e.preventDefault();
+                        handleSignup();
+                    }}
+                >
+                    <div className="flex flex-col space-y-4 py-4">
+                        <label
+                            className="block mb-1 font-medium text-sm"
+                            htmlFor="password"
                         >
-                            {showPassword ? (
-                                <EyeOff className="h-4 w-4" />
-                            ) : (
-                                <Eye className="h-4 w-4" />
+                            Username:
+                        </label>
+                        <input
+                            type="text"
+                            placeholder="Username"
+                            autoComplete="username"
+                            value={userName}
+                            onChange={e => setUserName(e.target.value)}
+                            className="border border-gray-300 rounded p-2"
+                        />
+                        <label
+                            className="block mb-1 font-medium text-sm"
+                            htmlFor="password"
+                        >
+                            Password:
+                        </label>
+                        <div className="relative w-full">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="Password"
+                                autoComplete="new-password"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                className="border border-gray-300 rounded p-2 w-full"
+                            />
+
+                            {error && (
+                                <p className="text-red-500 text-sm">{error}</p>
                             )}
+                            <Button
+                                onClick={toggleVisibility}
+                                className="absolute inset-y-0 right-1 flex items-center px-2 h-full rounded cursor-pointer bg-grey text-black hover:bg-grey focus:outline-none shadow-none"
+                            >
+                                {showPassword ? (
+                                    <EyeOff className="h-4 w-4" />
+                                ) : (
+                                    <Eye className="h-4 w-4" />
+                                )}
+                            </Button>
+                        </div>
+
+                        <Button
+                            type="submit"
+                            className="bg-red-400 sm:w-auto text-sm sm:text-base md:text-lg hover:bg-red-600 text-white font-semibold py-1 rounded-2xl cursor-pointer"
+                            // className="w-full sm:w-auto text-sm sm:text-base md:text-lg px-3 sm:px-4 md:px-6 !py-1 sm:!py-1.5 md:py-3 bg-red-400 hover:bg-red-600  text-white font-medium rounded-xl transition"
+                        >
+                            Sign Up
                         </Button>
                     </div>
-
-                    <Button
-                        onClick={handleSignup}
-                        className="bg-red-400 sm:w-auto text-sm sm:text-base md:text-lg hover:bg-red-600 text-white font-semibold py-1 rounded-2xl cursor-pointer"
-                        // className="w-full sm:w-auto text-sm sm:text-base md:text-lg px-3 sm:px-4 md:px-6 !py-1 sm:!py-1.5 md:py-3 bg-red-400 hover:bg-red-600  text-white font-medium rounded-xl transition"
-                    >
-                        Sign Up
-                    </Button>
-                </div>
+                </form>
             </DialogContent>
         </Dialog>
     );
