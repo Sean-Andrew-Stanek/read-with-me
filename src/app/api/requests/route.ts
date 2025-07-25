@@ -18,7 +18,7 @@ export const GET = async (): Promise<NextResponse> => {
             .find({
                 parentId: session.user.uuid,
                 status: 'pending',
-                epiresAt: { $gt: new Date() }
+                expiresAt: { $gt: new Date() }
             })
             .toArray();
 
