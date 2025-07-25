@@ -5,7 +5,7 @@ import { auth } from '@/auth';
 export const PATCH = async (
     req: Request,
     { params }: { params: { token: string } }
-) => {
+): Promise<NextResponse> => {
     const session = await auth();
     if (!session?.user?.uuid || !session?.user?.isParent) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
