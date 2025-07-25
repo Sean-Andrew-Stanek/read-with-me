@@ -18,9 +18,15 @@ const Profile: React.FC = () => {
     const { data: session } = useSession();
     const [showTokenDialog, setShowTokenDialog] = useState(false);
 
-    const { children, handleImpersonate, linkToken, handleGenerateToken } =
-        useLinkedChildren();
-    const { fetchPendingRequests, pendingRequests } = usePendingRequests();
+    const {
+        children,
+        handleImpersonate,
+        linkToken,
+        handleGenerateToken,
+        fetchChildren
+    } = useLinkedChildren();
+    const { fetchPendingRequests, pendingRequests, handleApprove } =
+        usePendingRequests({ fetchChildren });
 
     const isParent = session?.user?.isParent;
     const isLinkedChild = !isParent && !!session?.user?.parentId;
@@ -115,10 +121,16 @@ const Profile: React.FC = () => {
                                 >
                                     <span>{req.childName}</span>
                                     <div className="flex gap-2">
-                                        <button className="px-3 py-1 text-sm text-white bg-green-600 hover:bg-green-700 rounded">
+                                        <button
+                                            onClick={() =>
+                                                req.token &&
+                                                handleApprove(req.token)
+                                            }
+                                            className="px-3 py-1 text-sm text-white bg-green-600 hover:bg-green-700 rounded cursor-pointer"
+                                        >
                                             Approve
                                         </button>
-                                        <button className="px-3 py-1 text-sm text-white bg-red-600 hover:bg-red-700 rounded">
+                                        <button className="px-3 py-1 text-sm text-white bg-red-600 hover:bg-red-700 rounded cursor-pointer">
                                             Reject
                                         </button>
                                     </div>

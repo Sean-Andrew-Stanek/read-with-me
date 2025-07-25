@@ -3,27 +3,63 @@ import { useCallback, useState } from 'react';
 
 import { LinkRequest } from '@/lib/types/linkRequest';
 import { toast } from 'sonner';
+
 export type usePendingrequestsTypes = {
     pendingRequests: LinkRequest[];
     fetchPendingRequests: () => Promise<void>;
     setPendingRequests: React.Dispatch<React.SetStateAction<LinkRequest[]>>;
+    handleApprove: (token: string) => Promise<void>;
 };
 
-export const usePendingRequests = (): usePendingrequestsTypes => {
+export const usePendingRequests = ({
+    fetchChildren
+}: {
+    fetchChildren: () => Promise<void>;
+}): usePendingrequestsTypes => {
     const [pendingRequests, setPendingRequests] = useState<LinkRequest[]>([]);
 
     const fetchPendingRequests = useCallback(async (): Promise<void> => {
         try {
             const res = await fetch('/api/requests');
+            const result = await res.json();
+
             if (!res.ok) {
-                throw new Error('Failed to fetch the data!');
+                throw new Error(result.error || 'Failed to approve request');
             }
-            const data = await res.json();
-            setPendingRequests(data);
+            setPendingRequests(result);
         } catch {
             toast.error('Failed to load pending requests');
         }
     }, []);
 
-    return { fetchPendingRequests, pendingRequests, setPendingRequests };
+    const handleApprove = async (token: string): Promise<void> => {
+        try {
+            const res = await fetch(`/api/requests/${token}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'approved' })
+            });
+
+            // const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error('Failed to approve request');
+            }
+
+            await fetchChildren();
+
+            // update pending list
+            toast.success('Request approved!');
+            setPendingRequests(prev => prev.filter(req => req.token !== token));
+        } catch {
+            toast.error('Could not approve request');
+        }
+    };
+
+    return {
+        fetchPendingRequests,
+        pendingRequests,
+        setPendingRequests,
+        handleApprove
+    };
 };
