@@ -22,7 +22,25 @@ export const GET = async (): Promise<NextResponse> => {
             })
             .toArray();
 
-        const validatedRequests = LinkRequestArraySchema.parse(rawRequests);
+        // add the child name to requests
+        const enrichedRequests = await Promise.all(
+            rawRequests.map(async req => {
+                const child = await db
+                    .collection('childUsers')
+                    .findOne(
+                        { uuid: req.childId },
+                        { projection: { userName: 1 } }
+                    );
+
+                return {
+                    ...req,
+                    childName: child?.userName || 'Unnamed Child'
+                };
+            })
+        );
+
+        const validatedRequests =
+            LinkRequestArraySchema.parse(enrichedRequests);
 
         return NextResponse.json(validatedRequests);
     } catch (error) {
