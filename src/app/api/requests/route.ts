@@ -15,7 +15,11 @@ export const GET = async (): Promise<NextResponse> => {
 
         const rawRequests = await db
             .collection('link_requests')
-            .find({ parentId: session.user.uuid, status: 'pending' })
+            .find({
+                parentId: session.user.uuid,
+                status: 'pending',
+                epiresAt: { $gt: new Date() }
+            })
             .toArray();
 
         const validatedRequests = LinkRequestArraySchema.parse(rawRequests);

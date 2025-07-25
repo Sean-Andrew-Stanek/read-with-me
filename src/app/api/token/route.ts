@@ -85,6 +85,7 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
 
         // Check if a pending request already exists
         const existingRequest = await db.collection('link_requests').findOne({
+            token,
             childId: session.user.uuid,
             parentId: linkToken.parentId,
             status: 'pending'
@@ -101,7 +102,8 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
             childId: session.user.uuid,
             parentId: linkToken.parentId,
             status: 'pending',
-            createdAt: new Date()
+            createdAt: new Date(),
+            expiresAt: linkToken.expiresAt
         });
 
         await db
