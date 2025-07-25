@@ -12,31 +12,22 @@ import UserDropdown from '@/components/Sidebar/UserDropdown';
 import EnterTokenDialog from '@/components/EnterTokenDialog';
 import LinkedChildren from '@/components/LinkedChildren';
 import { useLinkedChildren } from '@/lib/utils/hooks/useLinkedChildren';
-import { LinkRequest } from '@/lib/linkRequest';
+import { usePendingRequests } from '@/lib/utils/hooks/usePendingRequests';
 
 const Profile: React.FC = () => {
     const { data: session } = useSession();
     const [showTokenDialog, setShowTokenDialog] = useState(false);
-    const [pendingRequests, setPendingRequests] = useState<LinkRequest[]>([]);
 
     const { children, handleImpersonate, linkToken, handleGenerateToken } =
         useLinkedChildren();
+    const { fetchPendingRequests, pendingRequests, setPendingRequests } =
+        usePendingRequests();
 
     const isParent = session?.user?.isParent;
     const isLinkedChild = !isParent && !!session?.user?.parentId;
     useEffect(() => {
-        const fetchRequests = async (): Promise<void> => {
-            try {
-                const res = await fetch('/api/requests');
-                if (!res.ok) throw new Error('Failed to fetch');
-                const data = await res.json();
-                setPendingRequests(data);
-            } catch {
-                toast.error('An error occurred while fetching link requests');
-            }
-        };
-        fetchRequests();
-    }, []);
+        fetchPendingRequests();
+    }, [fetchPendingRequests]);
 
     return (
         <div className="flex justify-center items-start p-6">
