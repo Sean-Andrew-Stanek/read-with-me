@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -12,16 +12,31 @@ import UserDropdown from '@/components/Sidebar/UserDropdown';
 import EnterTokenDialog from '@/components/EnterTokenDialog';
 import LinkedChildren from '@/components/LinkedChildren';
 import { useLinkedChildren } from '@/lib/utils/hooks/useLinkedChildren';
+import { LinkRequest } from '@/lib/linkRequest';
 
 const Profile: React.FC = () => {
     const { data: session } = useSession();
     const [showTokenDialog, setShowTokenDialog] = useState(false);
+    const [pendingRequests, setPendingRequests] = useState<LinkRequest[]>([]);
 
     const { children, handleImpersonate, linkToken, handleGenerateToken } =
         useLinkedChildren();
 
     const isParent = session?.user?.isParent;
     const isLinkedChild = !isParent && !!session?.user?.parentId;
+    useEffect(() => {
+        const fetchRequests = async (): Promise<void> => {
+            try {
+                const res = await fetch('/api/requests');
+                if (!res.ok) throw new Error('Failed to fetch');
+                const data = await res.json();
+                setPendingRequests(data);
+            } catch {
+                toast.error('An error occurred while fetching link requests');
+            }
+        };
+        fetchRequests();
+    }, []);
 
     return (
         <div className="flex justify-center items-start p-6">
@@ -92,6 +107,32 @@ const Profile: React.FC = () => {
                         )}
                     </div>
                 )}
+                {pendingRequests.length > 0 && (
+                    <div className="mt-6 w-full bg-yellow-50 border border-yellow-300 rounded-xl p-4 shadow-sm">
+                        <h3 className="font-semibold text-lg mb-2">
+                            Pending Requests:
+                        </h3>
+                        <ul className="space-y-2">
+                            {pendingRequests.map(req => (
+                                <li
+                                    key={req.childId}
+                                    className="flex justify-between items-center"
+                                >
+                                    <span>{req.childName}</span>
+                                    <div className="flex gap-2">
+                                        <button className="px-3 py-1 text-sm text-white bg-green-600 hover:bg-green-700 rounded">
+                                            Approve
+                                        </button>
+                                        <button className="px-3 py-1 text-sm text-white bg-red-600 hover:bg-red-700 rounded">
+                                            Reject
+                                        </button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+
                 {!isParent && (
                     <div className="mt-4 flex justify-center ">
                         <EnterTokenDialog

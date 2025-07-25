@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
 export const LinkRequestSchema = z.object({
-    token: z.string(),
+    token: z.string().optional(),
     childId: z.string(),
     parentId: z.string(),
-    childName: z.string(),
-    requestedAt: z.date(),
+    childName: z.string().optional(),
+    createdAt: z.date().optional(),
     status: z.enum(['pending', 'approved', 'rejected'])
 });
 
