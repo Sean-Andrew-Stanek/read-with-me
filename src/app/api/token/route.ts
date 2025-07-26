@@ -97,11 +97,16 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
             });
         }
 
+        const child = await db
+            .collection('childUsers')
+            .findOne({ uuid: session.user.uuid });
+
         // Create pending link request
         await db.collection('link_requests').insertOne({
             token,
             childId: session.user.uuid,
             parentId: linkToken.parentId,
+            childName: child?.userName ?? 'Unnamed Child',
             status: 'pending',
             createdAt: new Date(),
             expiresAt: linkToken.expiresAt
