@@ -26,8 +26,12 @@ const Profile: React.FC = () => {
         handleGenerateToken,
         fetchChildren
     } = useLinkedChildren();
-    const { fetchPendingRequests, pendingRequests, handleApprove } =
-        usePendingRequests({ fetchChildren });
+    const {
+        fetchPendingRequests,
+        pendingRequests,
+        handleApprove,
+        handleReject
+    } = usePendingRequests({ fetchChildren });
 
     const isParent = session?.user?.isParent;
     const isLinkedChild = !isParent && !!session?.user?.parentId;
@@ -78,26 +82,6 @@ const Profile: React.FC = () => {
                         {session?.user.name}
                     </p>
                 </div>
-
-                {/* {!isParent ? (
-                    !isLinkedChild ? (
-                        <div className="mt-4 w-full text-center text-lg text-gray-700">
-                            <p className="mb-4">
-                                Haven’t linked to a parent yet?
-                            </p>
-                            <button
-                                onClick={() => setShowTokenDialog(true)}
-                                className="text-xl text-blue-600 underline hover:text-blue-800 cursor-pointer"
-                            >
-                                Enter Parent Token
-                            </button>
-                        </div>
-                    ) : (
-                        <p className="mt-4 text-center text-green-700 font-medium">
-                            You are already linked to your parent account!
-                        </p>
-                    )
-                ) : null} */}
                 {!isParent ? (
                     isLinkedChild ? (
                         <p className="mt-4 text-center text-green-700 font-medium">
@@ -171,7 +155,13 @@ const Profile: React.FC = () => {
                                         >
                                             Approve
                                         </button>
-                                        <button className="px-3 py-1 text-sm text-white bg-red-600 hover:bg-red-700 rounded cursor-pointer">
+                                        <button
+                                            onClick={() =>
+                                                req.token &&
+                                                handleReject(req.token)
+                                            }
+                                            className="px-3 py-1 text-sm text-white bg-red-600 hover:bg-red-700 rounded cursor-pointer"
+                                        >
                                             Reject
                                         </button>
                                     </div>
