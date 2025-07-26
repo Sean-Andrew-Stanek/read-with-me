@@ -9,7 +9,11 @@ export const LinkRequestSchema = z.object({
     status: z.enum(['pending', 'approved', 'rejected'])
 });
 
-export const LinkRequestArraySchema = z.array(LinkRequestSchema);
+export const LinkStatusSchema = z.object({
+    isWaitingApproval: z.boolean()
+});
 
+export type LinkStatus = z.infer<typeof LinkStatusSchema>;
+export const LinkRequestArraySchema = z.array(LinkRequestSchema);
 export type LinkRequest = z.infer<typeof LinkRequestSchema>;
 export type LinkRequestArray = z.infer<typeof LinkRequestArraySchema>;

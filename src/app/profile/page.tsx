@@ -148,7 +148,7 @@ const Profile: React.FC = () => {
                             onLinked={() => {
                                 setShowTokenDialog(false);
                                 toast.success(
-                                    'Linked successfully! You are now linked to your parent account.',
+                                    'Request was sent successfuly, wait for your parent to approve!',
                                     {
                                         icon: (
                                             <Check className="h-5 w-5 text-green-500" />
