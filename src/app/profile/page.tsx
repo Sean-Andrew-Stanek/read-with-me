@@ -17,6 +17,7 @@ import { usePendingRequests } from '@/lib/utils/hooks/usePendingRequests';
 const Profile: React.FC = () => {
     const { data: session } = useSession();
     const [showTokenDialog, setShowTokenDialog] = useState(false);
+    const [pendingSubmitted, setPendingSubmitted] = useState(false);
 
     const {
         children,
@@ -35,6 +36,20 @@ const Profile: React.FC = () => {
             fetchPendingRequests();
         }
     }, [isParent, fetchPendingRequests]);
+
+    useEffect(() => {
+        if (!isParent && !isLinkedChild) {
+            // Only check if child is not yet linked
+            fetch('/api/requests/pending')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.pending) setPendingSubmitted(true);
+                })
+                .catch(() => {
+                    console.error('Failed to fetch pending request status');
+                });
+        }
+    }, [isParent, isLinkedChild]);
 
     if (typeof isParent !== 'boolean') {
         return <div>Loading...</div>;
@@ -62,7 +77,7 @@ const Profile: React.FC = () => {
                     </p>
                 </div>
 
-                {!isParent ? (
+                {/* {!isParent ? (
                     !isLinkedChild ? (
                         <div className="mt-4 w-full text-center text-lg text-gray-700">
                             <p className="mb-4">
@@ -79,6 +94,30 @@ const Profile: React.FC = () => {
                         <p className="mt-4 text-center text-green-700 font-medium">
                             You are already linked to your parent account!
                         </p>
+                    )
+                ) : null} */}
+                {!isParent ? (
+                    isLinkedChild ? (
+                        <p className="mt-4 text-center text-green-700 font-medium">
+                            You are already linked to your parent account!
+                        </p>
+                    ) : pendingSubmitted ? (
+                        <p className="mt-4 text-center text-yellow-700 font-medium">
+                            Your parent has received the request. Please wait
+                            for them to approve.
+                        </p>
+                    ) : (
+                        <div className="mt-4 w-full text-center text-lg text-gray-700">
+                            <p className="mb-4">
+                                Haven’t linked to a parent yet?
+                            </p>
+                            <button
+                                onClick={() => setShowTokenDialog(true)}
+                                className="text-xl text-blue-600 underline hover:text-blue-800 cursor-pointer"
+                            >
+                                Enter Parent Token
+                            </button>
+                        </div>
                     )
                 ) : null}
 
@@ -147,6 +186,7 @@ const Profile: React.FC = () => {
                             onClose={() => setShowTokenDialog(false)}
                             onLinked={() => {
                                 setShowTokenDialog(false);
+                                setPendingSubmitted(true);
                                 toast.success(
                                     'Request was sent successfuly, wait for your parent to approve!',
                                     {
