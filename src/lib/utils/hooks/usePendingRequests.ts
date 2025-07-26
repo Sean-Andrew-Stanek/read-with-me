@@ -9,6 +9,7 @@ export type usePendingrequestsTypes = {
     fetchPendingRequests: () => Promise<void>;
     setPendingRequests: React.Dispatch<React.SetStateAction<LinkRequest[]>>;
     handleApprove: (token: string) => Promise<void>;
+    handleReject: (token: string) => Promise<void>;
 };
 
 export const usePendingRequests = ({
@@ -56,10 +57,31 @@ export const usePendingRequests = ({
         }
     };
 
+    const handleReject = async (token: string): Promise<void> => {
+        try {
+            const res = await fetch(`/api/requests/${token}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'rejected' })
+            });
+
+            if (!res.ok) {
+                const { error } = await res.json();
+                throw new Error(error || 'Failed to reject request');
+            }
+
+            toast.success('Request rejected successfully');
+            fetchPendingRequests();
+        } catch {
+            toast.error(`Failed to reject request`);
+        }
+    };
+
     return {
         fetchPendingRequests,
         pendingRequests,
         setPendingRequests,
-        handleApprove
+        handleApprove,
+        handleReject
     };
 };
