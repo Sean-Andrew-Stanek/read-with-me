@@ -46,7 +46,9 @@ const Profile: React.FC = () => {
                     if (data.pending) setPendingSubmitted(true);
                 })
                 .catch(() => {
-                    console.error('Failed to fetch pending request status');
+                    toast.error(
+                        'Failed to check request status. Please try again later.'
+                    );
                 });
         }
     }, [isParent, isLinkedChild]);

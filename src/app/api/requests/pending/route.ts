@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { auth } from '@/auth';
 
-export const GET = async () => {
+export const GET = async (): Promise<NextResponse> => {
     const session = await auth();
 
     if (!session?.user?.uuid || session.user.isParent) {
