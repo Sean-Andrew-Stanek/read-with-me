@@ -13,7 +13,7 @@ type UseLinkedChildrenReturn = {
     handleImpersonate: (uuid: string, name: string) => Promise<void>;
     handleGenerateToken: () => Promise<void>;
     handleDeleteChild: (uuid: string, name: string) => Promise<void>;
-    linkToken: string | null;
+    linkToken: string | null; 
 };
 
 export const useLinkedChildren = (): UseLinkedChildrenReturn => {

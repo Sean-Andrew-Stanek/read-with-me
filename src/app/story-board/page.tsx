@@ -93,6 +93,10 @@ const StoryBoard: React.FC = () => {
             toast.warning('Story deleted successfully.');
         } catch {
             toast.warning('Failed to delete story.');
+        } finally {
+            setTimeout(() => {
+                window.location.reload();
+            }, 5000);            
         }
     };
 
