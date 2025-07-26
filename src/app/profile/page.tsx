@@ -13,6 +13,7 @@ import EnterTokenDialog from '@/components/EnterTokenDialog';
 import LinkedChildren from '@/components/LinkedChildren';
 import { useLinkedChildren } from '@/lib/utils/hooks/useLinkedChildren';
 import { usePendingRequests } from '@/lib/utils/hooks/usePendingRequests';
+import { getPendingRequests } from '@/config/apiUri';
 
 const Profile: React.FC = () => {
     const { data: session } = useSession();
@@ -44,7 +45,7 @@ const Profile: React.FC = () => {
     useEffect(() => {
         if (!isParent && !isLinkedChild) {
             // Only check if child is not yet linked
-            fetch('/api/requests/pending')
+            fetch(getPendingRequests())
                 .then(res => res.json())
                 .then(data => {
                     if (data.pending) setPendingSubmitted(true);

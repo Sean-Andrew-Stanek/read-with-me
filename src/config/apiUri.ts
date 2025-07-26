@@ -4,7 +4,7 @@ const baseApiUri =
 const putUserGradeURI = (): string => `${baseApiUri}/grade`;
 const postNewStoryUri = (): string => `${baseApiUri}/story`;
 const getUserDataUri = (uuid: string): string =>
-    `${baseApiUri}/user?uuid=${uuid}`;
+    `${baseApiUri}/user?uuid=${encodeURIComponent(uuid)}`;
 const getStoriesUri = (parentId?: string, childId?: string): string => {
     const params = new URLSearchParams();
     if (parentId) params.append('parentId', parentId);
@@ -20,7 +20,7 @@ const patchRequestsUri = (token: string): string =>
 
 const deleteChildUri = (): string => `${baseApiUri}/user/children`;
 const postTokenUri = (): string => `${baseApiUri}/token`;
-
+const getPendingRequests = (): string => `${baseApiUri}/requests/pending`;
 export {
     putUserGradeURI,
     postNewStoryUri,
@@ -31,5 +31,6 @@ export {
     getRequestsUri,
     patchRequestsUri,
     deleteChildUri,
-    postTokenUri
+    postTokenUri,
+    getPendingRequests
 };

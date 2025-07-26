@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { ChildUser } from '@/lib/types/user';
 import { toast } from 'sonner';
 import { signIn } from 'next-auth/react';
-import { deleteChildUri, postTokenUri } from '@/config/apiUri';
+import { deleteChildUri, postTokenUri, getUserDataUri } from '@/config/apiUri';
 
 export type ChildUserWithName = ChildUser & { userName: string };
 
@@ -25,7 +25,7 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
 
     const fetchChildren = useCallback(async (): Promise<void> => {
         if (isParent && session?.user?.uuid) {
-            const res = await fetch(`/api/user?uuid=${session.user.uuid}`);
+            const res = await fetch(getUserDataUri(session.user.uuid));
             const data = await res.json();
 
             if (data.children?.length > 0) {
