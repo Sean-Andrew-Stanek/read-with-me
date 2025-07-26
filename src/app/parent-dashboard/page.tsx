@@ -65,7 +65,10 @@ const ParentDashboard = (): JSX.Element => {
                     <div className="flex flex-col space-y-6 mt-6">
                         <div>
                             <Button
-                                onClick={() => setViewChildOpen(true)}
+                                onClick={() => {
+                                    setViewChildOpen(true);
+                                    setDeleteMode(false);
+                                }}
                                 className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md"
                             >
                                 <IconBubble>
