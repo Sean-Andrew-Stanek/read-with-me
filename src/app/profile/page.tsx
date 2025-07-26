@@ -68,7 +68,7 @@ const Profile: React.FC = () => {
                 <div className="flex flex-col items-center">
                     <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
                         <Image
-                            src="/profile.png"
+                            src="/profile.png" 
                             width={120}
                             height={120}
                             priority

@@ -34,11 +34,11 @@ const UserDropdown: FC = (): JSX.Element => {
                     </DropdownMenuItem>
                 ) : (
                     <DropdownMenuItem
-                        onClick={() => router.push('/')}
+                        onClick={() => router.push('/parent-dashboard')}
                         className="text-black cursor-pointer"
                     >
                         <Home className="mr-2 h-4 w-4" />
-                        Home
+                        Dashboard
                     </DropdownMenuItem>
                 )}
 
