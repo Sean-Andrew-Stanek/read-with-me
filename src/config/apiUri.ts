@@ -14,11 +14,22 @@ const getStoriesUri = (parentId?: string, childId?: string): string => {
 const getStoryByIdUri = (id: string): string => `${baseApiUri}/story/${id}`;
 const deleteStoryUri = (id: string): string => `${baseApiUri}/story/${id}`;
 
+const getRequestsUri = (): string => `${baseApiUri}/requests`;
+const patchRequestsUri = (token: string): string =>
+    `${baseApiUri}/requests/${token}/status`;
+
+const deleteChildUri = (): string => `${baseApiUri}/user/children`;
+const postTokenUri = (): string => `${baseApiUri}/token`;
+
 export {
     putUserGradeURI,
     postNewStoryUri,
     getUserDataUri,
     getStoriesUri,
     getStoryByIdUri,
-    deleteStoryUri
+    deleteStoryUri,
+    getRequestsUri,
+    patchRequestsUri,
+    deleteChildUri,
+    postTokenUri
 };

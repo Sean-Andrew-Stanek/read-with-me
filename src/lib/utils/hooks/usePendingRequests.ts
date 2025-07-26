@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 
 import { LinkRequest } from '@/lib/types/linkRequest';
 import { toast } from 'sonner';
+import { getRequestsUri, patchRequestsUri } from '@/config/apiUri';
 
 export type usePendingrequestsTypes = {
     pendingRequests: LinkRequest[];
@@ -21,7 +22,7 @@ export const usePendingRequests = ({
 
     const fetchPendingRequests = useCallback(async (): Promise<void> => {
         try {
-            const res = await fetch('/api/requests');
+            const res = await fetch(getRequestsUri());
             const result = await res.json();
 
             if (!res.ok) {
@@ -35,7 +36,7 @@ export const usePendingRequests = ({
 
     const handleApprove = async (token: string): Promise<void> => {
         try {
-            const res = await fetch(`/api/requests/${token}/status`, {
+            const res = await fetch(patchRequestsUri(token), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: 'approved' })
@@ -59,7 +60,7 @@ export const usePendingRequests = ({
 
     const handleReject = async (token: string): Promise<void> => {
         try {
-            const res = await fetch(`/api/requests/${token}/status`, {
+            const res = await fetch(patchRequestsUri(token), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: 'rejected' })

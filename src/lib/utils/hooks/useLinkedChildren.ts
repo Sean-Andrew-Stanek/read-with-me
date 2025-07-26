@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { ChildUser } from '@/lib/types/user';
 import { toast } from 'sonner';
 import { signIn } from 'next-auth/react';
+import { deleteChildUri, postTokenUri } from '@/config/apiUri';
 
 export type ChildUserWithName = ChildUser & { userName: string };
 
@@ -86,7 +87,7 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
 
     const handleGenerateToken = async (): Promise<void> => {
         try {
-            const res = await fetch('api/token', { method: 'POST' });
+            const res = await fetch(postTokenUri(), { method: 'POST' });
             const data = await res.json();
 
             if (res.ok && data.token) {
@@ -112,7 +113,7 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
         const confirmed = confirm(`Are you sure you want to delete ${name}?`);
         if (!confirmed) return;
 
-        const res = await fetch('/api/user/children', {
+        const res = await fetch(deleteChildUri(), {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ childUuid: uuid })
