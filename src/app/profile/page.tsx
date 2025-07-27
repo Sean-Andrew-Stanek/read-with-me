@@ -19,6 +19,7 @@ const Profile: React.FC = () => {
     const { data: session } = useSession();
     const [showTokenDialog, setShowTokenDialog] = useState(false);
     const [pendingSubmitted, setPendingSubmitted] = useState(false);
+    const [loadingChildren, setLoadingChildren] = useState(false);
 
     const {
         children,
@@ -38,9 +39,12 @@ const Profile: React.FC = () => {
     const isLinkedChild = !isParent && !!session?.user?.parentId;
     useEffect(() => {
         if (isParent === true) {
-            fetchPendingRequests();
+            setLoadingChildren(true);
+            Promise.all([fetchPendingRequests(), fetchChildren()]).finally(() =>
+                setLoadingChildren(false)
+            );
         }
-    }, [isParent, fetchPendingRequests]);
+    }, [isParent, fetchPendingRequests, fetchChildren]);
 
     useEffect(() => {
         if (!isParent && !isLinkedChild) {
@@ -68,7 +72,7 @@ const Profile: React.FC = () => {
                 <div className="flex flex-col items-center">
                     <div className="relative w-30 h-30 rounded-xl overflow-hidden bg-white p-1 mt-2">
                         <Image
-                            src="/profile.png" 
+                            src="/profile.png"
                             width={120}
                             height={120}
                             priority
@@ -83,6 +87,7 @@ const Profile: React.FC = () => {
                         {session?.user.name}
                     </p>
                 </div>
+                {/**Child View */}
                 {!isParent ? (
                     isLinkedChild ? (
                         <p className="mt-4 text-center text-green-700 font-medium">
@@ -109,31 +114,40 @@ const Profile: React.FC = () => {
                 ) : null}
 
                 {/* Parent View – Linked Children */}
-                {isParent && session?.user?.uuid && (
-                    <div className="mt-6 ">
-                        <div className="w-full bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm">
-                            <LinkedChildren
-                                childrenList={children}
-                                onImpersonate={handleImpersonate}
-                            />
-                        </div>
-                        <div className="mt-4 flex justify-center ">
-                            <Button
-                                onClick={handleGenerateToken}
-                                variant="outline"
-                                className="gap-2 cursor-pointer justify-center"
-                            >
-                                <Link2 className="h-4 w-4" />
-                                Generate Link Token
-                            </Button>
-                        </div>
-                        {linkToken && (
-                            <div className="text-center mt-2 p-3 bg-gray-100 border rounded font-mono text-sm">
-                                Share this token: <strong>{linkToken}</strong>
-                            </div>
-                        )}
+                {loadingChildren ? (
+                    <div className="flex justify-center items-center mt-6">
+                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-500"></div>
                     </div>
+                ) : (
+                    isParent &&
+                    session?.user?.uuid && (
+                        <div className="mt-6 ">
+                            <div className="w-full bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm">
+                                <LinkedChildren
+                                    childrenList={children}
+                                    onImpersonate={handleImpersonate}
+                                />
+                            </div>
+                            <div className="mt-4 flex justify-center ">
+                                <Button
+                                    onClick={handleGenerateToken}
+                                    variant="outline"
+                                    className="gap-2 cursor-pointer justify-center"
+                                >
+                                    <Link2 className="h-4 w-4" />
+                                    Generate Link Token
+                                </Button>
+                            </div>
+                            {linkToken && (
+                                <div className="text-center mt-2 p-3 bg-gray-100 border rounded font-mono text-sm">
+                                    Share this token:{' '}
+                                    <strong>{linkToken}</strong>
+                                </div>
+                            )}
+                        </div>
+                    )
                 )}
+                {/**Parent view, pending requests */}
                 {pendingRequests.length > 0 && (
                     <div className="mt-6 w-full bg-yellow-50 border border-yellow-300 rounded-xl p-4 shadow-sm">
                         <h3 className="font-semibold text-lg mb-2">
@@ -171,7 +185,7 @@ const Profile: React.FC = () => {
                         </ul>
                     </div>
                 )}
-
+                {/**Enter token modal for child veiw */}
                 {!isParent && (
                     <div className="mt-4 flex justify-center ">
                         <EnterTokenDialog
