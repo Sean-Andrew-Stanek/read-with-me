@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { Eye, ArrowLeft, Link2, Baby, MinusIcon } from 'lucide-react';
 import { JSX } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import LinkedChildren from '@/components/LinkedChildren';
 import { useLinkedChildren } from '@/lib/utils/hooks/useLinkedChildren';
+import { usePendingRequests } from '@/lib/utils/hooks/usePendingRequests';
+import PendingRequests from '@/components/PendingRequests';
 
 const IconBubble = ({
     children
@@ -23,6 +25,7 @@ const ParentDashboard = (): JSX.Element => {
     const [viewChildOpen, setViewChildOpen] = useState<boolean>(false);
     const [tokenModalOpen, setTokenModalOpen] = useState(false);
     const [deleteMode, setDeleteMode] = useState(false);
+    const [pendingModalOpen, setPendingModalOpen] = useState(false);
 
     const { data: session } = useSession();
     const isParent = session?.user?.isParent;
@@ -32,8 +35,19 @@ const ParentDashboard = (): JSX.Element => {
         handleImpersonate,
         linkToken,
         handleGenerateToken,
-        handleDeleteChild
+        handleDeleteChild,
+        fetchChildren
     } = useLinkedChildren();
+    const {
+        pendingRequests,
+        handleApprove,
+        handleReject,
+        fetchPendingRequests
+    } = usePendingRequests({ fetchChildren });
+
+    useEffect(() => {
+        fetchPendingRequests();
+    }, [fetchPendingRequests]);
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#dbeafe] to-[#fce7f3] py-12 px-6">
@@ -77,6 +91,35 @@ const ParentDashboard = (): JSX.Element => {
                                 View a child
                             </Button>
                         </div>
+                        {pendingRequests.length > 0 ? (
+                            <div>
+                                <Button
+                                    onClick={() => setPendingModalOpen(true)}
+                                    className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md"
+                                >
+                                    <IconBubble>
+                                        <Eye className="size-7" />
+                                    </IconBubble>
+                                    You have a pending request!
+                                </Button>
+                            </div>
+                        ) : null}
+                        <Dialog
+                            open={pendingModalOpen}
+                            onOpenChange={setPendingModalOpen}
+                        >
+                            <DialogContent className="max-w-md [&>button]:cursor-pointer">
+                                <DialogTitle className="text-lg font-bold">
+                                    Pending Requests
+                                </DialogTitle>
+                                <PendingRequests
+                                    pendingRequests={pendingRequests}
+                                    handleApprove={handleApprove}
+                                    handleReject={handleReject}
+                                    onClose={() => setPendingModalOpen(false)}
+                                />
+                            </DialogContent>
+                        </Dialog>
 
                         <div>
                             <Link href="/create-child-account">
@@ -126,6 +169,15 @@ const ParentDashboard = (): JSX.Element => {
                         </div>
                     </div>
                 </div>
+                {/* {showPendingRequests && (
+                    <div className="mt-6">
+                        <PendingRequests
+                            pendingRequests={pendingRequests}
+                            handleApprove={handleApprove}
+                            handleReject={handleReject}
+                        />
+                    </div>
+                )} */}
                 {/**Modal for linked children */}
                 <Dialog open={viewChildOpen} onOpenChange={setViewChildOpen}>
                     <DialogContent className="max-w-md [&>button]:cursor-pointer">

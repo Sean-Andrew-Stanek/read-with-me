@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { Link2, Check } from 'lucide-react';
+import PendingRequests from '@/components/PendingRequests';
 
 import { Button } from '@/components/ui/button';
 import UserDropdown from '@/components/Sidebar/UserDropdown';
@@ -112,7 +113,6 @@ const Profile: React.FC = () => {
                         </div>
                     )
                 ) : null}
-
                 {/* Parent View – Linked Children */}
                 {loadingChildren ? (
                     <div className="flex justify-center items-center mt-6">
@@ -148,7 +148,7 @@ const Profile: React.FC = () => {
                     )
                 )}
                 {/**Parent view, pending requests */}
-                {pendingRequests.length > 0 && (
+                {/* {pendingRequests.length > 0 && (
                     <div className="mt-6 w-full bg-yellow-50 border border-yellow-300 rounded-xl p-4 shadow-sm">
                         <h3 className="font-semibold text-lg mb-2">
                             Pending Requests:
@@ -184,7 +184,12 @@ const Profile: React.FC = () => {
                             ))}
                         </ul>
                     </div>
-                )}
+                )} */}
+                <PendingRequests
+                    pendingRequests={pendingRequests}
+                    handleApprove={handleApprove}
+                    handleReject={handleReject}
+                />
                 {/**Enter token modal for child veiw */}
                 {!isParent && (
                     <div className="mt-4 flex justify-center ">
@@ -211,7 +216,6 @@ const Profile: React.FC = () => {
                         />
                     </div>
                 )}
-
                 <div className=" flex justify-center mt-8">
                     <Link href="/home">
                         <Button
