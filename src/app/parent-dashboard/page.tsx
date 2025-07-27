@@ -2,7 +2,15 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { Eye, ArrowLeft, Link2, Baby, MinusIcon, BellRing } from 'lucide-react';
+import {
+    Eye,
+    ArrowLeft,
+    Link2,
+    Baby,
+    MinusIcon,
+    BellRing,
+    Ban
+} from 'lucide-react';
 import { JSX } from 'react';
 import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -23,9 +31,11 @@ const IconBubble = ({
 
 const ParentDashboard = (): JSX.Element => {
     const [viewChildOpen, setViewChildOpen] = useState<boolean>(false);
-    const [tokenModalOpen, setTokenModalOpen] = useState(false);
-    const [deleteMode, setDeleteMode] = useState(false);
-    const [pendingModalOpen, setPendingModalOpen] = useState(false);
+    const [tokenModalOpen, setTokenModalOpen] = useState<boolean>(false);
+    const [deleteMode, setDeleteMode] = useState<boolean>(false);
+    const [pendingModalOpen, setPendingModalOpen] = useState<boolean>(false);
+    const [restrictionModalOpen, setRestrictionModalOpen] =
+        useState<boolean>(false);
 
     const { data: session } = useSession();
     const isParent = session?.user?.isParent;
@@ -146,6 +156,57 @@ const ParentDashboard = (): JSX.Element => {
                         <div>
                             <Button
                                 onClick={() => {
+                                    setDeleteMode(false);
+                                    setViewChildOpen(false);
+                                    setRestrictionModalOpen(true);
+                                }}
+                                className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md"
+                            >
+                                <IconBubble>
+                                    <Ban className="size-7" />
+                                </IconBubble>
+                                Set Restrictions
+                            </Button>
+                        </div>
+                        <Dialog
+                            open={restrictionModalOpen}
+                            onOpenChange={setRestrictionModalOpen}
+                        >
+                            <DialogContent className="max-w-md [&>button]:cursor-pointer">
+                                <DialogTitle className="text-lg font-bold">
+                                    Choose a Child
+                                </DialogTitle>
+                                <div className="space-y-4 mt-4">
+                                    {children?.length === 0 ? (
+                                        <p>You have no linked children.</p>
+                                    ) : (
+                                        children.map(child => (
+                                            <div
+                                                key={child.uuid}
+                                                className="flex items-center justify-between bg-white p-3 rounded shadow"
+                                            >
+                                                <span>{child.userName}</span>
+                                                <Link
+                                                    href={`/restrictions/${child.uuid}`}
+                                                >
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        className="cursor-pointer"
+                                                    >
+                                                        Set Restrictions
+                                                    </Button>
+                                                </Link>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+
+                        <div>
+                            <Button
+                                onClick={() => {
                                     setDeleteMode(true);
                                     setViewChildOpen(true);
                                 }}
@@ -170,15 +231,6 @@ const ParentDashboard = (): JSX.Element => {
                         </div>
                     </div>
                 </div>
-                {/* {showPendingRequests && (
-                    <div className="mt-6">
-                        <PendingRequests
-                            pendingRequests={pendingRequests}
-                            handleApprove={handleApprove}
-                            handleReject={handleReject}
-                        />
-                    </div>
-                )} */}
                 {/**Modal for linked children */}
                 <Dialog open={viewChildOpen} onOpenChange={setViewChildOpen}>
                     <DialogContent className="max-w-md [&>button]:cursor-pointer">
