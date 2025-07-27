@@ -38,6 +38,20 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
 
     const isParent = session?.user?.isParent;
 
+    const [children, setChildren] = useState<ChildUser[]>([]);
+    const [selectedChild, setSelectedChild] = useState<string>("");
+
+    useEffect(() => {
+        const fetchChildren = async (): Promise<void> => {
+            if (isParent) {
+                const res = await fetch("/api/children/list");
+                const data: { children: ChildUser[] } = await res.json();
+                setChildren(data.children || []);
+            }
+        };
+        fetchChildren();
+    }, [isParent]);
+
     // Api call for creating story when the grade exists or when user confirms to continue with toast
     const storyAPICall = async (): Promise<void> => {
         setIsLoading(true);
@@ -184,6 +198,23 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                 <form onSubmit={handleSubmit}>
                     <CardContent>
                         <div className="space-y-4">
+                            {isParent && (
+                                <div className="mb-4">
+                                    <label className="block font-medium mb-1">Select a child</label>
+                                    <select
+                                        value={selectedChild}
+                                        onChange={(e) => setSelectedChild(e.target.value)}
+                                        className="border p-2 rounded w-full"
+                                    >
+                                        <option value="">-- Choose a child --</option>
+                                        {children.map((child: ChildUser) => (
+                                            <option key={child.uuid} value={child.uuid}>
+                                                {child.userName}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
                             <div className="space-y-2">
                                 <Label htmlFor="prompt">
                                     What kind of story would you like?

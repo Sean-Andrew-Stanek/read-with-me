@@ -11,12 +11,14 @@ const BaseUserSchema = z.object({
 
 export const ParentUserSchema = BaseUserSchema.omit({ parentId: true }).extend({
     isParent: z.literal(true),
-    children: z.array(z.string().uuid())
+    children: z.array(z.string().uuid()),
+    name: z.string()
 });
 
 export const ChildUserSchema = BaseUserSchema.omit({ children: true }).extend({
     isParent: z.literal(false),
-    parentId: z.string().uuid()
+    parentId: z.string().uuid(),
+    userName: z.string()
 });
 
 export type User = z.infer<typeof BaseUserSchema>;
