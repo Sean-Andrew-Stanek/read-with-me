@@ -21,6 +21,8 @@ const patchRequestsUri = (token: string): string =>
 const deleteChildUri = (): string => `${baseApiUri}/user/children`;
 const postTokenUri = (): string => `${baseApiUri}/token`;
 const getPendingRequests = (): string => `${baseApiUri}/requests/pending`;
+
+const putUserDataUri = (): string => `${baseApiUri}/user`;
 export {
     putUserGradeURI,
     postNewStoryUri,
@@ -32,5 +34,6 @@ export {
     patchRequestsUri,
     deleteChildUri,
     postTokenUri,
-    getPendingRequests
+    getPendingRequests,
+    putUserDataUri
 };

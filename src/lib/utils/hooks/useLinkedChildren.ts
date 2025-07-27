@@ -31,7 +31,7 @@ export const useLinkedChildren = (): UseLinkedChildrenReturn => {
             if (data.children?.length > 0) {
                 const childDetails = await Promise.all(
                     data.children.map(async (childUuid: string) => {
-                        const res = await fetch(`/api/user?uuid=${childUuid}`);
+                        const res = await fetch(getUserDataUri(childUuid));
                         if (!res.ok) return null;
                         const child = await res.json();
 

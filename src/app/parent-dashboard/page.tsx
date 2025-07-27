@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { Eye, ArrowLeft, Link2, Baby, MinusIcon } from 'lucide-react';
+import { Eye, ArrowLeft, Link2, Baby, MinusIcon, BellRing } from 'lucide-react';
 import { JSX } from 'react';
 import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -38,6 +38,7 @@ const ParentDashboard = (): JSX.Element => {
         handleDeleteChild,
         fetchChildren
     } = useLinkedChildren();
+
     const {
         pendingRequests,
         handleApprove,
@@ -95,10 +96,10 @@ const ParentDashboard = (): JSX.Element => {
                             <div>
                                 <Button
                                     onClick={() => setPendingModalOpen(true)}
-                                    className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-white/70 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md"
+                                    className="w-full cursor-pointer h-auto flex justify-start items-center gap-4 text-lg font-semibold text-gray-700 bg-yellow-400 hover:bg-yellow-400 hover:text-white rounded-2xl py-4 px-6 transition duration-300 shadow-md backdrop-blur-md"
                                 >
                                     <IconBubble>
-                                        <Eye className="size-7" />
+                                        <BellRing className="size-7" />
                                     </IconBubble>
                                     You have a pending request!
                                 </Button>

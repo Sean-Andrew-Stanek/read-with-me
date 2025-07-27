@@ -8,6 +8,7 @@ import {
     DialogTitle
 } from '@/components/ui/dialog';
 import { grades } from '@/lib/constants/grades';
+import { putUserDataUri } from '@/config/apiUri';
 
 type LinkChildDialogProps = {
     open: boolean;
@@ -26,7 +27,7 @@ const LinkChildDialog = ({
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
 
-        const res = await fetch('/api/user', {
+        const res = await fetch(putUserDataUri(), {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userName, grade })
