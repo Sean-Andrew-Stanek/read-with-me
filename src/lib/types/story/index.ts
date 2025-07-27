@@ -9,6 +9,7 @@ export const StorySchema = z.object({
     createdAt: z.string().datetime(),
     parentId: z.string().or(z.string().uuid()).optional().nullable(), // Accepts both ObjectId and UUID
     childId: z.string().or(z.string().uuid()).optional().nullable(),
+    isParentAssigned: z.boolean().optional(),
     scoresByParagraph: z.record(z.string(), z.number()).optional()
 });
 
