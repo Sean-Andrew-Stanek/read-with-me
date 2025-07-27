@@ -96,7 +96,7 @@ const StoryBoard: React.FC = () => {
         } finally {
             setTimeout(() => {
                 window.location.reload();
-            }, 5000);            
+            }, 5000);
         }
     };
 
@@ -145,7 +145,16 @@ const StoryBoard: React.FC = () => {
                                     )}
                                 </div>
                             </div>
-                            <div className="flex justify-end items-center mt-auto">
+
+                            <div className="flex justify-center items-center mt-auto">
+                                {session?.user?.isParent && (
+                                    <Button
+                                        onClick={() => router.push(`/assign/${story.id}`)} // or open a modal
+                                        className="mr-4 bg-violet-400 hover:bg-gray-200 hover:text-violet-500 hover:border hover:border-violet-500 cursor-pointer"
+                                    >
+                                        Assign
+                                    </Button>
+                                )}
                                 <Button
                                     className="mr-4 bg-violet-400 hover:bg-gray-200 hover:text-violet-500 hover:border hover:border-violet-500 cursor-pointer"
                                     onClick={() =>
@@ -154,10 +163,10 @@ const StoryBoard: React.FC = () => {
                                 >
                                     Read
                                 </Button>
-                                <Button 
+                                <Button
                                     onClick={() => handleDelete(story.id)}
                                     className="bg-violet-400 hover:bg-gray-200 hover:text-violet-500 hover:border hover:border-violet-500 cursor-pointer"
-                                    >
+                                >
                                     Delete
                                 </Button>
                             </div>
