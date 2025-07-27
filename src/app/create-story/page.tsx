@@ -61,13 +61,11 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
             const parentId = userData?.isParent
                 ? userData.uuid
                 : userData?.parentId;
-            const childId = userData?.isParent ? null : userData?.uuid;
 
-            // const storyContent: string = await postNewStory(
-            //     prompt,
-            //     parentId,
-            //     childId as string | null
-            // );
+            const childId = userData?.isParent
+                ? selectedChild // coming from dropdown
+                : userData?.uuid;
+
             const createdStory: Story = await postNewStory(
                 prompt,
                 parentId,
@@ -76,7 +74,6 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
 
             setStoryContent(createdStory.content);
             setPrompt('');
-            // router.push('/story-result');
             router.push(`/read-story/${createdStory.id}`);
         } catch (error: unknown) {
             if (error instanceof Error) {
