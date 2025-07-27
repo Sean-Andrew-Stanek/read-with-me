@@ -52,44 +52,61 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
         fetchChildren();
     }, [isParent]);
 
-    // Api call for creating story when the grade exists or when user confirms to continue with toast
     const storyAPICall = async (): Promise<void> => {
-        setIsLoading(true);
-        setStoryContent('');
+    setIsLoading(true);
+    setStoryContent('');
 
-        try {
-            const parentId = userData?.isParent
-                ? userData.uuid
-                : userData?.parentId;
+    // --- CRITICAL DEBUGGING LOGS HERE ---
+    /* eslint-disable no-console */
+    console.log("--- DEBUGGING storyAPICall START ---");
+    console.log("1. Current state of isParent:", isParent);
+    console.log("2. Value of selectedChild state variable (BEFORE ASSIGNMENT):", selectedChild); // Should be child's UUID
+    console.log("3. Parent's own UUID (from userData?.uuid):", userData?.uuid); // Should be parent's UUID
+    console.log("-------------------------------------");
 
-            const childId = userData?.isParent
-                ? selectedChild // coming from dropdown
-                : userData?.uuid;
+    try {
+        const parentId = userData?.uuid; // Directly get parent's UUID for clarity
 
-            const createdStory: Story = await postNewStory(
-                prompt,
-                parentId,
-                childId
-            );
+        let childId = ''; // Initialize with empty string
 
-            setStoryContent(createdStory.content);
-            setPrompt('');
-            router.push(`/read-story/${createdStory.id}`);
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                toast.error(`Error creating story: ${error.message}`, {
-                    icon: <AlertCircle className="h-5 w-5 text-red-500" />,
-                    style: {
-                        color: 'rgb(220 38 38)',
-                        borderColor: 'rgb(252 165 165)',
-                        backgroundColor: 'rgb(254 242 242)'
-                    }
-                });
-            }
-        } finally {
-            setIsLoading(false);
+        // FORCE THE ASSIGNMENT WITH EXPLICIT IF STATEMENT
+        if (isParent) {
+            childId = selectedChild; // This *should* now force it to be the child's UUID
+        } else {
+            // This block should NOT be hit if isParent is true
+            childId = userData?.uuid || '';
         }
-    };
+
+        // --- DERIVED IDs LOGS (Using our new debug variables) ---
+        /* eslint-disable no-console */
+        console.log("4. Calculated parentId for API call (debugParentId):", parentId);
+        console.log("5. Calculated childId for API call (debugChildId):", childId); // *** THIS IS THE CRITICAL LOG NOW ***
+        console.log("--- DEBUGGING storyAPICall END ---");
+
+        const createdStory: Story = await postNewStory(
+            prompt,
+            parentId, 
+            childId  
+        );
+
+        setStoryContent(createdStory.content);
+        setPrompt('');
+        router.push(`/read-story/${createdStory.id}`);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            toast.error(`Error creating story: ${error.message}`, {
+                icon: <AlertCircle className="h-5 w-5 text-red-500" />,
+                style: {
+                    color: 'rgb(220 38 38)',
+                    borderColor: 'rgb(252 165 165)',
+                    backgroundColor: 'rgb(254 242 242)'
+                }
+            });
+        }
+    } finally {
+        setIsLoading(false);
+    }
+};
 
     // Fetch the user if the user is not found don't let them create a story
     useEffect(() => {

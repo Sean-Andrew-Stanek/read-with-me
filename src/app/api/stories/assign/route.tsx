@@ -33,15 +33,15 @@ export const POST = async (req: Request): Promise<NextResponse> => {
             );
         }
 
-        const newStory : Story = {
+        const newStory: Story = {
             id: uuidv4(),
             title: originalStory.title,
             content: originalStory.content,
             prompt: originalStory.prompt,
             createdAt: new Date().toISOString(),
-            parentId: parentId,
-            childId: childId,
-            isParentAssigned: true,
+            parentId: parentId || null,
+            childId: childId || null,
+            isParentAssigned: !!childId,
             scoresByParagraph: originalStory.scoresByParagraph || {},
         };
 
