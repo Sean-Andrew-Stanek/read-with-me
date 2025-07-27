@@ -24,6 +24,24 @@ const putUserGrade = async (grade: string, uuid: string): Promise<void> => {
     }
 };
 
+const getChildren = async (): Promise<ChildUser[]> => {
+    const response = await fetch("/api/children/list", {
+        method: "GET"
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to fetch children.");
+    }
+
+    const data = await response.json();
+    if (!data || !Array.isArray(data.children)) {
+        throw new Error("Invalid response format or no children found.");
+    }
+
+    return data.children;
+}
+
 const postNewStory = async (
     prompt?: string,
     parentId?: string | null,
@@ -153,6 +171,7 @@ export {
     getUserData,
     getStories,
     putUserGrade,
+    getChildren,
     getStoryById,
     getRandomStoryId,
     deleteStory

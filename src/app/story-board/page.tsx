@@ -15,6 +15,11 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import { deleteStory } from '@/services/apiServices';
 import { toast } from 'sonner';
 
+type SessionUser = {
+    uuid: string;
+    isParent: boolean;
+}
+
 const StoryBoard: React.FC = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -31,16 +36,16 @@ const StoryBoard: React.FC = () => {
                 );
                 return;
             }
-            const uuid = (session?.user as { uuid: string })?.uuid;
-            const isParent = (session?.user as { isParent: boolean })?.isParent;
+            const user = session.user as SessionUser;
+            const uuid = user?.uuid;
+            const isParent = user?.isParent;
 
             if (!uuid) {
                 setError(
-                    'No valid user ID found. Please make sure you are logged in properly.'
+                    "No valid user ID found. Please make sure you are logged in properly."
                 );
                 return;
             }
-
             try {
                 setLoading(true);
                 setError(null);
