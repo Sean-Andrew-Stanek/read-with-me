@@ -6,6 +6,7 @@ import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { auth } from '@/auth';
 import { ChildUser, User } from '@/lib/types/user';
+import { restrictionSchema, Restriction } from '@/lib/types/restrictions';
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY!
@@ -16,9 +17,16 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
     try {
         const session = await auth();
         if (!session || !session.user?.uuid) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
         }
-        const { prompt, genre, parentId: requestParentId, childId: requestChildId
+        const {
+            prompt,
+            genre,
+            parentId: requestParentId,
+            childId: requestChildId
         }: {
             prompt?: string;
             genre?: string;
@@ -27,12 +35,14 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
         } = await request.json(); // Use request.json()
 
         if (!prompt && !genre) {
-            return NextResponse.json({ error: 'Either prompt or genre is required' }, { status: 400 }
+            return NextResponse.json(
+                { error: 'Either prompt or genre is required' },
+                { status: 400 }
             );
         }
 
         const client = await clientPromise;
-        const db = client.db('read-with-me')
+        const db = client.db('read-with-me');
 
         // get the grade from database
         let userData: User | ChildUser | null;
@@ -46,9 +56,34 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
                 .findOne({ uuid: session.user.uuid });
         }
 
+        // apply restriction if exists for the child creating the story
+        let restrictions: Restriction | null = null;
+
+        if (!session.user.isParent) {
+            // query the restriction collection where child id matches the logged in childs
+            const raw = await db
+                .collection('restrictions')
+                .findOne({ childUuid: session.user.uuid });
+
+            // validate the data to match schema
+            if (raw) {
+                const parsed = restrictionSchema.safeParse(raw);
+                if (parsed.success) {
+                    restrictions = parsed.data;
+                } else {
+                    return NextResponse.json(
+                        {
+                            error: 'Invalid restriction data',
+                            details: parsed.error.flatten()
+                        },
+                        { status: 400 }
+                    );
+                }
+            }
+        }
+
         const grade = userData?.grade ?? '6';
         const gradeLevel = `${grade} grade reading level`;
-
 
         // Generate randomized story idea based on genre
         const characters = [
@@ -64,29 +99,64 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
         ];
 
         const salts = [
-            "Include a surprising plot twist.",
-            "Introduce an unexpected sidekick.",
-            "End the story with a powerful lesson.",
-            "Add a magical object that changes everything.",
-            "Include a challenge the character must solve using cleverness.",
-            "Describe the setting using vivid sensory details.",
-            "Add humor and playful language.",
-            "Make the story unfold in reverse.",
-            "Make the main character face a tough moral decision."
+            'Include a surprising plot twist.',
+            'Introduce an unexpected sidekick.',
+            'End the story with a powerful lesson.',
+            'Add a magical object that changes everything.',
+            'Include a challenge the character must solve using cleverness.',
+            'Describe the setting using vivid sensory details.',
+            'Add humor and playful language.',
+            'Make the story unfold in reverse.',
+            'Make the main character face a tough moral decision.'
         ];
-        const character = characters[Math.floor(Math.random() * characters.length)];
+        const character =
+            characters[Math.floor(Math.random() * characters.length)];
         const setting = settings[Math.floor(Math.random() * settings.length)];
         const plot = plots[Math.floor(Math.random() * plots.length)];
         const selectedSalts = salts
             .sort(() => 0.5 - Math.random())
             .slice(0, 2)
-            .join(" ");
+            .join(' ');
+
+        const restrictionNote = `
+${restrictions?.blacklistedWords?.length ? `Avoid these words: ${restrictions.blacklistedWords.join(', ')}.` : ''}
+${restrictions?.restrictedGenres?.length ? `Avoid these genres: ${restrictions.restrictedGenres.join(', ')}.` : ''}
+${restrictions?.notes ? `Parent's note: ${restrictions.notes}` : ''}
+`.trim();
+
+        if (
+            !session.user.isParent &&
+            prompt &&
+            restrictions?.restrictedGenres?.some(rg =>
+                prompt.toLowerCase().includes(rg.toLowerCase())
+            )
+        ) {
+            return NextResponse.json(
+                { error: `Your prompt contains a restricted genre.` },
+                { status: 403 }
+            );
+        }
+
+        if (
+            !session.user.isParent &&
+            prompt &&
+            restrictions?.blacklistedWords?.some(word =>
+                prompt.toLowerCase().includes(word.toLowerCase())
+            )
+        ) {
+            return NextResponse.json(
+                { error: `Your prompt contains restricted words.` },
+                { status: 403 }
+            );
+        }
 
         const generatedPrompt =
             typeof prompt === 'string' && prompt.trim().length > 0
                 ? `${prompt} ${selectedSalts}`
                 : `Write a unique, fun, and age-appropriate ${genre} story for a ${gradeLevel}.
-The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring. ${selectedSalts}`;
+The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring. ${selectedSalts} 
+
+${restrictionNote}`;
 
         const response = await ai.models.generateContent({
             model: 'gemini-1.5-flash',
@@ -127,8 +197,6 @@ The main character is ${character} who ${plot} in ${setting}. Make it imaginativ
             storyParentId = requestParentId || session.user.uuid;
             storyChildId = requestChildId || null; // Will be the selected child's UUID
             createdBy = 'parent';
-
-
         } else {
             // Child user creating their own story
             storyChildId = session.user.uuid; // Child's own UUID
@@ -153,7 +221,7 @@ The main character is ${character} who ${plot} in ${setting}. Make it imaginativ
             createdBy: createdBy,
             createdAt: new Date().toISOString(),
             parentId: storyParentId, // Use the determined parentId
-            childId: storyChildId,   // Use the determined childId
+            childId: storyChildId, // Use the determined childId
             scoresByParagraph: {}
         };
 
@@ -192,11 +260,14 @@ export const GET = async (): Promise<Response> => {
         const isParent = session.user.isParent;
 
         let query: {
-            parentId?: string | { $in?: (string | null | undefined)[]; $exists?: boolean; };
-            childId?: string | { $in?: (string | null | undefined)[]; $exists?: boolean; };
+            parentId?:
+                | string
+                | { $in?: (string | null | undefined)[]; $exists?: boolean };
+            childId?:
+                | string
+                | { $in?: (string | null | undefined)[]; $exists?: boolean };
             createdBy?: 'parent' | 'child';
         };
-
 
         if (isParent) {
             query = {
@@ -209,8 +280,6 @@ export const GET = async (): Promise<Response> => {
             query = { childId: uuid };
             // console.log('GET /api/story: Query being executed (child):', query);
         }
-
-
 
         const client = await clientPromise;
         const db = client.db('read-with-me');

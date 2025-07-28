@@ -6,4 +6,4 @@ export const restrictionSchema = z.object({
     notes: z.string().optional()
 });
 
-export type restrictionData = z.infer<typeof restrictionSchema>;
+export type Restriction = z.infer<typeof restrictionSchema>;
