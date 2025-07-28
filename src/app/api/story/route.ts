@@ -119,9 +119,10 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             .join(' ');
 
         const restrictionNote = `
-${restrictions?.blacklistedWords?.length ? `Avoid these words: ${restrictions.blacklistedWords.join(', ')}.` : ''}
-${restrictions?.restrictedGenres?.length ? `Avoid these genres: ${restrictions.restrictedGenres.join(', ')}.` : ''}
-${restrictions?.notes ? `Parent's note: ${restrictions.notes}` : ''}
+Please strictly avoid using the following in the story:
+${restrictions?.blacklistedWords?.length ? `- Prohibited words: ${restrictions.blacklistedWords.join(', ')}` : ''}
+${restrictions?.restrictedGenres?.length ? `- Forbidden genres: ${restrictions.restrictedGenres.join(', ')}` : ''}
+${restrictions?.notes ? `- Additional instructions from parent: ${restrictions.notes}` : ''}
 `.trim();
 
         if (
@@ -133,6 +134,25 @@ ${restrictions?.notes ? `Parent's note: ${restrictions.notes}` : ''}
         ) {
             return NextResponse.json(
                 { error: `Your prompt contains a restricted genre.` },
+                { status: 403 }
+            );
+        }
+
+        let notesKeywords: string[] = [];
+
+        if (restrictions?.notes) {
+            notesKeywords =
+                restrictions.notes.toLowerCase().match(/\b[\w']+\b/g) ?? []; // splits to words
+        }
+
+        if (
+            !session.user.isParent &&
+            prompt &&
+            notesKeywords.length > 0 &&
+            notesKeywords.some(note => prompt.toLowerCase().includes(note))
+        ) {
+            return NextResponse.json(
+                { error: `Your prompt may violate parental instructions.` },
                 { status: 403 }
             );
         }
@@ -152,11 +172,9 @@ ${restrictions?.notes ? `Parent's note: ${restrictions.notes}` : ''}
 
         const generatedPrompt =
             typeof prompt === 'string' && prompt.trim().length > 0
-                ? `${prompt} ${selectedSalts}`
-                : `Write a unique, fun, and age-appropriate ${genre} story for a ${gradeLevel}.
-The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring. ${selectedSalts} 
-
-${restrictionNote}`;
+                ? `${restrictionNote}\n\nPROMPT:\n${prompt}\n\n${selectedSalts}`
+                : `${restrictionNote}\n\nWrite a unique, fun, and age-appropriate ${genre} story for a ${gradeLevel}.
+The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring. ${selectedSalts}`;
 
         const response = await ai.models.generateContent({
             model: 'gemini-1.5-flash',
