@@ -14,6 +14,7 @@ import { PlusIcon, CheckIcon } from 'lucide-react';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { deleteStory } from '@/services/apiServices';
 import { toast } from 'sonner';
+import { getAverageScore } from '@/lib/utils/story';
 
 type SessionUser = {
     uuid: string;
@@ -140,25 +141,41 @@ const StoryBoard: React.FC = () => {
                             className="mb-5 p-6 bg-white border rounded-lg shadow-md flex flex-col justify-between"
                         >
                             <div >
-                                <div className="flex flex-col justify-center">
-                                    {!currentUserIsParent && story.createdBy === 'parent' && (
-                                        <span className="
-                                            bg-violet-400
-                                            text-white
-                                            text-center
-                                            py-1 px-2
-                                            rounded
-                                            text-sm
+                                <div className="flex flex-col justify-center items-center">
+                                    {
+                                        // Condition for the "Assigned by Parent" flag to appear
+                                        // It appears if the current user is a child AND the story was created by a parent
+                                        !currentUserIsParent && story.createdBy === 'parent' && (
+                                            <span className="
+                                            bg-violet-400            
+                                            text-white        
+                                            py-1 px-2             
+                                            rounded               
+                                            text-md               
+                                            font-semibold             
                                             whitespace-nowrap
+                                            inline-flex  
+                                            flex-shrink-0
+                                            justify-center
+                                            items-center
                                             mb-4
-                                        "
-                                        >
-                                            Assigned by Parent
-                                            {story.scoresByParagraph && Object.keys(story.scoresByParagraph).length > 0 && (
-                                                <CheckIcon className="h-4 w-4 ml-1 text-green-700" /> 
-                                            )}
-                                        </span>
-                                    )}
+                                            pl-5
+                                            pr-4
+                                            w-full
+                                        ">
+                                                Assigned by Parent
+                                                {
+                                                    getAverageScore(story) !== null && // Check if there's an average score
+                                                    getAverageScore(story)! >= 80 && ( // Check if average score is 90 or higher
+                                                        <div className='ml-6'>
+                                                            <CheckIcon className="size-8  text-white" />
+                                                        </div>
+
+                                                    )
+                                                }
+                                            </span>
+                                        )
+                                    }
                                     <h2 className="text-xl font-semibold line-clamp-2 pr-2">
                                         {convertToTitleCase(`${story.title}`)}
                                     </h2>
@@ -197,7 +214,7 @@ const StoryBoard: React.FC = () => {
                                 title="Create a Story"
                                 size="icon"
                                 className="h-20 w-20 rounded-xl bg-white/30 hover:bg-white/40 backdrop-blur-md 
-                     border border-white/30 shadow-lg flex items-center justify-center cursor-pointer"
+                                    border border-white/30 shadow-lg flex items-center justify-center cursor-pointer"
                             >
                                 <PlusIcon className="size-18 text-white" />
                             </Button>

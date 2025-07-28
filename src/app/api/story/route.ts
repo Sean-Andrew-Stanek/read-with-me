@@ -18,7 +18,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
         if (!session || !session.user?.uuid) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
-        const { prompt, genre,  parentId: requestParentId, childId: requestChildId    
+        const { prompt, genre, parentId: requestParentId, childId: requestChildId
         }: {
             prompt?: string;
             genre?: string;
@@ -38,11 +38,11 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
         let userData: User | ChildUser | null;
         if (session.user.isParent) {
             userData = await db
-                .collection<User>('users') 
+                .collection<User>('users')
                 .findOne({ uuid: session.user.uuid });
         } else {
             userData = await db
-                .collection<ChildUser>('childUsers') 
+                .collection<ChildUser>('childUsers')
                 .findOne({ uuid: session.user.uuid });
         }
 
@@ -81,7 +81,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             .sort(() => 0.5 - Math.random())
             .slice(0, 2)
             .join(" ");
-        
+
         const generatedPrompt =
             typeof prompt === 'string' && prompt.trim().length > 0
                 ? `${prompt} ${selectedSalts}`
@@ -120,15 +120,15 @@ The main character is ${character} who ${plot} in ${setting}. Make it imaginativ
 
         let storyParentId: string | null = null;
         let storyChildId: string | null = null;
-        let createdBy: 'parent' | 'child';        
+        let createdBy: 'parent' | 'child';
 
         if (session.user.isParent) {
             // Parent user creating a story
             storyParentId = requestParentId || session.user.uuid;
             storyChildId = requestChildId || null; // Will be the selected child's UUID
             createdBy = 'parent';
-            
-            
+
+
         } else {
             // Child user creating their own story
             storyChildId = session.user.uuid; // Child's own UUID
@@ -204,7 +204,7 @@ export const GET = async (): Promise<Response> => {
             // console.log('GET /api/story: Query being executed (child):', query);
         }
 
-        
+
 
         const client = await clientPromise;
         const db = client.db('read-with-me');
