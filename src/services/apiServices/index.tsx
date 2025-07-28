@@ -84,8 +84,8 @@ const getStories = async (
     childId?: string
 ): Promise<Story[]> => {
     const params = new URLSearchParams();
-    if (childId && parentId)
-        return Promise.reject('Both parentId and childId cannot be provided.');
+    // if (childId && parentId)
+    //     return Promise.reject('Both parentId and childId cannot be provided.');
 
     if (parentId) params.append('parentId', parentId);
     if (childId) params.append('childId', childId);

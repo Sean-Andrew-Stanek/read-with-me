@@ -1,10 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 // import OpenAI from 'openai';
 import { StorySchema, Story } from '@/lib/types/story';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { auth } from '@/auth';
+import { ChildUser, User } from '@/lib/types/user';
 
 // const openai = new OpenAI({
 //     apiKey: process.env.OPENAI_API_KEY!
@@ -14,35 +15,43 @@ const ai = new GoogleGenAI({
 });
 
 //Create a story
-export const POST = async (req: Request): Promise<Response> => {
+export const POST = async (request: NextRequest): Promise<NextResponse> => {
     try {
         const session = await auth();
         if (!session || !session.user?.uuid) {
-            return NextResponse.json(
-                { error: 'Unauthorized' },
-                { status: 401 }
-            );
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
-        const { prompt, genre }: { prompt?: string; genre?: string } =
-            await req.json();
+        const { prompt, genre,  parentId: requestParentId, childId: requestChildId    
+        }: {
+            prompt?: string;
+            genre?: string;
+            parentId?: string;
+            childId?: string;
+        } = await request.json(); // Use request.json()
 
         if (!prompt && !genre) {
-            return NextResponse.json(
-                { error: 'Either prompt or genre is required' },
-                { status: 400 }
+            return NextResponse.json({ error: 'Either prompt or genre is required' }, { status: 400 }
             );
         }
 
-        // get the grade from database
         const client = await clientPromise;
-        const db = client.db('read-with-me');
-        const userCollection = session.user.isParent ? 'users' : 'childUsers';
-        const userData = await db
-            .collection(userCollection)
-            .findOne({ uuid: session.user.uuid });
+        const db = client.db('read-with-me')
 
-        const grade = userData?.grade ?? '6'; // fallback to 6th grade only if null or undefined
+        // get the grade from database
+        let userData: User | ChildUser | null;
+        if (session.user.isParent) {
+            userData = await db
+                .collection<User>('users') 
+                .findOne({ uuid: session.user.uuid });
+        } else {
+            userData = await db
+                .collection<ChildUser>('childUsers') 
+                .findOne({ uuid: session.user.uuid });
+        }
+
+        const grade = userData?.grade ?? '6';
         const gradeLevel = `${grade} grade reading level`;
+
 
         // Generate randomized story idea based on genre
         const characters = [
@@ -58,50 +67,29 @@ export const POST = async (req: Request): Promise<Response> => {
         ];
 
         const salts = [
-            'Include a surprising plot twist.',
-            'Introduce an unexpected sidekick.',
-            'End the story with a powerful lesson.',
-            'Add a magical object that changes everything.',
-            'Include a challenge the character must solve using cleverness.',
-            'Describe the setting using vivid sensory details.',
-            'Add humor and playful language.',
-            'Make the story unfold in reverse.',
-            'Make the main character face a tough moral decision.'
+            "Include a surprising plot twist.",
+            "Introduce an unexpected sidekick.",
+            "End the story with a powerful lesson.",
+            "Add a magical object that changes everything.",
+            "Include a challenge the character must solve using cleverness.",
+            "Describe the setting using vivid sensory details.",
+            "Add humor and playful language.",
+            "Make the story unfold in reverse.",
+            "Make the main character face a tough moral decision."
         ];
-
-        const character =
-            characters[Math.floor(Math.random() * characters.length)];
+        const character = characters[Math.floor(Math.random() * characters.length)];
         const setting = settings[Math.floor(Math.random() * settings.length)];
         const plot = plots[Math.floor(Math.random() * plots.length)];
         const selectedSalts = salts
             .sort(() => 0.5 - Math.random())
             .slice(0, 2)
-            .join(' ');
-
-        //         const generatedPrompt =
-        //             typeof prompt === 'string' && prompt.trim().length > 0
-        //                 ? prompt
-        //                 : `Write a unique, fun, and age-appropriate ${genre} story for a ${gradeLevel}.
-        // The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring.`;
-
+            .join(" ");
+        
         const generatedPrompt =
             typeof prompt === 'string' && prompt.trim().length > 0
                 ? `${prompt} ${selectedSalts}`
                 : `Write a unique, fun, and age-appropriate ${genre} story for a ${gradeLevel}.
 The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring. ${selectedSalts}`;
-
-        // const response = await openai.chat.completions.create({
-        //     model: 'gpt-3.5-turbo',
-        //     messages: [
-        //         {
-        //             role: 'system',
-        //             content: `You are a children's storyteller. Create a short, engaging story for a ${gradeLevel}`
-        //         },
-        //         { role: 'user', content: generatedPrompt }
-        //     ],
-        //     max_tokens: 500,
-        //     temperature: 0.85
-        // });
 
         const response = await ai.models.generateContent({
             model: 'gemini-1.5-flash',
@@ -120,15 +108,36 @@ The main character is ${character} who ${plot} in ${setting}. Make it imaginativ
         const storyContent =
             response.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? '';
 
-        // const storyContent: string = response.choices[0].message?.content || '';
-
         /* eslint-disable no-console */
         console.log('Backend received grade:', grade);
         console.log('System message:', gradeLevel);
-        /* eslint-enable no-console */
+
+        console.log('Backend received grade:', grade);
+        console.log('System message:', gradeLevel);
+        console.log('Backend received requestParentId:', requestParentId);
+        console.log('Backend received requestChildId:', requestChildId);
 
         if (!storyContent) {
             throw new Error('Failed to generate story');
+        }
+
+        let storyParentId: string | null = null;
+        let storyChildId: string | null = null;
+
+        if (session.user.isParent) {
+            // Parent user creating a story
+            storyParentId = requestParentId || session.user.uuid;
+            storyChildId = requestChildId || null; // Will be the selected child's UUID
+        } else {
+            // Child user creating their own story
+            storyChildId = session.user.uuid; // Child's own UUID
+            if (userData) {
+                // Safely get parentId from the fetched ChildUser data
+                storyParentId = (userData as ChildUser).parentId ?? null;
+            } else {
+                // Fallback if userData was unexpectedly null
+                storyParentId = null;
+            }
         }
 
         const story: Story = {
@@ -137,12 +146,11 @@ The main character is ${character} who ${plot} in ${setting}. Make it imaginativ
                 typeof prompt === 'string' && prompt.trim().length > 0
                     ? prompt.slice(0, 50)
                     : `${genre ?? 'Story'} - ${character}`.slice(0, 50),
-
             content: storyContent,
             prompt: generatedPrompt,
             createdAt: new Date().toISOString(),
-            parentId: session.user.isParent ? session.user.uuid : null,
-            childId: session.user.isParent ? null : session.user.uuid,
+            parentId: storyParentId, // Use the determined parentId
+            childId: storyChildId,   // Use the determined childId
             scoresByParagraph: {}
         };
 
