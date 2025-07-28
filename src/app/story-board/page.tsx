@@ -147,7 +147,7 @@ const StoryBoard: React.FC = () => {
                                         // It appears if the current user is a child AND the story was created by a parent
                                         !currentUserIsParent && story.createdBy === 'parent' && (
                                             <span className="
-                                            bg-violet-400            
+                                            bg-gradient-to-r from-blue-300 to-violet-500           
                                             text-white        
                                             py-1 px-2             
                                             rounded               
@@ -165,10 +165,10 @@ const StoryBoard: React.FC = () => {
                                         ">
                                                 Assigned by Parent
                                                 {
-                                                    getAverageScore(story) !== null && // Check if there's an average score
-                                                    getAverageScore(story)! >= 80 && ( // Check if average score is 90 or higher
+                                                    getAverageScore(story) !== null &&
+                                                    getAverageScore(story)! >= 80 && ( 
                                                         <div className='ml-6'>
-                                                            <CheckIcon className="size-8  text-white" />
+                                                            <CheckIcon className="size-8  text-white" />{getAverageScore(story)}%
                                                         </div>
 
                                                     )
