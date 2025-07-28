@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { getStories } from '@/services/apiServices'; 
+import { getStories } from '@/services/apiServices';
 import { useSession } from 'next-auth/react';
 import { Story } from '@/lib/types/story';
 import { Button } from '@/components/ui/button';
@@ -139,28 +139,27 @@ const StoryBoard: React.FC = () => {
                             key={story.id}
                             className="mb-5 p-6 bg-white border rounded-lg shadow-md flex flex-col justify-between"
                         >
-                            <div>
-                                <h2 className="text-xl font-semibold mb-2 line-clamp-2">
-                                    {convertToTitleCase(`${story.title}`)}
-                                </h2>
-                                {                                    
-                                    !currentUserIsParent && story.createdBy === 'parent' && (
-                                        <span style={{
-                                            backgroundColor: '#e0f7fa', // Light blue
-                                            color: '#00796b', // Darker teal
-                                            padding: '4px 8px',
-                                            borderRadius: '4px',
-                                            fontSize: '0.75em',
-                                            fontWeight: 'bold',
-                                            marginLeft: '10px',
-                                            whiteSpace: 'nowrap',
-                                            display: 'inline-block', // Ensures it respects margins better
-                                            marginBottom: '8px' // Add some space below the flag
-                                        }}>
+                            <div >
+                                <div className="flex flex-col justify-center">
+                                    {!currentUserIsParent && story.createdBy === 'parent' && (
+                                        <span className="
+                                            bg-violet-400
+                                            text-white
+                                            text-center
+                                            py-1 px-2
+                                            rounded
+                                            text-sm
+                                            whitespace-nowrap
+                                            mb-4
+                                        "
+                                        >
                                             Assigned by Parent
                                         </span>
-                                    )
-                                }
+                                    )}
+                                    <h2 className="text-xl font-semibold line-clamp-2 pr-2">
+                                        {convertToTitleCase(`${story.title}`)}
+                                    </h2>
+                                </div>
                                 <p className="text-sm text-gray-600 mb-4">
                                     {new Date(story.createdAt).toLocaleDateString()}
                                 </p>
