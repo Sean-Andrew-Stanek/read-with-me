@@ -1,21 +1,85 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { useParams, useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
 
 const ChildRestrictionsPage: React.FC = () => {
+    const { childUuid } = useParams() as { childUuid: string };
+    const searchParams = useSearchParams();
+    const childName = searchParams.get('name');
+
     const [blacklistedWords, setBlacklistedWords] = useState('');
     const [restrictedGenres, setRestrictedGenres] = useState('');
     const [notes, setNotes] = useState('');
 
-    const handleSave = (): void => {
-        alert('Restrictions saved!');
+    // fetch exisiting restrictions
+    useEffect(() => {
+        const fetchRestrictionData = async (): Promise<void> => {
+            try {
+                const res = await fetch(`/api/restrictions/${childUuid}`);
+                if (!res.ok) return;
+                const data = await res.json();
+
+                if (
+                    data.blacklistedWords &&
+                    Array.isArray(data.blacklistedWords)
+                ) {
+                    setBlacklistedWords(data.blacklistedWords.join(', '));
+                }
+
+                if (
+                    data.restrictedGenres &&
+                    Array.isArray(data.restrictedGenres)
+                ) {
+                    setRestrictedGenres(data.restrictedGenres.join(', '));
+                }
+
+                if (data.notes) {
+                    setNotes(data.notes);
+                }
+            } catch {
+                toast.error('Failed to load restrictions.');
+            }
+        };
+        fetchRestrictionData();
+    }, [childUuid]);
+
+    const handleSave = async (): Promise<void> => {
+        try {
+            const res = await fetch(`/api/restrictions/${childUuid}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    blacklistedWords: blacklistedWords
+                        .split(',')
+                        .map(w => w.trim())
+                        .filter(Boolean),
+                    restrictedGenres: restrictedGenres
+                        .split(',')
+                        .map(g => g.trim())
+                        .filter(Boolean),
+                    notes
+                })
+            });
+            if (res.ok) {
+                toast.success('Restrictions saved!');
+            } else {
+                const data = await res.json();
+                toast.error(
+                    data.error?.message || 'Failed to save restrictions'
+                );
+            }
+        } catch {
+            toast.error('Error saving restrictions.');
+        }
     };
 
     return (
         <div className="max-w-3xl mx-auto py-10 px-6 bg-white rounded shadow">
             <h1 className="text-2xl font-bold mb-6">
-                Set Restrictions for Child: Temporaty Child
+                Set Restrictions for Child: {childName || 'Unnamed Child'}
             </h1>
 
             <div className="space-y-6">

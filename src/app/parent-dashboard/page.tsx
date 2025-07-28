@@ -187,7 +187,12 @@ const ParentDashboard = (): JSX.Element => {
                                             >
                                                 <span>{child.userName}</span>
                                                 <Link
-                                                    href={`/restrictions/${child.uuid}`}
+                                                    href={{
+                                                        pathname: `/restrictions/${child.uuid}`,
+                                                        query: {
+                                                            name: child.userName
+                                                        }
+                                                    }}
                                                 >
                                                     <Button
                                                         size="sm"

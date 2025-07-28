@@ -20,7 +20,7 @@ export const GET = async (
 // add restrictions
 export const PUT = async (
     req: NextRequest,
-    { params }: { params: { childUuid: string } }
+    { params }: { params: Promise<{ childUuid: string }> }
 ): Promise<NextResponse> => {
     const client = await clientPromise;
     const db = client.db('read-with-me');
@@ -38,7 +38,7 @@ export const PUT = async (
     const { blacklistedWords, restrictedGenres, notes } = parsed.data;
 
     await db.collection('restrictions').updateOne(
-        { childUuid: params.childUuid },
+        { childUuid: (await params).childUuid },
         {
             $set: {
                 blacklistedWords,
@@ -47,7 +47,7 @@ export const PUT = async (
                 updatedAt: new Date()
             },
             $setOnInsert: {
-                childUuid: params.childUuid,
+                childUuid: (await params).childUuid,
                 createdAt: new Date()
             }
         },
