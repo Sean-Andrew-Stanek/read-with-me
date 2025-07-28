@@ -191,12 +191,18 @@ export const GET = async (): Promise<Response> => {
         const uuid = session.user.uuid;
         const isParent = session.user.isParent;
 
-        let query: { parentId?: string; childId?: string; createdBy?: 'parent' | 'child'; };
+        let query: {
+            parentId?: string | { $in?: (string | null | undefined)[]; $exists?: boolean; };
+            childId?: string | { $in?: (string | null | undefined)[]; $exists?: boolean; };
+            createdBy?: 'parent' | 'child';
+        };
+
 
         if (isParent) {
             query = {
                 parentId: uuid,
                 createdBy: 'parent',
+                childId: { $in: [null, undefined] }
             };
             //  console.log('GET /api/story: Query being executed:', query);
         } else {
