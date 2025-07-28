@@ -155,7 +155,7 @@ const StoryBoard: React.FC = () => {
                                         >
                                             Assigned by Parent
                                             {story.scoresByParagraph && Object.keys(story.scoresByParagraph).length > 0 && (
-                                                <CheckIcon className="h-4 w-4 ml-1 text-green-700" />
+                                                <CheckIcon className="h-4 w-4 ml-1 text-green-700" /> 
                                             )}
                                         </span>
                                     )}
