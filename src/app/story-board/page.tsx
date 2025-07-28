@@ -28,6 +28,8 @@ const StoryBoard: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
+    const currentUserIsParent = session?.user?.isParent ?? false;
+
     useEffect(() => {
         const loadStories = async (): Promise<void> => {
             if (status !== 'authenticated' || !session || !session.user) {
@@ -141,6 +143,24 @@ const StoryBoard: React.FC = () => {
                                 <h2 className="text-xl font-semibold mb-2 line-clamp-2">
                                     {convertToTitleCase(`${story.title}`)}
                                 </h2>
+                                {                                    
+                                    !currentUserIsParent && story.createdBy === 'parent' && (
+                                        <span style={{
+                                            backgroundColor: '#e0f7fa', // Light blue
+                                            color: '#00796b', // Darker teal
+                                            padding: '4px 8px',
+                                            borderRadius: '4px',
+                                            fontSize: '0.75em',
+                                            fontWeight: 'bold',
+                                            marginLeft: '10px',
+                                            whiteSpace: 'nowrap',
+                                            display: 'inline-block', // Ensures it respects margins better
+                                            marginBottom: '8px' // Add some space below the flag
+                                        }}>
+                                            Assigned by Parent
+                                        </span>
+                                    )
+                                }
                                 <p className="text-sm text-gray-600 mb-4">
                                     {new Date(story.createdAt).toLocaleDateString()}
                                 </p>
@@ -150,7 +170,6 @@ const StoryBoard: React.FC = () => {
                                     )}
                                 </div>
                             </div>
-
                             <div className="flex justify-center items-center mt-auto">
                                 <Button
                                     className="mr-4 bg-violet-400 hover:bg-gray-200 hover:text-violet-500 hover:border hover:border-violet-500 cursor-pointer"

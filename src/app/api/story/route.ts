@@ -105,7 +105,7 @@ The main character is ${character} who ${plot} in ${setting}. Make it imaginativ
         const storyContent =
             response.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? '';
 
-        /* eslint-disable no-console */
+        // /* eslint-disable no-console */
         // console.log('Backend received grade:', grade);
         // console.log('System message:', gradeLevel);
 
