@@ -6,10 +6,10 @@ export const StorySchema = z.object({
     title: z.string().min(1, 'Title is required'),
     content: z.string().min(1, 'Content is required'),
     prompt: z.string().min(1, 'Prompt is required'),
+    createdBy: z.enum(['parent', 'child']),
     createdAt: z.string().datetime(),
-    parentId: z.string().or(z.string().uuid()).optional().nullable(), // Accepts both ObjectId and UUID
+    parentId: z.string().or(z.string().uuid()).optional().nullable(),
     childId: z.string().or(z.string().uuid()).optional().nullable(),
-    isParentAssigned: z.boolean().optional(),
     scoresByParagraph: z.record(z.string(), z.number()).optional()
 });
 

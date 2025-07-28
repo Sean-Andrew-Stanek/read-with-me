@@ -7,9 +7,6 @@ import { ObjectId } from 'mongodb';
 import { auth } from '@/auth';
 import { ChildUser, User } from '@/lib/types/user';
 
-// const openai = new OpenAI({
-//     apiKey: process.env.OPENAI_API_KEY!
-// });
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY!
 });
@@ -109,13 +106,13 @@ The main character is ${character} who ${plot} in ${setting}. Make it imaginativ
             response.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ?? '';
 
         /* eslint-disable no-console */
-        console.log('Backend received grade:', grade);
-        console.log('System message:', gradeLevel);
+        // console.log('Backend received grade:', grade);
+        // console.log('System message:', gradeLevel);
 
-        console.log('Backend received grade:', grade);
-        console.log('System message:', gradeLevel);
-        console.log('Backend received requestParentId:', requestParentId);
-        console.log('Backend received requestChildId:', requestChildId);
+        // console.log('Backend received grade:', grade);
+        // console.log('System message:', gradeLevel);
+        // console.log('Backend received requestParentId:', requestParentId);
+        // console.log('Backend received requestChildId:', requestChildId);
 
         if (!storyContent) {
             throw new Error('Failed to generate story');
@@ -123,21 +120,26 @@ The main character is ${character} who ${plot} in ${setting}. Make it imaginativ
 
         let storyParentId: string | null = null;
         let storyChildId: string | null = null;
+        let createdBy: 'parent' | 'child';        
 
         if (session.user.isParent) {
             // Parent user creating a story
             storyParentId = requestParentId || session.user.uuid;
             storyChildId = requestChildId || null; // Will be the selected child's UUID
+            createdBy = 'parent';
+            
+            
         } else {
             // Child user creating their own story
             storyChildId = session.user.uuid; // Child's own UUID
             if (userData) {
-                // Safely get parentId from the fetched ChildUser data
+                // Get parentId from the fetched ChildUser data
                 storyParentId = (userData as ChildUser).parentId ?? null;
             } else {
                 // Fallback if userData was unexpectedly null
                 storyParentId = null;
             }
+            createdBy = 'child';
         }
 
         const story: Story = {
@@ -148,6 +150,7 @@ The main character is ${character} who ${plot} in ${setting}. Make it imaginativ
                     : `${genre ?? 'Story'} - ${character}`.slice(0, 50),
             content: storyContent,
             prompt: generatedPrompt,
+            createdBy: createdBy,
             createdAt: new Date().toISOString(),
             parentId: storyParentId, // Use the determined parentId
             childId: storyChildId,   // Use the determined childId
@@ -188,7 +191,20 @@ export const GET = async (): Promise<Response> => {
         const uuid = session.user.uuid;
         const isParent = session.user.isParent;
 
-        const query = isParent ? { parentId: uuid } : { childId: uuid };
+        let query: { parentId?: string; childId?: string; createdBy?: 'parent' | 'child'; };
+
+        if (isParent) {
+            query = {
+                parentId: uuid,
+                createdBy: 'parent',
+            };
+            //  console.log('GET /api/story: Query being executed:', query);
+        } else {
+            query = { childId: uuid };
+            // console.log('GET /api/story: Query being executed (child):', query);
+        }
+
+        
 
         const client = await clientPromise;
         const db = client.db('read-with-me');
