@@ -10,7 +10,7 @@ import {
     formatSentencesWithSpacing
 } from '@/lib/utils/formatters';
 import Link from 'next/link';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, CheckIcon } from 'lucide-react';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { deleteStory } from '@/services/apiServices';
 import { toast } from 'sonner';
@@ -154,6 +154,9 @@ const StoryBoard: React.FC = () => {
                                         "
                                         >
                                             Assigned by Parent
+                                            {story.scoresByParagraph && Object.keys(story.scoresByParagraph).length > 0 && (
+                                                <CheckIcon className="h-4 w-4 ml-1 text-green-700" />
+                                            )}
                                         </span>
                                     )}
                                     <h2 className="text-xl font-semibold line-clamp-2 pr-2">
