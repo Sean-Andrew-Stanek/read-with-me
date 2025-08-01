@@ -50,7 +50,7 @@ const SpeechToText: React.FC<Props> = ({
             currentExpected.toLowerCase()
         );
 
-        const newScore = Math.round(similarity * 100);
+        const newScore = Math.round((similarity * 100) / 10) * 10;
 
         setScore(newScore);
 
