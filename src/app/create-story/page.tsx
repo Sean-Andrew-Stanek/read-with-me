@@ -96,7 +96,6 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
                 router.push(`/read-story/${createdStory.id}`);
                 toast.success("Story created successfully!");
             }
-            router.push(`/read-story/${createdStory.id}`);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 toast.error(`Error creating story: ${error.message}`, {
