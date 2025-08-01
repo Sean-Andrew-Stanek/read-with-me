@@ -89,6 +89,13 @@ const CreateStoryPage: React.FC<CreateStoryPageProps> = () => {
 
             setStoryContent(createdStory.content);
             setPrompt('');
+            if (isParent && selectedChild) {
+                router.push('/home');
+                toast.success("Story created successfully and assigned to your child!");
+            } else {
+                router.push(`/read-story/${createdStory.id}`);
+                toast.success("Story created successfully!");
+            }
             router.push(`/read-story/${createdStory.id}`);
         } catch (error: unknown) {
             if (error instanceof Error) {
