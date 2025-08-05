@@ -113,10 +113,17 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             characters[Math.floor(Math.random() * characters.length)];
         const setting = settings[Math.floor(Math.random() * settings.length)];
         const plot = plots[Math.floor(Math.random() * plots.length)];
+        const length_in_minutes = 2;
         const selectedSalts = salts
             .sort(() => 0.5 - Math.random())
             .slice(0, 2)
             .join(' ');
+        
+        const getRandomLetter = ():string => {
+            const letters = 'abcdefghijklmnopqrstuvwxyz';
+            const index = Math.floor(Math.random() * letters.length);
+            return letters[index];
+        }
 
         const restrictionNote = `
 Please strictly avoid using the following in the story:
@@ -169,12 +176,22 @@ ${restrictions?.notes ? `- Additional instructions from parent: ${restrictions.n
                 { status: 403 }
             );
         }
+        
+        const getRandomNumber = (): number => {
+            return Math.floor(Math.random() * (8 - 4 + 1)) + 4;
+        }
 
         const generatedPrompt =
-            typeof prompt === 'string' && prompt.trim().length > 0
-                ? `${restrictionNote}\n\nPROMPT:\n${prompt}\n\n${selectedSalts}`
-                : `${restrictionNote}\n\nWrite a unique, fun, and age-appropriate ${genre} story for a ${gradeLevel}.
-The main character is ${character} who ${plot} in ${setting}. Make it imaginative and inspiring. ${selectedSalts}`;
+            `This is from an app that generates stories for children. ` +
+            `Please use their prompt heavily.  Here is their prompt: ${prompt}` +
+            `The parent has requested the following restrictions: ${restrictionNote}` +
+            `Please return a story that would take a ${gradeLevel} reader ${length_in_minutes} minutes to read. ` +
+            `Use the following genre: ${genre}. Setting: ${setting}. Plot: ${plot} Main character's name should start with ${getRandomLetter()} and be ${getRandomNumber()} letters long` +
+            `We are adding the following additions: ${selectedSalts}`;
+            
+            // eslint-disable-next-line no-console
+            console.log('Generated prompt:', generatedPrompt);
+        
 
         const response = await ai.models.generateContent({
             model: 'gemini-1.5-flash',
