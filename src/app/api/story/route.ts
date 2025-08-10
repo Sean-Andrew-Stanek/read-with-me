@@ -37,7 +37,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             genre?: string;
             parentId?: string;
             childId?: string;
-        } = await request.json(); // Use request.json()
+        } = await request.json();
 
         if (!prompt && !genre) {
             return NextResponse.json(
@@ -61,7 +61,6 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
                 .findOne({ uuid: session.user.uuid });
         }
 
-        // Define a type for objects that may have a grade property
         type OptionalGrade = { grade?: unknown };
 
         /**
@@ -106,7 +105,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             .limit(3)
             .toArray();
 
-        console.log('DEBUG last stories:', JSON.stringify(debugLast, null, 2));
+        // console.log('DEBUG last stories:', JSON.stringify(debugLast, null, 2));
 
         // If child, adjust based on recent average score
         if (!session.user.isParent) {
@@ -116,7 +115,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
                 1
             );
 
-            console.log('Recent average score:', recentAverageScore);
+            // console.log('Recent average score:', recentAverageScore);
 
             adjustedGrade = adjustGradeFromAvgScore(
                 baseGradeFromDB,
@@ -129,11 +128,11 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
         // Step 3: Build a string for AI prompt
         const gradeLevel = `${adjustedGrade}th grade`;
 
-        console.log('Auto-adjust grade:', {
-            baseGradeFromDB,
-            adjustedGrade
-        });
-        console.log('grade Level', gradeLevel);
+        // console.log('Auto-adjust grade:', {
+        //     baseGradeFromDB,
+        //     adjustedGrade
+        // });
+        // console.log('grade Level', gradeLevel);
 
         // apply restriction if exists for the child creating the story
         let restrictions: Restriction | null = null;

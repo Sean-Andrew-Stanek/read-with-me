@@ -17,7 +17,10 @@ const ReadStory = (): JSX.Element => {
     const [paragraphs, setParagraphs] = useState<string[]>([]);
     const [currentParagraphIndex, setCurrentParagraphIndex] = useState(0);
 
-    const handleScoreUpdate = (paragraphIndex: number, newScore: number) => {
+    const handleScoreUpdate = (
+        paragraphIndex: number,
+        newScore: number
+    ): void => {
         setStory(prev => {
             if (!prev) return prev;
             return {
