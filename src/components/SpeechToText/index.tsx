@@ -13,6 +13,7 @@ type Props = {
     paragraphIndex: number;
     showSavedScore?: boolean;
     onAccurateRead: (index: number) => void;
+    onScoreUpdate: (paragraphIndex: number, newScore: number) => void;
 };
 
 const SpeechToText: React.FC<Props> = ({
@@ -20,7 +21,8 @@ const SpeechToText: React.FC<Props> = ({
     onAccurateRead,
     story,
     paragraphIndex,
-    showSavedScore
+    showSavedScore,
+    onScoreUpdate
 }: Props) => {
     const [isListening, setIsListening] = useState(false);
     const [, setTranscript] = useState('');
@@ -238,25 +240,37 @@ const SpeechToText: React.FC<Props> = ({
                 newScore
             );
             // Manually update story object, so it shows score even when the page is not refreshed
-            story.scoresByParagraph = {
-                ...story.scoresByParagraph,
-                [paragraphIndex]: newScore
-            };
+            // story.scoresByParagraph = {
+            //     ...story.scoresByParagraph,
+            //     [paragraphIndex]: newScore
+            // };
+            onScoreUpdate(paragraphIndex, newScore);
+            setScore(newScore);
         } else {
             // eslint-disable-next-line no-console
             console.error('Failed to update score');
         }
     };
 
+    // useEffect(() => {
+    //     if (
+    //         showSavedScore &&
+    //         story?.scoresByParagraph?.[String(paragraphIndex)] !== undefined
+    //     ) {
+    //         setScore(story.scoresByParagraph[String(paragraphIndex)]);
+    //         setMessage(`This is your last saved score for this paragraph.`);
+    //     }
+    // }, [story, paragraphIndex, showSavedScore]);
+
     useEffect(() => {
-        if (
-            showSavedScore &&
-            story?.scoresByParagraph?.[String(paragraphIndex)] !== undefined
-        ) {
-            setScore(story.scoresByParagraph[String(paragraphIndex)]);
-            setMessage(`This is your last saved score for this paragraph.`);
+        if (!showSavedScore) return;
+
+        const saved = story?.scoresByParagraph?.[String(paragraphIndex)];
+        if (saved !== undefined) {
+            setScore(saved);
+            setMessage('This is your last saved score for this paragraph.');
         }
-    }, [story, paragraphIndex, showSavedScore]);
+    }, [showSavedScore, paragraphIndex, story?.scoresByParagraph]);
 
     return (
         <Card className="w-full mx-auto">

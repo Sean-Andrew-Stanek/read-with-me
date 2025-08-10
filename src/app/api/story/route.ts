@@ -8,6 +8,11 @@ import { auth } from '@/auth';
 import { ChildUser, User } from '@/lib/types/user';
 import { restrictionSchema, Restriction } from '@/lib/types/restrictions';
 
+import {
+    getRecentAvgScoreFromStories,
+    adjustGradeFromAvgScore
+} from '@/lib/utils/difficulty';
+
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY!
 });
@@ -56,6 +61,80 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
                 .findOne({ uuid: session.user.uuid });
         }
 
+        // Define a type for objects that may have a grade property
+        type OptionalGrade = { grade?: unknown };
+
+        /**
+         * Converts a user's grade (from DB) to a valid number.
+         * Defaults to 6 if missing or invalid.
+         */
+        const getNumericGrade = (
+            userRecord: User | ChildUser | null
+        ): number => {
+            if (!userRecord) return 6;
+
+            const gradeValue = (userRecord as OptionalGrade).grade;
+
+            if (typeof gradeValue === 'number' && Number.isFinite(gradeValue)) {
+                return gradeValue;
+            }
+
+            if (typeof gradeValue === 'string') {
+                const parsedGrade = Number.parseInt(gradeValue, 10);
+                if (Number.isFinite(parsedGrade)) {
+                    return parsedGrade;
+                }
+            }
+
+            return 6;
+        };
+
+        //  Determine base grade
+        const baseGradeFromDB = getNumericGrade(userData);
+        let adjustedGrade = baseGradeFromDB;
+
+        const debugLast = await db
+            .collection('stories')
+            .find({ childId: session.user.uuid })
+            .project({
+                id: 1,
+                scoresByParagraph: 1,
+                updatedAt: 1,
+                createdAt: 1
+            })
+            .sort({ updatedAt: -1, createdAt: -1 })
+            .limit(3)
+            .toArray();
+
+        console.log('DEBUG last stories:', JSON.stringify(debugLast, null, 2));
+
+        // If child, adjust based on recent average score
+        if (!session.user.isParent) {
+            const recentAverageScore = await getRecentAvgScoreFromStories(
+                db,
+                session.user.uuid,
+                1
+            );
+
+            console.log('Recent average score:', recentAverageScore);
+
+            adjustedGrade = adjustGradeFromAvgScore(
+                baseGradeFromDB,
+                recentAverageScore,
+                1,
+                12
+            );
+        }
+
+        // Step 3: Build a string for AI prompt
+        const gradeLevel = `${adjustedGrade}th grade`;
+
+        console.log('Auto-adjust grade:', {
+            baseGradeFromDB,
+            adjustedGrade
+        });
+        console.log('grade Level', gradeLevel);
+
         // apply restriction if exists for the child creating the story
         let restrictions: Restriction | null = null;
 
@@ -82,8 +161,8 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             }
         }
 
-        const grade = userData?.grade ?? '6';
-        const gradeLevel = `${grade} grade reading level`;
+        // const grade = userData?.grade ?? '6';
+        // const gradeLevel = `${grade} grade reading level`;
 
         // Generate randomized story idea based on genre
         const characters = [
@@ -118,18 +197,17 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             .sort(() => 0.5 - Math.random())
             .slice(0, 2)
             .join(' ');
-        
-        const getRandomLetter = ():string => {
+
+        const getRandomLetter = (): string => {
             const letters = 'abcdefghijklmnopqrstuvwxyz';
             const index = Math.floor(Math.random() * letters.length);
             return letters[index];
-        }
+        };
 
         const restrictionNote = `
 Please strictly avoid using the following in the story:
 ${restrictions?.blacklistedWords?.length ? `- Prohibited words: ${restrictions.blacklistedWords.join(', ')}` : ''}
 ${restrictions?.restrictedGenres?.length ? `- Forbidden genres: ${restrictions.restrictedGenres.join(', ')}` : ''}
-${restrictions?.notes ? `- Additional instructions from parent: ${restrictions.notes}` : ''}
 `.trim();
 
         if (
@@ -141,25 +219,6 @@ ${restrictions?.notes ? `- Additional instructions from parent: ${restrictions.n
         ) {
             return NextResponse.json(
                 { error: `Your prompt contains a restricted genre.` },
-                { status: 403 }
-            );
-        }
-
-        let notesKeywords: string[] = [];
-
-        if (restrictions?.notes) {
-            notesKeywords =
-                restrictions.notes.toLowerCase().match(/\b[\w']+\b/g) ?? []; // splits to words
-        }
-
-        if (
-            !session.user.isParent &&
-            prompt &&
-            notesKeywords.length > 0 &&
-            notesKeywords.some(note => prompt.toLowerCase().includes(note))
-        ) {
-            return NextResponse.json(
-                { error: `Your prompt may violate parental instructions.` },
                 { status: 403 }
             );
         }
@@ -176,10 +235,10 @@ ${restrictions?.notes ? `- Additional instructions from parent: ${restrictions.n
                 { status: 403 }
             );
         }
-        
+
         const getRandomNumber = (): number => {
             return Math.floor(Math.random() * (8 - 4 + 1)) + 4;
-        }
+        };
 
         const generatedPrompt =
             `This is from an app that generates stories for children. ` +
@@ -188,10 +247,9 @@ ${restrictions?.notes ? `- Additional instructions from parent: ${restrictions.n
             `Please return a story that would take a ${gradeLevel} reader ${length_in_minutes} minutes to read. ` +
             `Use the following genre: ${genre}. Setting: ${setting}. Plot: ${plot} Main character's name should start with ${getRandomLetter()} and be ${getRandomNumber()} letters long` +
             `We are adding the following additions: ${selectedSalts}`;
-            
-            // eslint-disable-next-line no-console
-            console.log('Generated prompt:', generatedPrompt);
-        
+
+        // eslint-disable-next-line no-console
+        console.log('Generated prompt:', generatedPrompt);
 
         const response = await ai.models.generateContent({
             model: 'gemini-1.5-flash',

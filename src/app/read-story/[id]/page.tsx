@@ -17,6 +17,19 @@ const ReadStory = (): JSX.Element => {
     const [paragraphs, setParagraphs] = useState<string[]>([]);
     const [currentParagraphIndex, setCurrentParagraphIndex] = useState(0);
 
+    const handleScoreUpdate = (paragraphIndex: number, newScore: number) => {
+        setStory(prev => {
+            if (!prev) return prev;
+            return {
+                ...prev,
+                scoresByParagraph: {
+                    ...prev.scoresByParagraph,
+                    [String(paragraphIndex)]: newScore
+                }
+            };
+        });
+    };
+
     useEffect(() => {
         const fetchStory = async (): Promise<void> => {
             if (!id) return;
@@ -140,6 +153,7 @@ const ReadStory = (): JSX.Element => {
                 story={story}
                 paragraphIndex={currentParagraphIndex}
                 showSavedScore={true}
+                onScoreUpdate={handleScoreUpdate}
             />
         </div>
     );

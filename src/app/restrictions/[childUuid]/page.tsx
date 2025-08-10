@@ -59,8 +59,7 @@ const ChildRestrictionsPage: React.FC = () => {
                     restrictedGenres: restrictedGenres
                         .split(',')
                         .map(g => g.trim())
-                        .filter(Boolean),
-                    notes
+                        .filter(Boolean)
                 })
             });
             if (res.ok) {
@@ -112,7 +111,7 @@ const ChildRestrictionsPage: React.FC = () => {
                 </div>
 
                 {/* Notes */}
-                <div>
+                {/* <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                         Other Notes
                     </label>
@@ -123,7 +122,7 @@ const ChildRestrictionsPage: React.FC = () => {
                         onChange={e => setNotes(e.target.value)}
                         placeholder="Any additional rules..."
                     />
-                </div>
+                </div> */}
 
                 {/* Save Button */}
                 <div className="flex justify-end">

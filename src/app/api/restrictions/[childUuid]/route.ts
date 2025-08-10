@@ -35,7 +35,7 @@ export const PUT = async (
         );
     }
 
-    const { blacklistedWords, restrictedGenres, notes } = parsed.data;
+    const { blacklistedWords, restrictedGenres } = parsed.data;
 
     await db.collection('restrictions').updateOne(
         { childUuid: (await params).childUuid },
@@ -43,7 +43,6 @@ export const PUT = async (
             $set: {
                 blacklistedWords,
                 restrictedGenres,
-                notes,
                 updatedAt: new Date()
             },
             $setOnInsert: {
