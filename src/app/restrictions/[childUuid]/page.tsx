@@ -12,7 +12,6 @@ const ChildRestrictionsPage: React.FC = () => {
 
     const [blacklistedWords, setBlacklistedWords] = useState('');
     const [restrictedGenres, setRestrictedGenres] = useState('');
-    const [notes, setNotes] = useState('');
 
     // fetch exisiting restrictions
     useEffect(() => {
@@ -34,10 +33,6 @@ const ChildRestrictionsPage: React.FC = () => {
                     Array.isArray(data.restrictedGenres)
                 ) {
                     setRestrictedGenres(data.restrictedGenres.join(', '));
-                }
-
-                if (data.notes) {
-                    setNotes(data.notes);
                 }
             } catch {
                 toast.error('Failed to load restrictions.');
