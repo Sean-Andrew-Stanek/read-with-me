@@ -40,21 +40,85 @@ export const GET = async (
     }
 };
 
+// export async function PATCH(
+//     req: Request,
+//     { params }: { params: Promise<{ id: string }> }
+// ): Promise<NextResponse> {
+//     try {
+//         const { newScore, paragraphIndex } = await req.json();
+//         const storyId = (await params).id;
+
+//         const client = await clientPromise;
+//         const db = client.db('read-with-me');
+//         const collection = db.collection('stories');
+
+//         // Fetch current story
+//         const story = await collection.findOne({ id: storyId });
+
+//         if (!story) {
+//             return NextResponse.json(
+//                 { error: 'Story not found' },
+//                 { status: 404 }
+//             );
+//         }
+
+//         // Merge new score
+//         const existingScores = story.scoresByParagraph || {};
+//         const updatedScores = {
+//             ...existingScores,
+//             [String(paragraphIndex)]: newScore
+//         };
+
+//         // Update story with merged scores
+//         await collection.updateOne(
+//             { id: storyId },
+//             { $set: { scoresByParagraph: updatedScores } }
+//         );
+
+//         return new NextResponse(null, { status: 204 });
+//     } catch (error) {
+//         return NextResponse.json(
+//             { error: error instanceof Error ? error.message : 'Unknown error' },
+//             { status: 500 }
+//         );
+//     }
+// }
+
 export async function PATCH(
     req: Request,
     { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
     try {
+        const session = await auth();
+        if (!session || !session.user?.uuid) {
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
+        }
+
         const { newScore, paragraphIndex } = await req.json();
         const storyId = (await params).id;
+
+        const scoreNumber: number =
+            typeof newScore === 'number' ? newScore : Number(newScore);
+        if (
+            !Number.isFinite(scoreNumber) ||
+            scoreNumber < 0 ||
+            scoreNumber > 100
+        ) {
+            return NextResponse.json(
+                { error: 'Invalid score' },
+                { status: 400 }
+            );
+        }
+        const paragraphKey = String(paragraphIndex);
 
         const client = await clientPromise;
         const db = client.db('read-with-me');
         const collection = db.collection('stories');
 
-        // Fetch current story
         const story = await collection.findOne({ id: storyId });
-
         if (!story) {
             return NextResponse.json(
                 { error: 'Story not found' },
@@ -62,20 +126,35 @@ export async function PATCH(
             );
         }
 
-        // Merge new score
-        const existingScores = story.scoresByParagraph || {};
+        // Merge the new score with existing scores
         const updatedScores = {
-            ...existingScores,
-            [String(paragraphIndex)]: newScore
+            ...(story.scoresByParagraph || {}),
+            [paragraphKey]: scoreNumber
         };
 
-        // Update story with merged scores
-        await collection.updateOne(
+        const setDoc: Record<string, unknown> = {
+            scoresByParagraph: updatedScores,
+            updatedAt: new Date()
+        };
+        if (!session.user.isParent && story.childId == null) {
+            setDoc.childId = session.user.uuid;
+        }
+
+        await collection.updateOne({ id: storyId }, { $set: setDoc });
+
+        // Fetch the updated doc & return it
+        const updated = await collection.findOne(
             { id: storyId },
-            { $set: { scoresByParagraph: updatedScores } }
+            { projection: { scoresByParagraph: 1, childId: 1 } }
         );
 
-        return new NextResponse(null, { status: 204 });
+        return NextResponse.json(
+            {
+                scoresByParagraph: updated?.scoresByParagraph ?? {},
+                childId: updated?.childId ?? null
+            },
+            { status: 200 }
+        );
     } catch (error) {
         return NextResponse.json(
             { error: error instanceof Error ? error.message : 'Unknown error' },
@@ -93,7 +172,10 @@ export async function DELETE(
         const session = await auth();
 
         if (!session || !session.user?.uuid) {
-            return NextResponse.json({error: 'Unauthorized' }, {status: 401 });
+            return NextResponse.json(
+                { error: 'Unauthorized' },
+                { status: 401 }
+            );
         }
 
         const client = await clientPromise;
@@ -101,13 +183,17 @@ export async function DELETE(
         const result = await db.collection('stories').deleteOne({ id });
 
         if (result.deletedCount === 0) {
-            return NextResponse.json({error: "Story not found."}, { status: 404 });
+            return NextResponse.json(
+                { error: 'Story not found.' },
+                { status: 404 }
+            );
         }
 
         return new NextResponse(null, { status: 204 });
     } catch (error) {
         return NextResponse.json(
-            { error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500}
+            { error: error instanceof Error ? error.message : 'Unknown error' },
+            { status: 500 }
         );
     }
 }
