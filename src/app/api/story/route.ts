@@ -7,6 +7,7 @@ import { ObjectId } from 'mongodb';
 import { auth } from '@/auth';
 import { ChildUser, User } from '@/lib/types/user';
 import { restrictionSchema, Restriction } from '@/lib/types/restrictions';
+import { getNumericGrade } from '@/lib/utils/grade';
 
 import {
     getRecentAvgScoreFromStories,
@@ -61,37 +62,38 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
                 .findOne({ uuid: session.user.uuid });
         }
 
-        type OptionalGrade = { grade?: unknown };
+        // type OptionalGrade = { grade?: unknown };
 
-        /**
-         * Converts a user's grade (from DB) to a valid number.
-         * Defaults to 6 if missing or invalid.
-         */
-        const getNumericGrade = (
-            userRecord: User | ChildUser | null
-        ): number => {
-            if (!userRecord) return 6;
+        // /**
+        //  * Converts a user's grade (from DB) to a valid number.
+        //  * Defaults to 6 if missing or invalid.
+        //  */
+        // const getNumericGrade = (
+        //     userRecord: User | ChildUser | null
+        // ): number => {
+        //     if (!userRecord) return 6;
 
-            const gradeValue = (userRecord as OptionalGrade).grade;
+        //     const gradeValue = (userRecord as OptionalGrade).grade;
 
-            if (typeof gradeValue === 'number' && Number.isFinite(gradeValue)) {
-                return gradeValue;
-            }
+        //     if (typeof gradeValue === 'number' && Number.isFinite(gradeValue)) {
+        //         return gradeValue;
+        //     }
 
-            if (typeof gradeValue === 'string') {
-                const parsedGrade = Number.parseInt(gradeValue, 10);
-                if (Number.isFinite(parsedGrade)) {
-                    return parsedGrade;
-                }
-            }
+        //     if (typeof gradeValue === 'string') {
+        //         const parsedGrade = Number.parseInt(gradeValue, 10);
+        //         if (Number.isFinite(parsedGrade)) {
+        //             return parsedGrade;
+        //         }
+        //     }
 
-            return 6;
-        };
+        //     return 6;
+        // };
 
         //  Determine base grade
         const baseGradeFromDB = getNumericGrade(userData);
         let adjustedGrade = baseGradeFromDB;
 
+        /* eslint-disable no-console */
         const debugLast = await db
             .collection('stories')
             .find({ childId: session.user.uuid })
@@ -105,7 +107,8 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             .limit(3)
             .toArray();
 
-        // console.log('DEBUG last stories:', JSON.stringify(debugLast, null, 2));
+        console.log('DEBUG last stories:', JSON.stringify(debugLast, null, 2));
+        /* eslint-enable no-console */
 
         // If child, adjust based on recent average score
         if (!session.user.isParent) {
@@ -123,6 +126,19 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
                 1,
                 12
             );
+
+            // Save adjusted grade to DB
+            const collectionName = session.user.isParent
+                ? 'users'
+                : 'childUsers';
+            await db
+                .collection(collectionName)
+                .updateOne(
+                    { uuid: session.user.uuid },
+                    { $set: { difficultyGrade: adjustedGrade } }
+                );
+
+            // console.log('Persisted adjusted grade:', adjustedGrade);
         }
 
         // Step 3: Build a string for AI prompt

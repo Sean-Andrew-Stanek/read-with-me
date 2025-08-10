@@ -6,7 +6,8 @@ const BaseUserSchema = z.object({
     isParent: z.boolean(),
     parentId: z.string().or(z.string().uuid()).optional(),
     children: z.array(z.string().or(z.string().uuid())).optional(),
-    grade: z.string().or(z.number()).optional().nullable()
+    grade: z.string().or(z.number()).optional().nullable(),
+    difficultyGrade: z.string().or(z.number()).optional().nullable()
 });
 
 export const ParentUserSchema = BaseUserSchema.omit({ parentId: true }).extend({
