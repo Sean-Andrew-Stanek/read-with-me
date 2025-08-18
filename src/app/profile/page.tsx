@@ -15,12 +15,14 @@ import LinkedChildren from '@/components/LinkedChildren';
 import { useLinkedChildren } from '@/lib/utils/hooks/useLinkedChildren';
 import { usePendingRequests } from '@/lib/utils/hooks/usePendingRequests';
 import { getPendingRequests } from '@/config/apiUri';
+import OnboardingDialog from '@/components/OnBoardingDialog';
 
 const Profile: React.FC = () => {
     const { data: session } = useSession();
     const [showTokenDialog, setShowTokenDialog] = useState(false);
     const [pendingSubmitted, setPendingSubmitted] = useState(false);
     const [loadingChildren, setLoadingChildren] = useState(false);
+    const [showOnboarding, setShowOnboarding] = useState(false);
 
     const {
         children,
@@ -113,6 +115,17 @@ const Profile: React.FC = () => {
                         </div>
                     )
                 ) : null}
+                {!isParent && (
+                    <div className="mt-6 flex justify-center">
+                        <button
+                            onClick={() => setShowOnboarding(true)}
+                            className="text-blue-600 underline hover:text-blue-800 cursor-pointer"
+                        >
+                            Change your grade
+                        </button>
+                    </div>
+                )}
+
                 {/* Parent View – Linked Children */}
                 {loadingChildren ? (
                     <div className="flex justify-center items-center mt-6">
@@ -216,6 +229,11 @@ const Profile: React.FC = () => {
                         />
                     </div>
                 )}
+                <OnboardingDialog
+                    open={showOnboarding}
+                    onOnboarded={() => setShowOnboarding(false)}
+                />
+
                 <div className=" flex justify-center mt-8">
                     <Link href="/home">
                         <Button

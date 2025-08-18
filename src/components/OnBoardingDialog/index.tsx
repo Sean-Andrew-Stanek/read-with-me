@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { navLink } from '@/config/navigation';
 import { putUserGrade } from '@/services/apiServices';
 import { grades } from '@/lib/constants/grades';
+import { toast } from 'sonner';
 
 interface OnboardingDialogProps {
     open: boolean;
@@ -25,7 +26,10 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
     const handleSubmit = async (): Promise<void> => {
         if (!session || !session.user || !session.user.uuid) return;
 
-        if (selectedGrade === null) return;
+        if (selectedGrade === null) {
+            toast.error('Please pick a grade');
+            return;
+        }
 
         await putUserGrade(selectedGrade.toString(), session.user.uuid);
 
@@ -38,9 +42,9 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
     };
 
     const handleCancel = (): void => {
-        // Only show "grade-skipped" toast if no grade is set yet
-        if (!session?.user?.grade) {
-            localStorage.setItem('toast', 'grade-skipped');
+        if (selectedGrade === null) {
+            toast.error('Please pick a grade before continuing');
+            return; // block closing
         }
         onOnboarded(); // close without saving
         router.push(navLink.home); // Redirect to the home page
@@ -48,7 +52,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
 
     return (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center select-none">
-            <div className="relative bg-white p-8 rounded-md shadow-md w-full max-w-md">
+            <div className="relative bg-white rounded-md shadow-md w-full max-w-md mx-4 max-h-screen flex flex-col p-4">
                 {/* Close button */}
                 <button
                     onClick={handleCancel}
@@ -60,7 +64,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
                 <h2 className="text-xl font-semibold mb-4 text-gray-800">
                     Tell us your grade level
                 </h2>
-                <div className="mb-4">
+                <div className="mb-4 flex-1 overflow-y-auto">
                     <label className="block text-gray-700 text-sm font-bold mb-2">
                         Select your grade level:
                     </label>
@@ -70,7 +74,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
                             return (
                                 <div
                                     key={grade}
-                                    className="flex items-center rounded-md p-1 transition-all duration-200 hover:bg-gray-100 hover:translate-x-1 cursor-pointer"
+                                    className="flex items-center rounded-md p-1 transition-colors duration-200 hover:bg-gray-100 cursor-pointer"
                                 >
                                     <input
                                         type="radio"
@@ -92,7 +96,7 @@ const OnboardingDialog: React.FC<OnboardingDialogProps> = ({
                         })}
                     </div>
                 </div>
-                <div className="flex justify-end">
+                <div className="flex justify-end mt-auto">
                     <button
                         className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         onClick={handleSubmit}
